@@ -22,9 +22,25 @@ public class MemoryBar extends JPanel {
         long totalMemory = Runtime.getRuntime().totalMemory();
         long freeMemory = Runtime.getRuntime().freeMemory();
         long usedMemory = totalMemory - freeMemory;
-        int percentUsed = (int) ((double) usedMemory / totalMemory * 100);
 
-        progressBar.setValue(percentUsed);
-        progressBar.setString("Memory Usage: " + percentUsed + "%");
+        int progressBarMaxValue = progressBar.getMaximum();
+        int scaledValue = (int) ((double) usedMemory / totalMemory * progressBarMaxValue);
+
+        progressBar.setValue(scaledValue);
+        progressBar.setString("Used Memory: " + formatMemorySize(usedMemory) + "/" + formatMemorySize(totalMemory));
+    }
+
+    private String formatMemorySize(long bytes) {
+        long kilobytes = bytes / 1024;
+        long megabytes = kilobytes / 1024;
+        long gigabytes = megabytes / 1024;
+
+        if (gigabytes > 0) {
+            return gigabytes + " GB";
+        } else if (megabytes > 0) {
+            return megabytes + " MB";
+        } else {
+            return kilobytes + " KB";
+        }
     }
 }
