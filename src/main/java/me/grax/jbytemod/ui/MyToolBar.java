@@ -1,7 +1,5 @@
 package me.grax.jbytemod.ui;
 
-import com.alee.global.StyleConstants;
-import com.alee.laf.button.WebButton;
 import me.grax.jbytemod.JByteMod;
 
 import javax.swing.*;
@@ -51,7 +49,7 @@ public class MyToolBar extends JToolBar {
     }
 
     protected JButton makeNavigationButton(String action, ImageIcon i, ActionListener a) {
-        JButton button = WebButton.createIconWebButton(i, StyleConstants.smallRound, true);
+        JButton button = new JButton(i);
         button.setToolTipText(action);
         button.addActionListener(a);
         button.setFocusable(false);

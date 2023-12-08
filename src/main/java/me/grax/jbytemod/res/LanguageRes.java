@@ -1,6 +1,5 @@
 package me.grax.jbytemod.res;
 
-import com.alee.laf.WebLookAndFeel;
 import me.grax.jbytemod.JByteMod;
 import me.grax.jbytemod.utils.ErrorDisplay;
 import org.w3c.dom.Document;
@@ -24,27 +23,8 @@ public class LanguageRes {
         this.readXML(map, getXML());
         this.readXML(defaultMap, LanguageRes.class.getResourceAsStream("/locale/en.xml"));
         JByteMod.LOGGER.log("Successfully loaded " + map.size() + " local resources and " + defaultMap.size() + " default resources");
-        this.fixUnicodeSupport();
     }
 
-    private void fixUnicodeSupport() {
-        for (String translation : map.values()) {
-            for (char c : translation.toCharArray()) {
-                if (!WebLookAndFeel.globalControlFont.canDisplay(c)) {
-                    WebLookAndFeel.globalControlFont = fixFont(WebLookAndFeel.globalControlFont);
-                    WebLookAndFeel.globalTooltipFont = fixFont(WebLookAndFeel.globalTooltipFont);
-                    WebLookAndFeel.globalAlertFont = fixFont(WebLookAndFeel.globalAlertFont);
-                    WebLookAndFeel.globalMenuFont = fixFont(WebLookAndFeel.globalMenuFont);
-                    WebLookAndFeel.globalAcceleratorFont = fixFont(WebLookAndFeel.globalAcceleratorFont);
-                    WebLookAndFeel.globalTitleFont = fixFont(WebLookAndFeel.globalTitleFont);
-                    WebLookAndFeel.globalTextFont = fixFont(WebLookAndFeel.globalTextFont);
-                    JByteMod.LOGGER.log("Updated WebLaF fonts for unicode support");
-                    return;
-                }
-            }
-        }
-        JByteMod.LOGGER.log("Unicode check finished!");
-    }
 
     private Font fixFont(Font font) {
         return new Font(null, font.getStyle(), font.getSize());

@@ -130,10 +130,7 @@ public class JByteMod extends JFrame {
         this.setTCBList(new TCBList());
         this.setLVPList(new LVPList());
         JPanel border = new JPanel();
-        if (!UIManager.getLookAndFeel().getName().equals("WebLookAndFeel")) {
-            //looks better without border for weblaf
-            border.setBorder(new LineBorder(JByteMod.border));
-        }
+        border.setBorder(null);
         border.setLayout(new GridLayout());
         JSplitPane splitPane = new MySplitPane(this, jarTree);
         JPanel b2 = new JPanel();
@@ -267,10 +264,6 @@ public class JByteMod extends JFrame {
 
     public void attachTo(VirtualMachine vm) throws Exception {
         new AttachTask(this, vm).execute();
-    }
-
-    public void changeUI(String clazz) {
-        LookUtils.changeLAF(clazz);
     }
 
     public ControlFlowPanel getCFP() {

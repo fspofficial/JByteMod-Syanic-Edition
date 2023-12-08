@@ -1,8 +1,5 @@
 package me.grax.jbytemod.ui;
 
-import com.alee.laf.button.WebButton;
-import com.alee.managers.popup.PopupWay;
-import com.alee.managers.popup.WebButtonPopup;
 import me.lpk.util.AccessHelper;
 import org.objectweb.asm.Opcodes;
 
@@ -49,15 +46,15 @@ public class JAccessSelectorPanel extends JPanel implements Opcodes {
         other.updateVisibility(accezz);
     }
 
-    public class VisibilityButton extends WebButton {
+    public class VisibilityButton extends JButton {
         private int visibility;
 
         public VisibilityButton(int access) {
             updateVisibility(access);
             this.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
-                    WebButtonPopup popupMenu = generatePopupMenu();
-                    popupMenu.showPopup();
+                    JPopupMenu popupMenu = generatePopupMenu();
+                    popupMenu.show(VisibilityButton.this, 0, VisibilityButton.this.getHeight());
                 }
             });
         }
@@ -65,57 +62,36 @@ public class JAccessSelectorPanel extends JPanel implements Opcodes {
         public void updateVisibility(int access) {
             if (AccessHelper.isPublic(access)) {
                 visibility = ACC_PUBLIC;
-                this.setIcon(TreeCellRenderer.mpub);
+                this.setIcon(new ImageIcon(TreeCellRenderer.mpub.getImage()));
             } else if (AccessHelper.isPrivate(access)) {
                 visibility = ACC_PRIVATE;
-                this.setIcon(TreeCellRenderer.mpri);
+                this.setIcon(new ImageIcon(TreeCellRenderer.mpri.getImage()));
             } else if (AccessHelper.isProtected(access)) {
                 visibility = ACC_PROTECTED;
-                this.setIcon(TreeCellRenderer.mpro);
+                this.setIcon(new ImageIcon(TreeCellRenderer.mpro.getImage()));
             } else {
-                visibility = 0; //default
-                this.setIcon(TreeCellRenderer.mdef);
+                visibility = 0; // default
+                this.setIcon(new ImageIcon(TreeCellRenderer.mdef.getImage()));
             }
         }
 
-        private WebButtonPopup generatePopupMenu() {
-            WebButtonPopup pm = new WebButtonPopup(this, PopupWay.downCenter);
-            JToggleButton pub = new JToggleButton(TreeCellRenderer.mpub);
+        private JPopupMenu generatePopupMenu() {
+            JPopupMenu pm = new JPopupMenu();
+            JToggleButton pub = new JToggleButton(new ImageIcon(TreeCellRenderer.mpub.getImage()));
             pub.setToolTipText("public");
-            JToggleButton pri = new JToggleButton(TreeCellRenderer.mpri);
+            JToggleButton pri = new JToggleButton(new ImageIcon(TreeCellRenderer.mpri.getImage()));
             pri.setToolTipText("private");
-            JToggleButton pro = new JToggleButton(TreeCellRenderer.mpro);
+            JToggleButton pro = new JToggleButton(new ImageIcon(TreeCellRenderer.mpro.getImage()));
             pro.setToolTipText("protected");
-            JToggleButton def = new JToggleButton(TreeCellRenderer.mdef);
+            JToggleButton def = new JToggleButton(new ImageIcon(TreeCellRenderer.mdef.getImage()));
             def.setToolTipText("none");
-            pub.addActionListener(e -> {
-                pub.setSelected(true);
-                pri.setSelected(false);
-                pro.setSelected(false);
-                def.setSelected(false);
-                updateVisibility(ACC_PUBLIC);
-            });
-            pri.addActionListener(e -> {
-                pub.setSelected(false);
-                pri.setSelected(true);
-                pro.setSelected(false);
-                def.setSelected(false);
-                updateVisibility(ACC_PRIVATE);
-            });
-            pro.addActionListener(e -> {
-                pub.setSelected(false);
-                pri.setSelected(false);
-                pro.setSelected(true);
-                def.setSelected(false);
-                updateVisibility(ACC_PROTECTED);
-            });
-            def.addActionListener(e -> {
-                pub.setSelected(false);
-                pri.setSelected(false);
-                pro.setSelected(false);
-                def.setSelected(true);
-                updateVisibility(0);
-            });
+
+            ButtonGroup group = new ButtonGroup();
+            group.add(pub);
+            group.add(pri);
+            group.add(pro);
+            group.add(def);
+
             switch (visibility) {
                 case ACC_PUBLIC:
                     pub.setSelected(true);
@@ -130,30 +106,34 @@ public class JAccessSelectorPanel extends JPanel implements Opcodes {
                     def.setSelected(true);
                     break;
             }
-            JPanel list = new JPanel(new GridLayout(4, 1));
-            list.add(pub);
-            list.add(pri);
-            list.add(pro);
-            list.add(def);
-            pm.setContent(list);
+
+            pub.addActionListener(e -> updateVisibility(ACC_PUBLIC));
+            pri.addActionListener(e -> updateVisibility(ACC_PRIVATE));
+            pro.addActionListener(e -> updateVisibility(ACC_PROTECTED));
+            def.addActionListener(e -> updateVisibility(0));
+
+            pm.add(pub);
+            pm.add(pri);
+            pm.add(pro);
+            pm.add(def);
+
             return pm;
         }
 
         public int getVisibility() {
             return visibility;
         }
-
     }
 
-    public class ExtrasButton extends WebButton {
+    public class ExtrasButton extends JButton {
         private int visibility;
 
         public ExtrasButton(int access) {
             updateVisibility(access);
             this.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
-                    WebButtonPopup popupMenu = generatePopupMenu();
-                    popupMenu.showPopup();
+                    JPopupMenu popupMenu = generatePopupMenu();
+                    popupMenu.show(ExtrasButton.this, 0, ExtrasButton.this.getHeight());
                 }
             });
         }
@@ -175,6 +155,7 @@ public class JAccessSelectorPanel extends JPanel implements Opcodes {
             if (AccessHelper.isAbstract(access)) {
                 visibility |= ACC_ABSTRACT;
             }
+
             ImageIcon preview = new ImageIcon(new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB));
             boolean empty = true;
             if (AccessHelper.isAbstract(access)) {
@@ -185,7 +166,7 @@ public class JAccessSelectorPanel extends JPanel implements Opcodes {
                 if (AccessHelper.isFinal(access)) {
                     preview = TreeCellRenderer.combineAccess(preview, TreeCellRenderer.fin, true);
                     empty = scndRight = false;
-                } else if (AccessHelper.isNative(access)) { //do not allow triples
+                } else if (AccessHelper.isNative(access)) { // do not allow triples
                     preview = TreeCellRenderer.combineAccess(preview, TreeCellRenderer.nat, true);
                     empty = scndRight = false;
                 }
@@ -200,23 +181,24 @@ public class JAccessSelectorPanel extends JPanel implements Opcodes {
             this.setIcon(preview);
         }
 
-        private WebButtonPopup generatePopupMenu() {
-            WebButtonPopup pm = new WebButtonPopup(this, PopupWay.downCenter);
-            JToggleButton abs = new JToggleButton(TreeCellRenderer.abs);
+        private JPopupMenu generatePopupMenu() {
+            JPopupMenu pm = new JPopupMenu();
+            JToggleButton abs = new JToggleButton(new ImageIcon(TreeCellRenderer.abs.getImage()));
             abs.setToolTipText("abstract");
             abs.setSelected(AccessHelper.isAbstract(visibility));
-            JToggleButton fin = new JToggleButton(TreeCellRenderer.fin);
+            JToggleButton fin = new JToggleButton(new ImageIcon(TreeCellRenderer.fin.getImage()));
             fin.setToolTipText("final");
             fin.setSelected(AccessHelper.isFinal(visibility));
-            JToggleButton nat = new JToggleButton(TreeCellRenderer.nat);
+            JToggleButton nat = new JToggleButton(new ImageIcon(TreeCellRenderer.nat.getImage()));
             nat.setToolTipText("native");
             nat.setSelected(AccessHelper.isNative(visibility));
-            JToggleButton stat = new JToggleButton(TreeCellRenderer.stat);
+            JToggleButton stat = new JToggleButton(new ImageIcon(TreeCellRenderer.stat.getImage()));
             stat.setToolTipText("static");
             stat.setSelected(AccessHelper.isStatic(visibility));
-            JToggleButton syn = new JToggleButton(TreeCellRenderer.syn);
+            JToggleButton syn = new JToggleButton(new ImageIcon(TreeCellRenderer.syn.getImage()));
             syn.setToolTipText("synthetic");
             syn.setSelected(AccessHelper.isSynthetic(visibility));
+
             abs.addActionListener(e -> {
                 if (AccessHelper.isAbstract(visibility)) {
                     visibility -= ACC_ABSTRACT;
@@ -277,23 +259,22 @@ public class JAccessSelectorPanel extends JPanel implements Opcodes {
                 }
                 updateVisibility(visibility);
             });
-            JPanel list = new JPanel(new GridLayout(4, 1));
-            list.add(fin);
-            list.add(nat);
-            list.add(stat);
-            list.add(syn);
-            list.add(abs);
-            pm.setContent(list);
+
+            pm.add(fin);
+            pm.add(nat);
+            pm.add(stat);
+            pm.add(syn);
+            pm.add(abs);
+
             return pm;
         }
 
         public int getVisibility() {
             return visibility;
         }
-
     }
 
-    public class OtherButton extends WebButton {
+    public class OtherButton extends JButton {
         private final List<String> alreadyCovered = Arrays.asList("ACC_PUBLIC", "ACC_PRIVATE", "ACC_PROTECTED", "ACC_STATIC", "ACC_FINAL", "ACC_NATIVE",
                 "ACC_ABSTRACT", "ACC_SYNTHETIC", "ACC_STATIC_PHASE", "ACC_TRANSITIVE");
         private final HashMap<String, Integer> otherTypes = new HashMap<>();
@@ -313,8 +294,8 @@ public class JAccessSelectorPanel extends JPanel implements Opcodes {
             updateVisibility(access);
             this.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
-                    WebButtonPopup popupMenu = generatePopupMenu();
-                    popupMenu.showPopup();
+                    JPopupMenu popupMenu = generatePopupMenu();
+                    popupMenu.show(OtherButton.this, 0, OtherButton.this.getHeight());
                 }
             });
         }
@@ -329,9 +310,8 @@ public class JAccessSelectorPanel extends JPanel implements Opcodes {
             this.setText("...");
         }
 
-        private WebButtonPopup generatePopupMenu() {
-            WebButtonPopup pm = new WebButtonPopup(this, PopupWay.downCenter);
-            JPanel list = new JPanel(new GridLayout(7, 1));
+        private JPopupMenu generatePopupMenu() {
+            JPopupMenu pm = new JPopupMenu();
             for (Entry<String, Integer> acc : otherTypes.entrySet()) {
                 JToggleButton jtb = new JToggleButton(
                         acc.getKey().substring(0, 1).toUpperCase() + acc.getKey().substring(1, Math.min(acc.getKey().length(), 7)));
@@ -344,9 +324,8 @@ public class JAccessSelectorPanel extends JPanel implements Opcodes {
                     }
                 });
                 jtb.setFont(new Font(jtb.getFont().getName(), Font.PLAIN, 10));
-                list.add(jtb);
+                pm.add(jtb);
             }
-            pm.setContent(list);
             return pm;
         }
 

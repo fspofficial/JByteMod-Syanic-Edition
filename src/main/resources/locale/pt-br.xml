@@ -56,7 +56,6 @@
    <string name="compute_maxs">Usar COMPUTE_MAXS</string>
    <string name="hints">Dicas</string>
    <string name="select_tree">Selecionar tree entry</string>
-   <string name="use_weblaf">Usar WebLaF (Necessário reinicializar)</string>
    <string name="simplify_graph">Simplificar gráfico Control flow</string>
    <string name="remove_redundant">Remover blocos redundantes</string>
    <string name="select_code_tab">Selecionar editor tab automaticamente</string>

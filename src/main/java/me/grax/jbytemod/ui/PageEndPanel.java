@@ -1,6 +1,8 @@
 package me.grax.jbytemod.ui;
 
-import com.alee.extended.statusbar.WebMemoryBar;
+
+
+import de.xbrowniecodez.jbytemod.ui.MemoryBar;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -12,7 +14,7 @@ public class PageEndPanel extends JPanel {
     private JProgressBar pb;
     private JLabel percent;
     private JLabel label;
-    private WebMemoryBar memoryBar;
+    private MemoryBar memoryBar;
 
     public PageEndPanel() {
         this.pb = new JProgressBar() {
@@ -36,8 +38,7 @@ public class PageEndPanel extends JPanel {
         label.setHorizontalAlignment(SwingConstants.RIGHT);
         label.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 13));
         this.add(label);
-        memoryBar = new WebMemoryBar();
-        memoryBar.setShowMaximumMemory(false);
+        memoryBar = new MemoryBar();
         this.add(memoryBar);
 
     }

@@ -52,7 +52,6 @@
    <string name="compute_maxs">Использовать COMPUTE_MAXS</string>
    <string name="hints">Подсказки</string>
    <string name="select_tree">Выбрать элемент дерева</string>
-   <string name="use_weblaf">Использовать WebLaF (Требуется перезагрузка)</string>
    <string name="simplify_graph">Упростить графики</string>
    <string name="remove_redundant">Удалять избыточные блоки</string>
    <string name="select_code_tab">Выбрать вкладку с кодом</string> <!-- TODO: UPDATE -->

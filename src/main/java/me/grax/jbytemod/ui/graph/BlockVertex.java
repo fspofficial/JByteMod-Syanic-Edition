@@ -1,6 +1,5 @@
 package me.grax.jbytemod.ui.graph;
 
-import com.strobel.core.ExceptionUtilities;
 import me.grax.jbytemod.JByteMod;
 import me.grax.jbytemod.analysis.block.Block;
 import me.grax.jbytemod.analysis.decompiler.code.ast.Expression;
@@ -65,7 +64,7 @@ public class BlockVertex {
                     text += InstrUtils.toString(ain) + "\n";
                 }
                 text += "\n<i>";
-                text += ExceptionUtilities.getStackTraceString(e);
+                //text += ExceptionUtilities.getStackTraceString(e);
             }
         }
         if (text.trim().isEmpty()) {

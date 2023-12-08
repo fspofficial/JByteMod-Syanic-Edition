@@ -52,7 +52,6 @@
    <string name="compute_maxs">未知支持庫使用COMPUTE_MAXS替換</string>
    <string name="hints">提示</string>
    <string name="select_tree">選擇樹形圖</string>
-   <string name="use_weblaf">使用WebLaF（需要重新啟動程序）</string>
    <string name="simplify_graph">顯示簡單Control flow</string>
    <string name="remove_redundant">移除重複blocks</string>
    <string name="select_code_tab">自動選擇編輯tab</string>

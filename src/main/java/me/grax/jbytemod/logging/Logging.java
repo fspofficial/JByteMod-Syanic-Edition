@@ -1,6 +1,6 @@
 package me.grax.jbytemod.logging;
 
-import com.alee.managers.notification.NotificationManager;
+import de.xbrowniecodez.jbytemod.ui.NotificationManager;
 import me.grax.jbytemod.JByteMod;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 

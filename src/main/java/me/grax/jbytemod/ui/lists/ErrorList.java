@@ -1,7 +1,5 @@
 package me.grax.jbytemod.ui.lists;
 
-import com.alee.extended.layout.VerticalFlowLayout;
-import com.alee.extended.window.WebPopOver;
 import me.grax.jbytemod.JByteMod;
 import me.grax.jbytemod.analysis.errors.EmptyMistake;
 import me.grax.jbytemod.analysis.errors.ErrorAnalyzer;
@@ -45,19 +43,28 @@ public class ErrorList extends JList<Mistake> {
                 int index = locationToIndex(e.getPoint());
                 Mistake error = getModel().getElementAt(index);
                 if (!(error instanceof EmptyMistake)) {
-                    WebPopOver popOver = new WebPopOver(JByteMod.instance);
-                    popOver.setMargin(10);
-                    popOver.setMovable(false);
-                    popOver.setCloseOnFocusLoss(true);
-                    popOver.setLayout(new VerticalFlowLayout());
-                    popOver.add(new JLabel(error.getDesc()));
-                    popOver.show(jbm, (int) jbm.getMousePosition().getX(), (int) jbm.getMousePosition().getY());
+                    showPopover(error, e.getXOnScreen(), e.getYOnScreen());
                 }
             }
         });
         this.updateErrors();
-        SwingUtils.disableSelection(this);
+        //SwingUtils.disableSelection(this);
     }
+
+    private void showPopover(Mistake error, int x, int y) {
+        JPopupMenu popover = new JPopupMenu();
+
+        // Create a custom panel to display the error message
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        panel.add(new JLabel(error.getDesc()));
+
+        popover.add(panel);
+
+        // Show the popover at the specified position
+        popover.show(jbm, x - jbm.getLocationOnScreen().x, y - jbm.getLocationOnScreen().y);
+    }
+
 
     public void updateErrors() {
         if (JByteMod.ops.get("analyze_errors").getBoolean() && jbm.getCurrentMethod() != null) {

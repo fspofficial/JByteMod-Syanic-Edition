@@ -18,9 +18,7 @@ import me.grax.jbytemod.utils.TextUtils;
 import me.grax.jbytemod.utils.attach.AttachUtils;
 import me.grax.jbytemod.utils.list.LazyListModel;
 import org.apache.commons.io.IOUtils;
-import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
-import org.objectweb.asm.util.CheckClassAdapter;
 import sun.tools.attach.WindowsAttachProvider;
 
 import javax.swing.*;
@@ -648,10 +646,6 @@ public class MyMenuBar extends JMenuBar {
                         public void actionPerformed(ActionEvent e) {
                             op.setValue(jmi.isSelected());
                             o.save();
-                            if (op.getName().equals("use_weblaf")) {
-                                JByteMod.resetLAF();
-                                JByteMod.restartGUI();
-                            }
                         }
                     });
                     menu.add(jmi);
