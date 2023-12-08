@@ -7,7 +7,7 @@ public class TextUtils {
     }
 
     public static String toBlack(String str) {
-        return addTag(str, "font color=#000000");
+        return addTag(str, "font color=#aba9a9");
     }
 
     public static String addTag(String str, String tag) {

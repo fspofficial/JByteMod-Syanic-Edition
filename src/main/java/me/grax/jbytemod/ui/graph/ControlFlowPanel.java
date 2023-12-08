@@ -72,7 +72,7 @@ public class ControlFlowPanel extends JPanel {
                     File output = jfc.getSelectedFile();
                     String type = ((FileNameExtensionFilter) jfc.getFileFilter()).getExtensions()[0];
                     JByteMod.LOGGER.log("Saving graph as " + type + " file (" + output.getName() + ")");
-                    BufferedImage image = mxCellRenderer.createBufferedImage(graph, null, 1, Color.WHITE, true, null);
+                    BufferedImage image = mxCellRenderer.createBufferedImage(graph, null, 1, new Color(33,37,43), true, null);
                     try {
                         ImageIO.write(ImageUtils.watermark(image), type, output);
                     } catch (IOException e1) {
@@ -99,7 +99,7 @@ public class ControlFlowPanel extends JPanel {
         JPanel inner = new JPanel();
         inner.setBorder(new EmptyBorder(30, 30, 30, 30));
         inner.setLayout(new BorderLayout(0, 0));
-        inner.setBackground(Color.WHITE);
+        inner.setBackground(new Color(33, 37, 43));
         inner.add(graphComponent, BorderLayout.CENTER);
         scp = new JScrollPane(inner);
         scp.getVerticalScrollBar().setUnitIncrement(16);
@@ -186,7 +186,7 @@ public class ControlFlowPanel extends JPanel {
             vertex.addInput(input);
         }
         vertex.setupText();
-        v1 = (mxCell) graph.insertVertex(parent, null, vertex, 150, 10, 80, 40, "fillColor=#FFFFFF;fontColor=#111111;strokeColor=#9297a1");
+        v1 = (mxCell) graph.insertVertex(parent, null, vertex, 150, 10, 80, 40, "fillColor=#21252B;fontColor=#e8e8e8;strokeColor=#9297a1");
         graph.updateCellSize(v1); //resize cell
 
         existing.put(b, v1);
