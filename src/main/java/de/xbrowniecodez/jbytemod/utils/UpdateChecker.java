@@ -1,6 +1,7 @@
 package de.xbrowniecodez.jbytemod.utils;
 
 import java.awt.Desktop;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
@@ -9,37 +10,56 @@ import java.net.URLConnection;
 
 import javax.swing.JOptionPane;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import lombok.SneakyThrows;
 import me.grax.jbytemod.JByteMod;
 
 public class UpdateChecker {
-	public UpdateChecker() throws Exception {
+
+	public UpdateChecker() {
 		JByteMod.LOGGER.log("Checking for updates...");
-		String sURL = "https://api.github.com/repos/xBrownieCodezV2/JByteMod-Remastered/releases/latest"; 																										// string
-		URL url = new URL(sURL);
-		URLConnection request = url.openConnection();
-		request.connect();
-		JsonParser jp = new JsonParser();
-		JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
-		JsonObject rootobj = root.getAsJsonObject();
-		String version = rootobj.get("name").getAsString();
-		if (!version.equals(JByteMod.version)) {
-			int buttonComponent = JOptionPane.YES_NO_OPTION;
-			int result = JOptionPane.showConfirmDialog(null,
-					String.format("Version %s is available, would you like to download it?", version),
-					"Update available", buttonComponent);
-			if (result == 0) {
-				if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-					Desktop.getDesktop().browse(new URI(String.format(
-							"https://github.com/xBrownieCodezV2/JByteMod-Remastered/releases/download/%s/JByteMod-Remastered-%s.jar",
-							version, version)));
-				}
+		JsonObject releaseInfo = fetchLatestReleaseInfo();
+
+		if (releaseInfo != null) {
+			String latestVersion = releaseInfo.get("name").getAsString();
+
+			if (!latestVersion.equals(JByteMod.version)) {
+				showUpdateDialog(latestVersion);
 			}
 		}
-
 	}
 
+	@SneakyThrows
+	private JsonObject fetchLatestReleaseInfo() {
+		URL url = new URL("https://api.github.com/repos/xBrownieCodezV2/JByteMod-Remastered/releases/latest");
+		URLConnection connection = url.openConnection();
+
+		try (InputStream inputStream = connection.getInputStream();
+			 InputStreamReader reader = new InputStreamReader(inputStream)) {
+			return JsonParser.parseReader(reader).getAsJsonObject();
+		}
+	}
+
+	private void showUpdateDialog(String latestVersion) {
+		int result = JOptionPane.showConfirmDialog(null,
+				String.format("Version %s is available, would you like to download it?", latestVersion),
+				"Update available", JOptionPane.YES_NO_OPTION);
+
+		if (result == JOptionPane.YES_OPTION) {
+			openDownloadLink(latestVersion);
+		}
+	}
+
+	@SneakyThrows
+	private void openDownloadLink(String version) {
+		URI downloadUri = new URI(String.format(
+				"https://github.com/xBrownieCodezV2/JByteMod-Remastered/releases/download/%s/JByteMod-Remastered-%s.jar",
+				version, version));
+
+		if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+			Desktop.getDesktop().browse(downloadUri);
+		}
+	}
 }
