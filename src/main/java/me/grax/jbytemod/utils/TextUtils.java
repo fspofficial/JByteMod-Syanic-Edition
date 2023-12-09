@@ -1,5 +1,7 @@
 package me.grax.jbytemod.utils;
 
+import me.grax.jbytemod.JByteMod;
+
 public class TextUtils {
 
     public static String toHtml(String str) {
@@ -7,7 +9,12 @@ public class TextUtils {
     }
 
     public static String toBlack(String str) {
-        return addTag(str, "font color=#aba9a9");
+        String fontColor;
+        if(JByteMod.ops.get("use_dark_theme").getBoolean())
+            fontColor = "#aba9a9";
+        else
+            fontColor = "#000000";
+        return addTag(str, "font color=" + fontColor);
     }
 
     public static String addTag(String str, String tag) {

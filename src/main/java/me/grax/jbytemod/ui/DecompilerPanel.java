@@ -19,7 +19,10 @@ public class DecompilerPanel extends RSyntaxTextArea {
         // change theme to java
         try {
             Theme theme;
-            theme = Theme.load(getClass().getResourceAsStream("/resources/de/brownie/rsyntaxtextarea/themes/custom.xml"));
+            if(JByteMod.ops.get("use_dark_theme").getBoolean())
+                theme = Theme.load(getClass().getResourceAsStream("/resources/de/brownie/rsyntaxtextarea/themes/custom.xml"));
+            else
+                theme = Theme.load(getClass().getResourceAsStream("/org/fife/ui/rsyntaxtextarea/themes/idea.xml"));
             theme.apply(this);
         } catch (IOException e1) {
             new ErrorDisplay(e1);

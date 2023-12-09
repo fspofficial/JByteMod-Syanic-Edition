@@ -86,5 +86,6 @@
    <string name="search_method">Method Referenz</string>
    <string name="replace_ldc">LDC ersetzen</string>
    <string name="attach">An Prozess anhängen</string>
+   <string name="use_dark_theme">Dunkles Design</string>
 </resources>
 

@@ -31,7 +31,7 @@ public class Options {
             new Option("decompile_graph", true, Type.BOOLEAN, "graph"), new Option("primary_color", "#557799", Type.STRING, "color"),
             new Option("secondary_color", "#995555", Type.STRING, "color"),
             new Option("discord_state", true, Type.BOOLEAN), new Option("auto_scan", false, Type.BOOLEAN),
-            new Option("bad_class_check", true, Type.BOOLEAN), new Option("use_flatdark", true, Type.BOOLEAN, "style")));
+            new Option("bad_class_check", true, Type.BOOLEAN), new Option("use_dark_theme", true, Type.BOOLEAN, "style")));
 
     public Options() {
         initializeDecompilerOptions();

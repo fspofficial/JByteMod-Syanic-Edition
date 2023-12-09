@@ -39,6 +39,11 @@ public class ControlFlowPanel extends JPanel {
     private HashMap<Block, mxCell> existing = new HashMap<>();
 
     public ControlFlowPanel(JByteMod jbm) {
+        Color backgroundColor;
+        if(JByteMod.ops.get("use_dark_theme").getBoolean())
+            backgroundColor = new Color(33,37,43);
+        else
+            backgroundColor = Color.WHITE;
         this.setLayout(new BorderLayout(0, 0));
         graph = new CFGraph(jbm);
         JPanel lpad = new JPanel();
@@ -72,7 +77,7 @@ public class ControlFlowPanel extends JPanel {
                     File output = jfc.getSelectedFile();
                     String type = ((FileNameExtensionFilter) jfc.getFileFilter()).getExtensions()[0];
                     JByteMod.LOGGER.log("Saving graph as " + type + " file (" + output.getName() + ")");
-                    BufferedImage image = mxCellRenderer.createBufferedImage(graph, null, 1, new Color(33,37,43), true, null);
+                    BufferedImage image = mxCellRenderer.createBufferedImage(graph, null, 1, backgroundColor, true, null);
                     try {
                         ImageIO.write(ImageUtils.watermark(image), type, output);
                     } catch (IOException e1) {
@@ -99,7 +104,7 @@ public class ControlFlowPanel extends JPanel {
         JPanel inner = new JPanel();
         inner.setBorder(new EmptyBorder(30, 30, 30, 30));
         inner.setLayout(new BorderLayout(0, 0));
-        inner.setBackground(new Color(33, 37, 43));
+        inner.setBackground(backgroundColor);
         inner.add(graphComponent, BorderLayout.CENTER);
         scp = new JScrollPane(inner);
         scp.getVerticalScrollBar().setUnitIncrement(16);

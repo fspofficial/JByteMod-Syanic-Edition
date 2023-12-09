@@ -7,8 +7,6 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 public class InfoPanel extends JPanel {
@@ -17,13 +15,18 @@ public class InfoPanel extends JPanel {
     private JByteMod jbm;
 
     public InfoPanel(JByteMod jbm) {
+        Color backgroundColor;
+        if(JByteMod.ops.get("use_dark_theme").getBoolean())
+            backgroundColor = new Color(33,37,43);
+        else
+            backgroundColor = Color.WHITE;
         this.jbm = jbm;
         this.setLayout(new BorderLayout());
         deskPane = new JDesktopPane() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.setColor(new Color(33,37,43));
+                g.setColor(backgroundColor);
                 g.fillRect(0, 0, getWidth(), getHeight());
             }
 
