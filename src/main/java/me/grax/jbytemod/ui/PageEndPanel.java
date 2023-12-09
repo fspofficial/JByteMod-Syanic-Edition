@@ -1,62 +1,64 @@
 package me.grax.jbytemod.ui;
 
-
-
 import de.xbrowniecodez.jbytemod.ui.MemoryBar;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
+/**
+ * Panel displayed at the bottom of the page.
+ */
 public class PageEndPanel extends JPanel {
 
-    private static final String copyright = "\u00A9 GraxCode 2016 - 2019";
-    private JProgressBar pb;
-    private JLabel percent;
-    private JLabel label;
+    private static final String COPYRIGHT_TEXT = "\u00A9 brownie 2020 - 2023";
+    private JProgressBar progressBar;
+    private JLabel percentLabel;
+    private JLabel copyrightLabel;
     private MemoryBar memoryBar;
 
     public PageEndPanel() {
-        this.pb = new JProgressBar() {
+        progressBar = new JProgressBar() {
             @Override
             public void setValue(int n) {
                 if (n == 100) {
                     super.setValue(0);
-                    percent.setText("");
+                    percentLabel.setText("");
                 } else {
                     super.setValue(n);
-                    percent.setText(n + "%");
+                    percentLabel.setText(n + "%");
                 }
             }
         };
-        this.setLayout(new GridLayout(1, 4, 10, 10));
-        this.setBorder(new EmptyBorder(3, 0, 0, 0));
-        this.add(pb);
-        this.add(percent = new JLabel());
-        percent.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 13));
-        label = new JLabel(copyright);
-        label.setHorizontalAlignment(SwingConstants.RIGHT);
-        label.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 13));
-        this.add(label);
-        memoryBar = new MemoryBar();
-        this.add(memoryBar);
 
+        setLayout(new GridLayout(1, 4, 10, 10));
+        setBorder(new EmptyBorder(3, 0, 0, 0));
+
+        add(progressBar);
+        add(percentLabel = new JLabel());
+        percentLabel.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 13));
+
+        copyrightLabel = new JLabel(COPYRIGHT_TEXT);
+        copyrightLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        copyrightLabel.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 13));
+        add(copyrightLabel);
+
+        memoryBar = new MemoryBar();
+        add(memoryBar);
     }
 
     public void setValue(int n) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                pb.setValue(n);
-                pb.repaint();
-            }
+        SwingUtilities.invokeLater(() -> {
+            progressBar.setValue(n);
+            progressBar.repaint();
         });
     }
 
-    public void setTip(String s) {
-        if (s != null) {
-            label.setText(s);
+    public void setTip(String tooltipText) {
+        if (tooltipText != null) {
+            copyrightLabel.setText(tooltipText);
         } else {
-            label.setText(copyright);
+            copyrightLabel.setText(COPYRIGHT_TEXT);
         }
     }
 }
