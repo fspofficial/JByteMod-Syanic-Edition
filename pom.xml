@@ -13,6 +13,7 @@
 		<maven.compiler.target>8</maven.compiler.target>
 		<asm.version>9.7-SNAPSHOT</asm.version>
 		<procyon.version>0.6.0</procyon.version>
+		<cfr.version>0.152</cfr.version>
 	</properties>
 	<build>
 		<plugins>
@@ -122,6 +123,12 @@
 				</executions>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
 
 	<repositories>
@@ -209,7 +216,7 @@
 		<dependency>
 			<groupId>org.benf</groupId>
 			<artifactId>cfr</artifactId>
-			<version>0.152</version>
+			<version>${cfr.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.tools</groupId>
@@ -270,11 +277,7 @@
 			<artifactId>asm</artifactId>
 			<version>${asm.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.jetbrains</groupId>
-			<artifactId>annotations</artifactId>
-			<version>13.0</version>
-			<scope>compile</scope>
-		</dependency>
 	</dependencies>
+
+
 </project>
