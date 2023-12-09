@@ -15,11 +15,7 @@ public class InfoPanel extends JPanel {
     private JByteMod jbm;
 
     public InfoPanel(JByteMod jbm) {
-        Color backgroundColor;
-        if(JByteMod.ops.get("use_dark_theme").getBoolean())
-            backgroundColor = new Color(33,37,43);
-        else
-            backgroundColor = Color.WHITE;
+        Color backgroundColor = JByteMod.ops.get("use_dark_theme").getBoolean() ? new Color(33, 37, 43) : Color.WHITE;
         this.jbm = jbm;
         this.setLayout(new BorderLayout());
         deskPane = new JDesktopPane() {

@@ -10,10 +10,7 @@ import me.grax.jbytemod.res.Option;
 public class LookUtils {
 
     public static void setLAF() {
-        if(JByteMod.ops.get("use_dark_theme").getBoolean())
-            LafManager.setTheme(new OneDarkTheme());
-        else
-            LafManager.setTheme(new IntelliJTheme());
+        LafManager.setTheme(JByteMod.ops.get("use_dark_theme").getBoolean() ? new OneDarkTheme() : new IntelliJTheme());
         try {
             JByteMod.LOGGER.log("Setting Look and Feel");
             LafManager.install();

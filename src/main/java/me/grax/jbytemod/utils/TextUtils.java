@@ -5,15 +5,11 @@ import me.grax.jbytemod.JByteMod;
 public class TextUtils {
 
     public static String toHtml(String str) {
-        return "<html>" + toBlack(str);
+        return "<html>" + toThemeColor(str);
     }
 
-    public static String toBlack(String str) {
-        String fontColor;
-        if(JByteMod.ops.get("use_dark_theme").getBoolean())
-            fontColor = "#aba9a9";
-        else
-            fontColor = "#000000";
+    public static String toThemeColor(String str) {
+        String fontColor = JByteMod.ops.get("use_dark_theme").getBoolean() ? "#aba9a9" : "#000000";
         return addTag(str, "font color=" + fontColor);
     }
 
