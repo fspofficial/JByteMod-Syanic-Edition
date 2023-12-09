@@ -85,6 +85,9 @@ public class DecompilerTab extends JPanel {
             case CFR:
                 d = new CFRDecompiler(jbm, dp);
                 break;
+            case KOFFEE:
+                d = new KoffeeDecompiler(jbm, dp);
+                break;
         }
         d.setNode(cn, mn);
         if (deleteCache) {
