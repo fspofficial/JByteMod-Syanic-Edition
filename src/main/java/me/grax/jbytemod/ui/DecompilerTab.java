@@ -171,9 +171,6 @@ public class DecompilerTab extends JPanel {
             case CFR:
                 d = new CFRDecompiler(jbm, dp);
                 break;
-            case KRAKATAU:
-                d = new KrakatauDecompiler(jbm, dp);
-                break;
 
         }
         d.setNode(cn, mn);
