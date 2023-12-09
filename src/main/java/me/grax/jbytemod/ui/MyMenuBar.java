@@ -9,7 +9,6 @@ import me.grax.jbytemod.plugin.Plugin;
 import me.grax.jbytemod.res.LanguageRes;
 import me.grax.jbytemod.res.Option;
 import me.grax.jbytemod.res.Options;
-import me.grax.jbytemod.scanner.ScannerThread;
 import me.grax.jbytemod.ui.dialogue.ClassDialogue;
 import me.grax.jbytemod.ui.lists.entries.SearchEntry;
 import me.grax.jbytemod.utils.DeobfusacteUtils;
@@ -222,27 +221,6 @@ public class MyMenuBar extends JMenuBar {
         // Utils:
         JMenu deobfTools = new JMenu(JByteMod.res.getResource("deobf_tools"));
         utils.add(deobfTools);
-
-        JMenu raccoon = new JMenu(JByteMod.res.getResource("raccoon"));
-        utils.add(raccoon);
-
-        JMenuItem raccoon_scan = new JMenuItem(JByteMod.res.getResource("raccoon_scan"));
-        raccoon_scan.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                if (jbm.getFile() != null && jbm.getFile().getClasses() != null) {
-                    JarArchive ja = JByteMod.instance.getFile();
-                    ScannerThread scannerThread;
-
-                    scannerThread = new ScannerThread(ja.getClasses());
-                    scannerThread.setJarManifest(ja.getJarManifest());
-                    scannerThread.start();
-                }else {
-                    canNotFindFile();
-                }
-            }
-        });
-        raccoon.add(raccoon_scan);
 
         JMenuItem findSF = new JMenuItem(JByteMod.res.getResource("find_sourcefiles"));
         findSF.addActionListener(new ActionListener() {

@@ -3,7 +3,6 @@ package me.grax.jbytemod.utils.task;
 import me.grax.jbytemod.JByteMod;
 import me.grax.jbytemod.JarArchive;
 import me.grax.jbytemod.discord.Discord;
-import me.grax.jbytemod.scanner.ScannerThread;
 import me.grax.jbytemod.ui.PageEndPanel;
 import me.grax.jbytemod.utils.ErrorDisplay;
 import me.grax.jbytemod.utils.FileUtils;
@@ -42,7 +41,6 @@ public class LoadTask extends SwingWorker<Void, Integer> {
     private long maxMem;
     private boolean memoryWarning;
     private long startTime;
-    private ScannerThread scannerThread;
     private int othersFile;
     private int junkClasses;
 
@@ -205,11 +203,5 @@ public class LoadTask extends SwingWorker<Void, Integer> {
         jbm.refreshTree();
         JByteMod.LOGGER.log("Tree refreshed.");
         JByteMod.LOGGER.log("Loaded classes in " + (System.currentTimeMillis() - startTime) + "ms" + ", bypassed " + othersFile + " files because I can't load them. (Include " + junkClasses + " junk classes.)");
-
-        if(!JByteMod.ops.get("auto_scan").getBoolean()) return;
-
-        scannerThread = new ScannerThread(ja.getClasses());
-        scannerThread.setJarManifest(ja.getJarManifest());
-        scannerThread.start();
     }
 }
