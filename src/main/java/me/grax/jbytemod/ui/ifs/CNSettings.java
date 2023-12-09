@@ -54,7 +54,10 @@ public class CNSettings extends MyInternalFrame {
         version.setValue(cn.version);
         input.add(SwingUtils.withButton(version, "?", e -> {
             JOptionPane.showMessageDialog(this,
-                    "Java SE 9 = 53 (0x35 hex),\nJava SE 8 = 52 (0x34 hex),\nJava SE 7 = 51 (0x33 hex),\nJava SE 6.0 = 50 (0x32 hex),\nJava SE 5.0 = 49 (0x31 hex)");
+                    "Java SE 21 = 65 (0x41 hex),\nJava SE 20 = 64 (0x40 hex),\nJava SE 19 = 63 (0x3F hex),\nJava SE 18 = 62 (0x3E hex),\nJava SE 17 = 61 (0x3D hex),\n" +
+                            "Java SE 16 = 60 (0x3C hex),\nJava SE 15 = 59 (0x3B hex),\nJava SE 14 = 58 (0x3A hex),\nJava SE 13 = 57 (0x39 hex),\nJava SE 12 = 56 (0x38 hex),\n" +
+                            "Java SE 11 = 55 (0x37 hex),\nJava SE 10 = 54 (0x36 hex),\nJava SE 9 = 53 (0x35 hex),\nJava SE 8 = 52 (0x34 hex),\nJava SE 7 = 51 (0x33 hex),\n" +
+                            "Java SE 6.0 = 50 (0x32 hex),\nJava SE 5.0 = 49 (0x31 hex)");
         }));
         labels.add(new JLabel("Class Signature:"));
         JTextField signature = new JTextField(cn.signature);
