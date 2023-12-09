@@ -39,8 +39,10 @@ public class MyEditorTab extends JPanel {
         this.info = this.withBorder(new JLabel(JByteMod.res.getResource("settings")), sp);
 
         this.decompiler = new DecompilerTab(jbm);
+        this.decompiler.setName("decompiler");
 
         jbm.setCFP(this.analysis = new ControlFlowPanel(jbm));
+        this.analysis.setName("analysis");
 
         center.add(code);
 
@@ -104,24 +106,24 @@ public class MyEditorTab extends JPanel {
     public void selectClass(ClassNode cn) {
         Discord.updatePresence("Working on " + JByteMod.lastEditFile, "Editing " + cn.name);
 
-        if (decompilerBtn.isSelected()) {
+        String selectedComponentName = center.getComponent(0).getName();
+        if(selectedComponentName.equals("decompiler"))
             decompiler.decompile(cn, null, false);
-        }
-        if (analysisBtn.isSelected()) {
+        else if (selectedComponentName.equals("analysis"))
             analysis.clear();
-        }
+
         this.classSelected = true;
     }
 
     public void selectMethod(ClassNode cn, MethodNode mn) {
         Discord.updatePresence("Working on " + JByteMod.lastEditFile, "Editing " + cn.name + "." + mn.name);
 
-        if (decompilerBtn.isSelected()) {
+        String selectedComponentName = center.getComponent(0).getName();
+        if(selectedComponentName.equals("decompiler"))
             decompiler.decompile(cn, mn, false);
-        }
-        if (analysisBtn.isSelected()) {
+        else if (selectedComponentName.equals("analysis"))
             analysis.generateList();
-        }
+
         this.classSelected = false;
     }
 }
