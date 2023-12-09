@@ -9,6 +9,7 @@ import org.objectweb.asm.tree.MethodNode;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.Objects;
 
 public class MyEditorTab extends JPanel {
     private static String analysisText = JByteMod.res.getResource("analysis");
@@ -107,10 +108,12 @@ public class MyEditorTab extends JPanel {
         Discord.updatePresence("Working on " + JByteMod.lastEditFile, "Editing " + cn.name);
 
         String selectedComponentName = center.getComponent(0).getName();
-        if(selectedComponentName.equals("decompiler"))
-            decompiler.decompile(cn, null, false);
-        else if (selectedComponentName.equals("analysis"))
-            analysis.clear();
+        if(Objects.nonNull(selectedComponentName)) {
+            if(selectedComponentName.equals("decompiler"))
+                decompiler.decompile(cn, null, false);
+            else if (selectedComponentName.equals("analysis"))
+                analysis.clear();
+        }
 
         this.classSelected = true;
     }
@@ -119,11 +122,12 @@ public class MyEditorTab extends JPanel {
         Discord.updatePresence("Working on " + JByteMod.lastEditFile, "Editing " + cn.name + "." + mn.name);
 
         String selectedComponentName = center.getComponent(0).getName();
-        if(selectedComponentName.equals("decompiler"))
-            decompiler.decompile(cn, mn, false);
-        else if (selectedComponentName.equals("analysis"))
-            analysis.generateList();
-
+        if(Objects.nonNull(selectedComponentName)) {
+            if (selectedComponentName.equals("decompiler"))
+                decompiler.decompile(cn, mn, false);
+            else if (selectedComponentName.equals("analysis"))
+                analysis.generateList();
+        }
         this.classSelected = false;
     }
 }
