@@ -17,30 +17,6 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-install-plugin</artifactId>
-				<version>2.5.2</version>
-				<executions>
-					<execution>
-						<id>install-attach</id>
-						<phase>clean</phase>
-						<configuration>
-							<file>${basedir}/lib/attach-1.7.jar</file>
-							<repositoryLayout>default</repositoryLayout>
-							<groupId>com.sun</groupId>
-							<artifactId>attach</artifactId>
-							<version>1.7</version>
-							<packaging>jar</packaging>
-							<generatePom>true</generatePom>
-						</configuration>
-						<goals>
-							<goal>install-file</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>3.0.2</version>
 				<configuration>
@@ -163,6 +139,10 @@
 			<name>asm-snapshot</name>
 			<url>https://repository.ow2.org/nexus/content/repositories/snapshots/</url>
 		</repository>
+		<repository>
+			<id>nexus-releases</id>
+			<url>https://nexus.mdma.dev/repository/maven-releases/</url>
+		</repository>
 	</repositories>
 
 
@@ -231,11 +211,9 @@
 			<version>0.152</version>
 		</dependency>
 		<dependency>
-			<groupId>com.sun</groupId>
+			<groupId>com.sun.tools</groupId>
 			<artifactId>attach</artifactId>
-			<version>1.7</version>
-			<systemPath>${basedir}/lib/attach-1.7.jar</systemPath>
-			<scope>system</scope>
+			<version>1.8</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-cli</groupId>
