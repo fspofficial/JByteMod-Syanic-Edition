@@ -10,8 +10,8 @@ import me.grax.jbytemod.ui.DecompilerPanel;
 import me.grax.jbytemod.utils.ErrorDisplay;
 import org.objectweb.asm.tree.MethodNode;
 
-import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.PrintWriter;
 import java.lang.reflect.Field;
 
 public class ProcyonDecompiler extends Decompiler {
@@ -22,52 +22,66 @@ public class ProcyonDecompiler extends Decompiler {
 
     public String decompile(byte[] b, MethodNode mn) {
         try {
-            //TODO decompile method only
-            DecompilerSettings settings = new DecompilerSettings();
-            try {
-                for (Field f : settings.getClass().getDeclaredFields()) {
-                    if (f.getType() == boolean.class) {
-                        f.setAccessible(true);
-                        f.setBoolean(settings, JByteMod.ops.get("procyon" + f.getName()).getBoolean());
-                    }
-                }
-            } catch (Throwable t) {
-                t.printStackTrace();
-            }
+            DecompilerSettings settings = createDecompilerSettings();
             settings.setShowSyntheticMembers(true);
-            MetadataSystem metadataSystem = new MetadataSystem(new ITypeLoader() {
-                private InputTypeLoader backLoader = new InputTypeLoader();
 
-                @Override
-                public boolean tryLoadType(String s, Buffer buffer) {
-                    if (s.equals(cn.name)) {
-                        buffer.putByteArray(b, 0, b.length);
-                        buffer.position(0);
-                        return true;
-                    } else {
-                        return backLoader.tryLoadType(s, buffer);
-                    }
-                }
-            });
+            MetadataSystem metadataSystem = createMetadataSystem(b, mn);
             TypeReference type = metadataSystem.lookupType(cn.name);
-            DecompilationOptions decompilationOptions = new DecompilationOptions();
-            decompilationOptions.setSettings(DecompilerSettings.javaDefaults());
-            decompilationOptions.setFullDecompilation(true);
-            TypeDefinition resolvedType = null;
-            if (type == null || ((resolvedType = type.resolve()) == null)) {
-                new ErrorDisplay("Unable to resolve type.");
-                return "error";
+            DecompilationOptions decompilationOptions = createDecompilationOptions();
+
+            TypeDefinition resolvedType = resolveType(type);
+            if (resolvedType == null) {
+                return "Unable to resolve type.";
             }
-            StringWriter stringwriter = new StringWriter();
-            settings.getLanguage().decompileType(resolvedType, new PlainTextOutput(stringwriter), decompilationOptions);
-            String decompiledSource = stringwriter.toString();
-            return decompiledSource;
+
+            StringWriter stringWriter = new StringWriter();
+            settings.getLanguage().decompileType(resolvedType, new PlainTextOutput(stringWriter), decompilationOptions);
+            return stringWriter.toString();
         } catch (Exception e) {
-            e.printStackTrace();
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            return sw.toString();
+            return e.getStackTrace().toString();
         }
     }
+
+    private DecompilerSettings createDecompilerSettings() throws IllegalAccessException {
+        DecompilerSettings settings = new DecompilerSettings();
+        for (Field f : settings.getClass().getDeclaredFields()) {
+            if (f.getType() == boolean.class && f.getName().startsWith("procyon")) {
+                f.setAccessible(true);
+                f.setBoolean(settings, JByteMod.ops.get(f.getName()).getBoolean());
+            }
+        }
+        return settings;
+    }
+
+    private MetadataSystem createMetadataSystem(byte[] b, MethodNode mn) {
+        return new MetadataSystem(new ITypeLoader() {
+            private InputTypeLoader backLoader = new InputTypeLoader();
+
+            @Override
+            public boolean tryLoadType(String s, Buffer buffer) {
+                if (s.equals(cn.name)) {
+                    buffer.putByteArray(b, 0, b.length);
+                    buffer.position(0);
+                    return true;
+                } else {
+                    return backLoader.tryLoadType(s, buffer);
+                }
+            }
+        });
+    }
+
+    private DecompilationOptions createDecompilationOptions() {
+        DecompilationOptions decompilationOptions = new DecompilationOptions();
+        decompilationOptions.setSettings(DecompilerSettings.javaDefaults());
+        decompilationOptions.setFullDecompilation(true);
+        return decompilationOptions;
+    }
+
+    private TypeDefinition resolveType(TypeReference type) {
+        if (type == null) {
+            return null;
+        }
+        return type.resolve();
+    }
+
 }
