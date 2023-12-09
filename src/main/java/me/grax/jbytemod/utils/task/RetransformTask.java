@@ -1,10 +1,10 @@
 package me.grax.jbytemod.utils.task;
 
+import de.xbrowniecodez.jbytemod.utils.BytecodeUtils;
 import me.grax.jbytemod.JByteMod;
 import me.grax.jbytemod.JarArchive;
 import me.grax.jbytemod.ui.PageEndPanel;
 import me.grax.jbytemod.utils.ErrorDisplay;
-import me.lpk.util.ASMUtils;
 import org.objectweb.asm.tree.ClassNode;
 
 import javax.swing.*;
@@ -43,7 +43,7 @@ public class RetransformTask extends SwingWorker<Void, Integer> {
             for (Entry<String, ClassNode> e : classes.entrySet()) {
                 publish((int) ((i / size) * 80d));
                 byte[] originalBytes = original.get(e.getKey());
-                byte[] bytes = ASMUtils.getNodeBytes0(e.getValue());
+                byte[] bytes = BytecodeUtils.getClassNodeBytes(e.getValue());
                 //probably not the best solution but whatever
                 if (!Arrays.equals(bytes, originalBytes)) {
                     definitions.add(new ClassDefinition(ClassLoader.getSystemClassLoader().loadClass(e.getKey().replace('/', '.')), bytes));

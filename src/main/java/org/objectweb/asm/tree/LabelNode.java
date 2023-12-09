@@ -31,10 +31,10 @@ package org.objectweb.asm.tree;
 
 import java.util.Map;
 
+import de.xbrowniecodez.jbytemod.utils.BytecodeUtils;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
-import me.lpk.util.OpUtils;
 
 /**
  * An {@link AbstractInsnNode} that encapsulates a {@link Label}.
@@ -80,6 +80,6 @@ public class LabelNode extends AbstractInsnNode {
 
   @Override
   public String toString() {
-    return "Label " + OpUtils.getLabelIndex(this);
+    return "Label " + BytecodeUtils.getLabelIndex(this);
   }
 }

@@ -2,6 +2,7 @@ package me.grax.jbytemod;
 
 import com.sun.tools.attach.VirtualMachine;
 import de.xbrowniecodez.jbytemod.securitymanager.CustomSecurityManager;
+import de.xbrowniecodez.jbytemod.utils.BytecodeUtils;
 import de.xbrowniecodez.jbytemod.utils.UpdateChecker;
 import me.grax.jbytemod.discord.Discord;
 import me.grax.jbytemod.logging.Logging;
@@ -24,7 +25,6 @@ import me.grax.jbytemod.utils.gui.LookUtils;
 import me.grax.jbytemod.utils.task.AttachTask;
 import me.grax.jbytemod.utils.task.RetransformTask;
 import me.grax.jbytemod.utils.task.SaveTask;
-import me.lpk.util.ASMUtils;
 import me.lpk.util.OpUtils;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -361,7 +361,7 @@ public class JByteMod extends JFrame {
             }
         } else if (ap.endsWith(".class")) {
             try {
-                file = new JarArchive(ASMUtils.getNode(Files.readAllBytes(input.toPath())));
+                file = new JarArchive(BytecodeUtils.getClassNodeFromBytes(Files.readAllBytes(input.toPath())));
                 this.setTitleSuffix(input.getName());
                 this.refreshTree();
             } catch (Throwable e) {

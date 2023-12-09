@@ -1,7 +1,7 @@
 package me.grax.jbytemod.utils.asm;
 
+import de.xbrowniecodez.jbytemod.utils.BytecodeUtils;
 import me.grax.jbytemod.JByteMod;
-import me.lpk.util.ASMUtils;
 import org.objectweb.asm.tree.ClassNode;
 
 import java.io.ByteArrayOutputStream;
@@ -10,7 +10,7 @@ import java.io.InputStream;
 
 public class Loader {
     public static ClassNode classToNode(String type) throws IOException {
-        return ASMUtils.getNode(classToBytes(type));
+        return BytecodeUtils.getClassNodeFromBytes(classToBytes(type));
     }
 
     public static byte[] classToBytes(String type) throws IOException {

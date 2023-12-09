@@ -1,9 +1,9 @@
 package me.grax.jbytemod.utils.attach;
 
+import de.xbrowniecodez.jbytemod.utils.BytecodeUtils;
 import me.grax.jbytemod.JByteMod;
 import me.grax.jbytemod.JarArchive;
 import me.grax.jbytemod.utils.asm.Loader;
-import me.lpk.util.ASMUtils;
 import me.lpk.util.JarUtils;
 import org.objectweb.asm.tree.ClassNode;
 
@@ -59,7 +59,7 @@ public class RuntimeJarArchive extends JarArchive {
                     ClassNode cn = Loader.classToNode(name);
                     if (cn != null) {
                         classes.put(name, cn);
-                        output.put(name, ASMUtils.getNodeBytes0(cn));
+                        output.put(name, BytecodeUtils.getClassNodeBytes(cn));
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

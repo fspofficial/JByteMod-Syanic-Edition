@@ -1,5 +1,6 @@
 package me.lpk.util;
 
+import de.xbrowniecodez.jbytemod.utils.BytecodeUtils;
 import org.apache.commons.io.IOUtils;
 import org.objectweb.asm.tree.ClassNode;
 
@@ -74,7 +75,7 @@ public class JarUtils {
                 String cafebabe = String.format("%02X%02X%02X%02X", bytes[0], bytes[1], bytes[2], bytes[3]);
                 if (cafebabe.toLowerCase().equals("cafebabe")) {
                     try {
-                        final ClassNode cn = ASMUtils.getNode(bytes);
+                        final ClassNode cn = BytecodeUtils.getClassNodeFromBytes(bytes);
                         if (cn != null && (cn.name.equals("java/lang/Object") ? true : cn.superName != null)) {
                             classes.put(cn.name, cn);
                         }

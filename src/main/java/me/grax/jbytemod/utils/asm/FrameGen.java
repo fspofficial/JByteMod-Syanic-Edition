@@ -1,8 +1,9 @@
 package me.grax.jbytemod.utils.asm;
 
+import de.xbrowniecodez.jbytemod.utils.BytecodeUtils;
 import me.grax.jbytemod.JByteMod;
 import me.grax.jbytemod.utils.ErrorDisplay;
-import me.lpk.util.ASMUtils;
+
 import me.lpk.util.JarUtils;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.ClassNode;
@@ -33,7 +34,7 @@ public class FrameGen extends Thread {
         ClassWriter cw = new LibClassWriter(ClassWriter.COMPUTE_FRAMES, jbm.getFile().getClasses(), libraries);
         try {
             cn.accept(cw);
-            ClassNode node2 = ASMUtils.getNode(cw.toByteArray());
+            ClassNode node2 = BytecodeUtils.getClassNodeFromBytes(cw.toByteArray());
             cn.methods.clear();
             cn.methods.addAll(node2.methods);
             JByteMod.LOGGER.log("Successfully regenerated frames at class " + cn.name);

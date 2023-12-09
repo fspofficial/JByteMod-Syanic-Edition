@@ -1,5 +1,6 @@
 package me.grax.jbytemod.analysis.decompiler.struct;
 
+import de.xbrowniecodez.jbytemod.utils.BytecodeUtils;
 import me.grax.jbytemod.analysis.block.Block;
 import me.grax.jbytemod.analysis.decompiler.ClassDefinition;
 import me.grax.jbytemod.analysis.decompiler.code.ast.Comparison;
@@ -11,13 +12,13 @@ import me.grax.jbytemod.analysis.decompiler.struct.exception.StackException;
 import me.grax.jbytemod.analysis.decompiler.struct.exception.UnknownOPException;
 import me.grax.jbytemod.analysis.decompiler.struct.utils.DescUtils;
 import me.grax.jbytemod.analysis.decompiler.syntax.nodes.NodeList;
-import me.lpk.util.AccessHelper;
 import me.lpk.util.OpUtils;
 import org.objectweb.asm.Handle;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.*;
 
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -386,7 +387,7 @@ public class Conversion implements Opcodes {
         Expression top;
         switch (opc) {
             case ALOAD:
-                if (!AccessHelper.isStatic(mn.access) && index == 0) {
+                if (!Modifier.isStatic(mn.access) && index == 0) {
                     stack.push(new VarSpecialExpression("this"));
                     break;
                 }

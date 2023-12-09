@@ -1,7 +1,7 @@
 package me.grax.jbytemod.analysis.converter;
 
+import de.xbrowniecodez.jbytemod.utils.BytecodeUtils;
 import me.grax.jbytemod.analysis.block.Block;
-import me.lpk.util.OpUtils;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
 
@@ -259,7 +259,7 @@ public class Converter implements Opcodes {
 
     private boolean isFirst(Block to) {
         LabelNode ln = to.getLabel();
-        if (ln != null && OpUtils.getLabelIndex(ln) == 0) {
+        if (ln != null && BytecodeUtils.getLabelIndex(ln) == 0) {
             return true;
         }
         return false;
