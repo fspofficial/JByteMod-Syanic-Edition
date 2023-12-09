@@ -54,7 +54,7 @@ public class JByteMod extends JFrame {
     private static final String jbytemod = "JByteMod Remastered v" + version;
     
     public static File workingDir = new File(".");
-    public static String configPath = "jbytemod.cfg";
+    public static String configPath = "jbyte-remastered.cfg";
     public static Logging LOGGER;
     public static LanguageRes res;
     public static Options ops;
