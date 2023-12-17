@@ -75,6 +75,7 @@ public class JByteMod extends JFrame {
     }
 
     private JPanel contentPane;
+    @Getter
     private ClassTree jarTree;
     private MyCodeList clist;
     private PageEndPanel pp;
@@ -82,14 +83,20 @@ public class JByteMod extends JFrame {
     @Getter
     private DecompilerPanel dp;
     private TCBList tcblist;
+    @Getter
     private MyTabbedPane tabbedPane;
     private InfoPanel sp;
     private LVPList lvplist;
     private ControlFlowPanel cfp;
+    @Getter
     private MyMenuBar myMenuBar;
+    @Getter
     private ClassNode currentNode;
+    @Getter
     private MethodNode currentMethod;
+    @Getter
     private PluginManager pluginManager;
+    @Getter
     private File filePath;
 
     /**
@@ -97,74 +104,8 @@ public class JByteMod extends JFrame {
      * @throws Exception 
      */
     public JByteMod(boolean agent) throws Exception {
-    	new UpdateChecker();
-    	new CustomSecurityManager();
-        if (ops.get("use_rt").getBoolean()) {
-            new FrameGen().start();
-        }
-        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent we) {
-                if (JOptionPane.showConfirmDialog(JByteMod.this, res.getResource("exit_warn"), res.getResource("is_sure"),
-                        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    if (agent) {
-                        dispose();
-                    } else {
-                        Discord.discordRPC.Discord_Shutdown();
-                        Runtime.getRuntime().exit(0);
-                    }
-                }
-            }
-        });
-        border = UIManager.getColor("nimbusBorder");
-        if (border == null) {
-            border = new Color(146, 151, 161);
-        }
-        this.setBounds(100, 100, 1280, 720);
-        this.setTitle(jbytemod);
-        this.setJMenuBar(myMenuBar = new MyMenuBar(this, agent));
-        this.jarTree = new ClassTree(this);
-        contentPane = new JPanel();
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-        contentPane.setLayout(new BorderLayout(5, 5));
-        this.setContentPane(contentPane);
-        this.setTCBList(new TCBList());
-        this.setLVPList(new LVPList());
-        JPanel border = new JPanel();
-        border.setBorder(null);
-        border.setLayout(new GridLayout());
-        JSplitPane splitPane = new MySplitPane(this, jarTree);
-        JPanel b2 = new JPanel();
-        b2.setBorder(new EmptyBorder(5, 0, 5, 0));
-        b2.setLayout(new GridLayout());
-        b2.add(splitPane);
-        border.add(b2);
-        contentPane.add(border, BorderLayout.CENTER);
-        contentPane.add(pp = new PageEndPanel(), BorderLayout.PAGE_END);
-        contentPane.add(new MyToolBar(this), BorderLayout.PAGE_START);
-        if (file != null) {
-            this.refreshTree();
-        }
-    }
-
-    public static void agentmain(String agentArgs, Instrumentation ins) throws Exception {
-        if (!ins.isRedefineClassesSupported()) {
-            JOptionPane.showMessageDialog(null, "Class redefinition is disabled, cannot attach!");
-            return;
-        }
-        agentInstrumentation = ins;
-        workingDir = new File(agentArgs);
         initialize();
-        if (!lafInit) {
-            LookUtils.setTheme();
-            lafInit = true;
-        }
-        JByteMod.file = new RuntimeJarArchive(ins);
-        JByteMod frame = new JByteMod(true);
-        frame.setTitleSuffix("Agent");
-        instance = frame;
-        frame.setVisible(true);
+        initializeComponents(agent);
     }
 
     public static void initialize() {
@@ -179,7 +120,71 @@ public class JByteMod extends JFrame {
             charset.setAccessible(true);
             charset.set(null, null);
         } catch (Throwable t) {
-            JByteMod.LOGGER.err("Failed to set encoding to UTF-8 (" + t.getMessage() + ")");
+            LOGGER.err("Failed to set encoding to UTF-8 (" + t.getMessage() + ")");
+        }
+    }
+
+    private void initializeComponents(boolean agent) throws Exception {
+        new UpdateChecker();
+        new CustomSecurityManager();
+        initializeFrame(agent);
+    }
+
+    private void initializeFrame(boolean agent) {
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent we) {
+                handleWindowClosing(agent);
+            }
+        });
+
+        border = UIManager.getColor("nimbusBorder");
+        if (border == null) {
+            border = new Color(146, 151, 161);
+        }
+
+        setBounds(100, 100, 1280, 720);
+        setTitle(jbytemod);
+        setJMenuBar(myMenuBar = new MyMenuBar(this, agent));
+        jarTree = new ClassTree(this);
+        contentPane = new JPanel();
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        contentPane.setLayout(new BorderLayout(5, 5));
+        setContentPane(contentPane);
+        setTCBList(new TCBList());
+        setLVPList(new LVPList());
+        createSplitPane();
+        contentPane.add(pp = new PageEndPanel(), BorderLayout.PAGE_END);
+        contentPane.add(new MyToolBar(this), BorderLayout.PAGE_START);
+
+        if (file != null) {
+            refreshTree();
+        }
+    }
+
+    private void createSplitPane() {
+        JPanel borderPanel = new JPanel();
+        borderPanel.setBorder(null);
+        borderPanel.setLayout(new GridLayout());
+        JSplitPane splitPane = new MySplitPane(this, jarTree);
+        JPanel b2 = new JPanel();
+        b2.setBorder(new EmptyBorder(5, 0, 5, 0));
+        b2.setLayout(new GridLayout());
+        b2.add(splitPane);
+        borderPanel.add(b2);
+        contentPane.add(borderPanel, BorderLayout.CENTER);
+    }
+
+    private void handleWindowClosing(boolean agent) {
+        if (JOptionPane.showConfirmDialog(JByteMod.this, res.getResource("exit_warn"), res.getResource("is_sure"),
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            if (agent) {
+                dispose();
+            } else {
+                Discord.discordRPC.Discord_Shutdown();
+                Runtime.getRuntime().exit(0);
+            }
         }
     }
 
@@ -187,75 +192,92 @@ public class JByteMod extends JFrame {
      * Launch the application.
      */
     public static void main(String[] args) {
+        CommandLine cmd = parseCommandLine(args);
+        if (cmd.hasOption("help")) {
+            printHelpAndExit();
+        }
+
+        configureWorkingDirectory(cmd);
+        configureConfigPath(cmd);
+        initialize();
+
+        EventQueue.invokeLater(() -> {
+            try {
+                initializeLookAndFeel();
+
+                JByteMod frame = new JByteMod(false);
+                instance = frame;
+                frame.setVisible(true);
+
+                loadFileIfNeeded(cmd, frame);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private static CommandLine parseCommandLine(String[] args) {
+        org.apache.commons.cli.Options options = buildCommandLineOptions();
+        CommandLineParser parser = new DefaultParser();
+        try {
+            return parser.parse(options, args);
+        } catch (org.apache.commons.cli.ParseException e) {
+            e.printStackTrace();
+            throw new RuntimeException("An error occurred while parsing the commandline ");
+        }
+    }
+
+    private static org.apache.commons.cli.Options buildCommandLineOptions() {
         org.apache.commons.cli.Options options = new org.apache.commons.cli.Options();
         options.addOption("f", "file", true, "File to open");
         options.addOption("d", "dir", true, "Working directory");
         options.addOption("c", "config", true, "Config file name");
         options.addOption("?", "help", false, "Prints this help");
+        return options;
+    }
 
-        CommandLineParser parser = new DefaultParser();
-        CommandLine line;
-        try {
-            line = parser.parse(options, args);
-        } catch (org.apache.commons.cli.ParseException e) {
-            e.printStackTrace();
-            throw new RuntimeException("An error occurred while parsing the commandline ");
-        }
-        if (line.hasOption("help")) {
-            HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp(jbytemod, options);
-            return;
-        }
-        if (line.hasOption("d")) {
-            workingDir = new File(line.getOptionValue("d"));
+    private static void printHelpAndExit() {
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp(jbytemod, buildCommandLineOptions());
+        System.exit(0);
+    }
+
+    private static void configureWorkingDirectory(CommandLine cmd) {
+        if (cmd.hasOption("d")) {
+            workingDir = new File(cmd.getOptionValue("d"));
             if (!(workingDir.exists() && workingDir.isDirectory())) {
-                HelpFormatter formatter = new HelpFormatter();
-                formatter.printHelp(jbytemod, options);
-                return;
+                printHelpAndExit();
             }
             JByteMod.LOGGER.err("Specified working dir set");
         }
-        if (line.hasOption("c")) {
-            configPath = line.getOptionValue("c");
+    }
+
+    private static void configureConfigPath(CommandLine cmd) {
+        if (cmd.hasOption("c")) {
+            configPath = cmd.getOptionValue("c");
         }
-        initialize();
-        EventQueue.invokeLater(new Runnable() {
+    }
 
-            public void run() {
-                try {
-                    if (!lafInit) {
-                        LookUtils.setTheme();
-                        lafInit = true;
-                    }
-                    JByteMod frame = new JByteMod(false);
-                    instance = frame;
-                    frame.setVisible(true);
-                    if (line.hasOption("f")) {
-                        File input = new File(line.getOptionValue("f"));
-                        if (FileUtils.exists(input) && FileUtils.isType(input, ".jar", ".class")) {
-                            frame.loadFile(input);
-                            JByteMod.LOGGER.log("Specified file loaded");
-                        } else {
-                            JByteMod.LOGGER.err("Specified file not found");
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+    private static void initializeLookAndFeel() {
+        if (!lafInit) {
+            LookUtils.setTheme();
+            lafInit = true;
+        }
+    }
+
+    private static void loadFileIfNeeded(CommandLine cmd, JByteMod frame) {
+        if (cmd.hasOption("f")) {
+            File input = new File(cmd.getOptionValue("f"));
+            if (FileUtils.exists(input) && FileUtils.isType(input, ".jar", ".class")) {
+                frame.loadFile(input);
+                JByteMod.LOGGER.log("Specified file loaded");
+            } else {
+                JByteMod.LOGGER.err("Specified file not found");
             }
-        });
+        }
     }
 
-    public static void resetLAF() {
-        lafInit = false;
-    }
-
-    public static void restartGUI() {
-        instance.dispose();
-        instance = null;
-        System.gc();
-        JByteMod.main(new String[0]);
-    }
 
     public void applyChangesAgent() {
         if (agentInstrumentation == null) {
@@ -284,24 +306,8 @@ public class JByteMod extends JFrame {
         this.clist = list;
     }
 
-    public MethodNode getCurrentMethod() {
-        return currentMethod;
-    }
-
-    public ClassNode getCurrentNode() {
-        return currentNode;
-    }
-
     public JarArchive getFile() {
         return file;
-    }
-
-    public File getFilePath() {
-        return filePath;
-    }
-
-    public ClassTree getJarTree() {
-        return jarTree;
     }
 
     public LVPList getLVPList() {
@@ -310,14 +316,6 @@ public class JByteMod extends JFrame {
 
     private void setLVPList(LVPList lvp) {
         this.lvplist = lvp;
-    }
-
-    public MyMenuBar getMyMenuBar() {
-        return myMenuBar;
-    }
-
-    public PluginManager getPluginManager() {
-        return pluginManager;
     }
 
     public void setPluginManager(PluginManager pluginManager) {
@@ -330,10 +328,6 @@ public class JByteMod extends JFrame {
 
     public SearchList getSearchList() {
         return slist;
-    }
-
-    public MyTabbedPane getTabbedPane() {
-        return tabbedPane;
     }
 
     public void setTabbedPane(MyTabbedPane tp) {
@@ -354,28 +348,43 @@ public class JByteMod extends JFrame {
     public void loadFile(File input) {
         this.filePath = input;
         String ap = input.getAbsolutePath();
-        if (ap.endsWith(".jar")) {
-            try {
-                file = new JarArchive(this, input);
-                this.setTitleSuffix(input.getName());
-            } catch (Throwable e) {
-                new ErrorDisplay(e);
+
+        try {
+            if (ap.endsWith(".jar")) {
+                loadJarFile(input);
+            } else if (ap.endsWith(".class")) {
+                loadClassFile(input);
+            } else {
+                displayJarWarning();
             }
-        } else if (ap.endsWith(".class")) {
-            try {
-                file = new JarArchive(BytecodeUtils.getClassNodeFromBytes(Files.readAllBytes(input.toPath())));
-                this.setTitleSuffix(input.getName());
-                this.refreshTree();
-            } catch (Throwable e) {
-                new ErrorDisplay(e);
-            }
-        } else {
-            new ErrorDisplay(new UnsupportedOperationException(res.getResource("jar_warn")));
+
+            notifyPlugins();
+        } catch (Throwable e) {
+            new ErrorDisplay(e);
         }
+    }
+
+    private void loadJarFile(File input) {
+        file = new JarArchive(this, input);
+        setTitleSuffix(input.getName());
+    }
+
+    private void loadClassFile(File input) throws Exception {
+        file = new JarArchive(BytecodeUtils.getClassNodeFromBytes(Files.readAllBytes(input.toPath())));
+        setTitleSuffix(input.getName());
+        refreshTree();
+    }
+
+    private void displayJarWarning() {
+        new ErrorDisplay(new UnsupportedOperationException(res.getResource("jar_warn")));
+    }
+
+    private void notifyPlugins() {
         for (Plugin p : pluginManager.getPlugins()) {
             p.loadFile(file.getClasses());
         }
     }
+
 
     public void refreshAgentClasses() {
         if (agentInstrumentation == null) {
