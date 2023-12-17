@@ -1,8 +1,10 @@
 package me.grax.jbytemod;
 
 import com.sun.tools.attach.VirtualMachine;
+import de.xbrowniecodez.jbytemod.securitymanager.CustomSecurityManager;
 import de.xbrowniecodez.jbytemod.utils.BytecodeUtils;
 import de.xbrowniecodez.jbytemod.utils.UpdateChecker;
+import de.xbrowniecodez.jbytemod.utils.Utils;
 import lombok.Getter;
 import me.grax.jbytemod.discord.Discord;
 import me.grax.jbytemod.logging.Logging;
@@ -49,7 +51,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class JByteMod extends JFrame {
-	public final static String version = "2.2";
+	public final static String version = Utils.readPropertiesFile().getProperty("version");
     private static final String jbytemod = "JByteMod Remastered v" + version;
     
     public static File workingDir = new File(".");
@@ -96,7 +98,7 @@ public class JByteMod extends JFrame {
      */
     public JByteMod(boolean agent) throws Exception {
     	new UpdateChecker();
-    	//new CustomSecurityManager();
+    	new CustomSecurityManager();
         if (ops.get("use_rt").getBoolean()) {
             new FrameGen().start();
         }
