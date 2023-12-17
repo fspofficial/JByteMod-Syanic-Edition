@@ -16,7 +16,6 @@ import org.objectweb.asm.tree.MethodNode;
 import java.io.File;
 import java.util.jar.Manifest;
 
-
 public class VineflowerDecompiler extends Decompiler implements IBytecodeProvider, IResultSaver {
     String content;
     byte[] byteArray;
@@ -33,8 +32,6 @@ public class VineflowerDecompiler extends Decompiler implements IBytecodeProvide
         vineflower.decompileContext();
         return content.trim();
     }
-
-
 
     @Override
     public byte[] getBytecode(String externalPath, String internalPath) {
