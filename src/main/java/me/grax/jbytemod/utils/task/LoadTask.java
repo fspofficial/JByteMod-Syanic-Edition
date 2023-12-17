@@ -1,5 +1,7 @@
 package me.grax.jbytemod.utils.task;
 
+import de.xbrowniecodez.jbytemod.utils.BytecodeUtils;
+import de.xbrowniecodez.jbytemod.utils.ClassUtils;
 import me.grax.jbytemod.JByteMod;
 import me.grax.jbytemod.JarArchive;
 import me.grax.jbytemod.discord.Discord;
@@ -9,25 +11,13 @@ import me.grax.jbytemod.utils.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipFile;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
-
-import de.xbrowniecodez.jbytemod.asm.CustomClassReader;
 
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.objectweb.asm.ClassReader.SKIP_CODE;
-import static org.objectweb.asm.ClassReader.SKIP_DEBUG;
+import java.util.*;
 
 public class LoadTask extends SwingWorker<Void, Integer> {
 
@@ -61,17 +51,6 @@ public class LoadTask extends SwingWorker<Void, Integer> {
         } catch (IOException e) {
             new ErrorDisplay(e);
         }
-    }
-
-    public static ClassNode convertToASM(final byte[] bytes) {
-        if (bytes == null) {
-            return null;
-        }
-        CustomClassReader cr = new CustomClassReader(bytes);
-        ClassNode cn = new ClassNode();
-
-        cr.accept(cn, ClassReader.EXPAND_FRAMES);
-        return cn;
     }
 
     @Override
@@ -122,70 +101,78 @@ public class LoadTask extends SwingWorker<Void, Integer> {
 
     private void readJar(ZipFile jar, ZipEntry zipEntry, Map<String, ClassNode> classes,
                          Map<String, byte[]> otherFiles) {
-        long ms = System.currentTimeMillis();
-        publish((int) (((float) loaded++ / (float) jarSize) * 100f));
+        long startTime = System.currentTimeMillis();
+        int progress = (int) (((float) loaded++ / (float) jarSize) * 100f);
+        publish(progress);
+
         String name = zipEntry.getName();
         try (InputStream jis = jar.getInputStream(zipEntry)) {
             byte[] bytes = IOUtils.toByteArray(jis);
-            if (name.endsWith(".class") || name.endsWith(".class/")) {
-                synchronized (classes) {
-                    try {
-                        //JByteMod.LOGGER.log("Class file: " + name + "-" + bytes.length);
-                        String cafebabe = String.format("%02X%02X%02X%02X", bytes[0], bytes[1], bytes[2], bytes[3]);
-                        if (cafebabe.toLowerCase().equals("cafebabe")) {
-                            try {
-                                final ClassNode cn = convertToASM(bytes);
-                                int rate;
-                                if(!JByteMod.ops.get("bad_class_check").getBoolean()){
-                                    rate = 0;
-                                }else {
-                                    rate = FileUtils.isBadClass(cn);
-                                }
-                                if (cn != null && rate <= 80) { // && (cn.name.equals("java/lang/Object") ? true : cn.superName != null)
-                                    classes.put(cn.name, cn);
-                                }else {
-                                    synchronized (otherFiles) {
-                                        otherFiles.put(name, bytes);
-                                    }
-                                }
-                            } catch (Exception e) {
-                                synchronized (otherFiles) {
-                                    otherFiles.put(name, bytes);
-                                }
-                            }
-                        }
-                    } catch (Exception ex) {
-                        synchronized (otherFiles) {
-                            otherFiles.put(name, bytes);
-                        }
-                    }
 
-                }
-            }else if(name.equals("META-INF/MANIFEST.MF")) {
-                ja.setJarManifest(bytes);
-                synchronized (otherFiles) {
-                    otherFiles.put(name, bytes);
-                }
-            }else {
-                synchronized (otherFiles) {
-                    otherFiles.put(name, bytes);
-                }
+            if (ClassUtils.isClassFileExt(name)) {
+                processClassFile(name, bytes, classes, otherFiles);
+            } else if (name.equals("META-INF/MANIFEST.MF")) {
+                processManifestFile(name, bytes, otherFiles);
+            } else {
+                processOtherFile(name, bytes, otherFiles);
             }
 
-            if (memoryWarning) {
-                long timeDif = System.currentTimeMillis() - ms;
-                if (timeDif > 60 * 3 * 1000 && Runtime.getRuntime().totalMemory() / (double) maxMem > 0.95) { // if
-                    JByteMod.LOGGER.logNotification(JByteMod.res.getResource("memory_full"));
-                    publish(100);
-                    this.cancel(true);
-                    return;
-                }
-            }
+            handleMemoryWarning(startTime, bytes);
         } catch (Exception e) {
             e.printStackTrace();
             JByteMod.LOGGER.err("Failed loading file");
         }
     }
+
+    private void processClassFile(String name, byte[] bytes, Map<String, ClassNode> classes, Map<String, byte[]> otherFiles) {
+        synchronized (classes) {
+            try {
+                if (ClassUtils.isClassFileFormat(bytes)) {
+                    final ClassNode cn = BytecodeUtils.getClassNodeFromBytes(bytes);
+                    int rate = JByteMod.ops.get("bad_class_check").getBoolean() ? FileUtils.isBadClass(cn) : 0;
+
+                    if (rate <= 80) {
+                        classes.put(cn.name, cn);
+                    } else {
+                        synchronized (otherFiles) {
+                            otherFiles.put(name, bytes);
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                synchronized (otherFiles) {
+                    otherFiles.put(name, bytes);
+                }
+            }
+        }
+    }
+
+    private void processManifestFile(String name, byte[] bytes, Map<String, byte[]> otherFiles) {
+        ja.setJarManifest(bytes);
+        synchronized (otherFiles) {
+            otherFiles.put(name, bytes);
+        }
+    }
+
+    private void processOtherFile(String name, byte[] bytes, Map<String, byte[]> otherFiles) {
+        synchronized (otherFiles) {
+            otherFiles.put(name, bytes);
+        }
+    }
+
+    private void handleMemoryWarning(long startTime, byte[] bytes) {
+        if (memoryWarning) {
+            long timeDiff = System.currentTimeMillis() - startTime;
+            double memoryUsage = Runtime.getRuntime().totalMemory() / (double) maxMem;
+
+            if (timeDiff > 60 * 3 * 1000 && memoryUsage > 0.95) {
+                JByteMod.LOGGER.logNotification(JByteMod.res.getResource("memory_full"));
+                publish(100);
+                this.cancel(true);
+            }
+        }
+    }
+
 
     @Override
     protected void process(List<Integer> chunks) {

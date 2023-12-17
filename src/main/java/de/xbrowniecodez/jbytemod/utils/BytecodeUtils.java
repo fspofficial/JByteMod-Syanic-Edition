@@ -1,5 +1,7 @@
 package de.xbrowniecodez.jbytemod.utils;
 
+import de.xbrowniecodez.jbytemod.asm.CustomClassReader;
+import de.xbrowniecodez.jbytemod.asm.CustomClassWriter;
 import lombok.experimental.UtilityClass;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
@@ -365,7 +367,7 @@ public class BytecodeUtils implements Opcodes {
     public static ClassNode getClassNodeFromBytes(byte[] bytes) {
         if(!ClassUtils.isClassFileFormat(bytes))
             throw new RuntimeException("Provided bytes are not a class file!");
-        ClassReader classReader = new ClassReader(bytes);
+        CustomClassReader classReader = new CustomClassReader(bytes);
         ClassNode classNode = new ClassNode();
         classReader.accept(classNode, ClassReader.EXPAND_FRAMES);
         return classNode;
@@ -378,13 +380,13 @@ public class BytecodeUtils implements Opcodes {
      * @return Class<?> of the provided classNode
      */
     public static Class<?> getClassFromNode(ClassNode classNode) {
-        ClassWriter classWriter = new ClassWriter(0);
+        CustomClassWriter classWriter = new CustomClassWriter(0);
         classNode.accept(classWriter);
         return new CustomClassLoader(ClassLoader.getSystemClassLoader()).get(classNode.name, classWriter.toByteArray());
     }
 
     public static byte[] getClassNodeBytes(ClassNode classNode) {
-        ClassWriter classWriter = new ClassWriter(0);
+        CustomClassWriter classWriter = new CustomClassWriter(0);
         classNode.accept(classWriter);
         return classWriter.toByteArray();
     }
