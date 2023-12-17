@@ -15,6 +15,7 @@ import me.grax.jbytemod.utils.DeobfusacteUtils;
 import me.grax.jbytemod.utils.ErrorDisplay;
 import me.grax.jbytemod.utils.TextUtils;
 import me.grax.jbytemod.utils.attach.AttachUtils;
+import me.grax.jbytemod.utils.gui.LookUtils;
 import me.grax.jbytemod.utils.list.LazyListModel;
 import org.apache.commons.io.IOUtils;
 import org.objectweb.asm.tree.*;
@@ -624,6 +625,9 @@ public class MyMenuBar extends JMenuBar {
                         public void actionPerformed(ActionEvent e) {
                             op.setValue(jmi.isSelected());
                             o.save();
+                            if(op.getName().equals("use_dark_theme")) {
+                                LookUtils.changeTheme();
+                            }
                         }
                     });
                     menu.add(jmi);

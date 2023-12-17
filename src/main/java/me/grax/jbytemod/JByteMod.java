@@ -1,9 +1,9 @@
 package me.grax.jbytemod;
 
 import com.sun.tools.attach.VirtualMachine;
-import de.xbrowniecodez.jbytemod.securitymanager.CustomSecurityManager;
 import de.xbrowniecodez.jbytemod.utils.BytecodeUtils;
 import de.xbrowniecodez.jbytemod.utils.UpdateChecker;
+import lombok.Getter;
 import me.grax.jbytemod.discord.Discord;
 import me.grax.jbytemod.logging.Logging;
 import me.grax.jbytemod.plugin.Plugin;
@@ -35,7 +35,6 @@ import org.objectweb.asm.tree.MethodNode;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.*;
@@ -78,6 +77,7 @@ public class JByteMod extends JFrame {
     private MyCodeList clist;
     private PageEndPanel pp;
     private SearchList slist;
+    @Getter
     private DecompilerPanel dp;
     private TCBList tcblist;
     private MyTabbedPane tabbedPane;
@@ -96,7 +96,7 @@ public class JByteMod extends JFrame {
      */
     public JByteMod(boolean agent) throws Exception {
     	new UpdateChecker();
-    	new CustomSecurityManager();
+    	//new CustomSecurityManager();
         if (ops.get("use_rt").getBoolean()) {
             new FrameGen().start();
         }
@@ -155,7 +155,7 @@ public class JByteMod extends JFrame {
         workingDir = new File(agentArgs);
         initialize();
         if (!lafInit) {
-            LookUtils.setLAF();
+            LookUtils.setTheme();
             lafInit = true;
         }
         JByteMod.file = new RuntimeJarArchive(ins);
@@ -222,7 +222,7 @@ public class JByteMod extends JFrame {
             public void run() {
                 try {
                     if (!lafInit) {
-                        LookUtils.setLAF();
+                        LookUtils.setTheme();
                         lafInit = true;
                     }
                     JByteMod frame = new JByteMod(false);
