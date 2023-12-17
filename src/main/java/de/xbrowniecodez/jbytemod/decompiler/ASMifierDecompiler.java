@@ -23,7 +23,7 @@ public class ASMifierDecompiler extends Decompiler {
     public String decompile(byte[] b, MethodNode mn) {
         ClassReader cr = new ClassReader(b);
         StringWriter out = new StringWriter();
-        cr.accept(new TraceClassVisitor(null, new Textifier(), new PrintWriter(
+        cr.accept(new TraceClassVisitor(null, new ASMifier(), new PrintWriter(
                 out)), 0);
         return out.toString();
     }
