@@ -1,5 +1,8 @@
 package me.grax.jbytemod.ui;
 
+import de.xbrowniecodez.jbytemod.decompiler.ASMifierDecompiler;
+import de.xbrowniecodez.jbytemod.decompiler.JDCoreDecompiler;
+import de.xbrowniecodez.jbytemod.decompiler.VineflowerDecompiler;
 import me.grax.jbytemod.JByteMod;
 import me.grax.jbytemod.decompiler.*;
 import org.fife.ui.rtextarea.RTextScrollPane;
@@ -9,13 +12,7 @@ import org.objectweb.asm.tree.MethodNode;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 public class DecompilerTab extends JPanel {
     private static File tempDir = new File(System.getProperty("java.io.tmpdir"));
@@ -79,8 +76,8 @@ public class DecompilerTab extends JPanel {
             case PROCYON:
                 d = new ProcyonDecompiler(jbm, dp);
                 break;
-            case FERNFLOWER:
-                d = new FernflowerDecompiler(jbm, dp);
+            case VINEFLOWER:
+                d = new VineflowerDecompiler(jbm, dp);
                 break;
             case CFR:
                 d = new CFRDecompiler(jbm, dp);

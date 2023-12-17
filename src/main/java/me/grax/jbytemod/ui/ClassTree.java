@@ -1,6 +1,5 @@
 package me.grax.jbytemod.ui;
 
-import jdk.nashorn.internal.scripts.JO;
 import me.grax.jbytemod.JByteMod;
 import me.grax.jbytemod.JarArchive;
 import me.grax.jbytemod.ui.dialogue.InsnEditDialogue;

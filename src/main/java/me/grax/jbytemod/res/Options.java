@@ -3,7 +3,7 @@ package me.grax.jbytemod.res;
 import com.strobel.decompiler.DecompilerSettings;
 import me.grax.jbytemod.JByteMod;
 import me.grax.jbytemod.decompiler.CFRDecompiler;
-import me.grax.jbytemod.decompiler.FernflowerDecompiler;
+
 import me.grax.jbytemod.res.Option.Type;
 import me.grax.jbytemod.utils.ErrorDisplay;
 
@@ -75,9 +75,6 @@ public class Options {
     }
 
     private void initializeDecompilerOptions() {
-        for (Entry<String, Boolean> e : FernflowerDecompiler.options.entrySet()) {
-            defaults.add(new Option("ff_" + e.getKey(), e.getValue(), Type.BOOLEAN, "decompiler_fernflower"));
-        }
         for (Entry<String, String> e : CFRDecompiler.options.entrySet()) {
             defaults.add(new Option("cfr_" + e.getKey(), Boolean.valueOf(e.getValue()), Type.BOOLEAN, "decompiler_cfr"));
         }
