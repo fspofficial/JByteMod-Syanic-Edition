@@ -91,6 +91,9 @@ public class DecompilerTab extends JPanel {
             case JDCORE:
                 d = new JDCoreDecompiler(jbm, dp);
                 break;
+            case ASMIFIER:
+                d = new ASMifierDecompiler(jbm, dp);
+                break;
         }
         d.setNode(cn, mn);
         if (deleteCache) {

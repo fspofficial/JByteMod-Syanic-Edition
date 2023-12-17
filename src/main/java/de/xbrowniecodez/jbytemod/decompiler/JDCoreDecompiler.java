@@ -1,7 +1,8 @@
-package me.grax.jbytemod.decompiler;
+package de.xbrowniecodez.jbytemod.decompiler;
 
 import de.xbrowniecodez.jbytemod.utils.BytecodeUtils;
 import me.grax.jbytemod.JByteMod;
+import me.grax.jbytemod.decompiler.Decompiler;
 import me.grax.jbytemod.ui.DecompilerPanel;
 import org.jd.core.v1.ClassFileToJavaSourceDecompiler;
 import org.jd.core.v1.api.loader.Loader;
