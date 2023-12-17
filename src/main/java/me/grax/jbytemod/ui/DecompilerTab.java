@@ -88,6 +88,9 @@ public class DecompilerTab extends JPanel {
             case KOFFEE:
                 d = new KoffeeDecompiler(jbm, dp);
                 break;
+            case JDCORE:
+                d = new JDCoreDecompiler(jbm, dp);
+                break;
         }
         d.setNode(cn, mn);
         if (deleteCache) {
