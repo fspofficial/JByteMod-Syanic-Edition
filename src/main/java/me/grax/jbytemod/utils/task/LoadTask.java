@@ -177,7 +177,7 @@ public class LoadTask extends SwingWorker<Void, Integer> {
     @Override
     protected void process(List<Integer> chunks) {
         int i = chunks.get(chunks.size() - 1);
-        Discord.updatePresence("Loading " + file.getName() + " (" + i + "%)", "");
+        JByteMod.instance.getDiscord().updatePresence("Loading " + file.getName() + " (" + i + "%)", "");
         jpb.setValue(i);
         super.process(chunks);
     }
@@ -185,7 +185,7 @@ public class LoadTask extends SwingWorker<Void, Integer> {
     @Override
     protected void done() {
         JByteMod.lastEditFile = file.getName();
-        Discord.updatePresence("Working on " + file.getName(), "Idle ...");
+        JByteMod.instance.getDiscord().updatePresence("Working on " + file.getName(), "Idle ...");
         JByteMod.LOGGER.log("Successfully loaded file!");
         jbm.refreshTree();
         JByteMod.LOGGER.log("Tree refreshed.");

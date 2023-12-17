@@ -98,12 +98,15 @@ public class JByteMod extends JFrame {
     private PluginManager pluginManager;
     @Getter
     private File filePath;
+    @Getter
+    private final Discord discord = new Discord("1184572566795468881");
 
     /**
      * Create the frame.
      * @throws Exception 
      */
     public JByteMod(boolean agent) throws Exception {
+        discord.init();
         initialize();
         initializeComponents(agent);
     }
@@ -112,7 +115,6 @@ public class JByteMod extends JFrame {
         LOGGER = new Logging();
         res = new LanguageRes();
         ops = new Options();
-        Discord.init();
 
         try {
             System.setProperty("file.encoding", "UTF-8");
@@ -182,7 +184,7 @@ public class JByteMod extends JFrame {
             if (agent) {
                 dispose();
             } else {
-                Discord.discordRPC.Discord_Shutdown();
+                instance.discord.getDiscordRPC().Discord_Shutdown();
                 Runtime.getRuntime().exit(0);
             }
         }
