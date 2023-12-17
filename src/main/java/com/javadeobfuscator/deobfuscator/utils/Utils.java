@@ -33,7 +33,6 @@ import org.objectweb.asm.tree.*;
 import org.objectweb.asm.util.Printer;
 import org.objectweb.asm.util.Textifier;
 import org.objectweb.asm.util.TraceMethodVisitor;
-import sun.misc.Unsafe;
 
 public class Utils {
     public static boolean isInstruction(AbstractInsnNode node) {
@@ -228,33 +227,6 @@ public class Utils {
         return false;
     }
 
-    public static Unsafe getUnsafe() {
-        try {
-            initializeUnsafe();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return unsafe;
-    }
-
-    public static <T> T allocateInstance(Class<T> t) {
-        try {
-            return (T) getUnsafe().allocateInstance(t);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private static Unsafe unsafe;
-
-    private static void initializeUnsafe() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        if (unsafe == null) {
-            Constructor<Unsafe> ctor = Unsafe.class.getDeclaredConstructor();
-            ctor.setAccessible(true);
-            unsafe = ctor.newInstance();
-        }
-    }
 
     public static boolean isNumber(String type) {
         switch (type) {
