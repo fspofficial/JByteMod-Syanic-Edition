@@ -11,7 +11,7 @@ public class Discord {
 
     public static void init() {
         discordRPC = DiscordRPC.INSTANCE;
-        String applicationId = "765649706877190195";
+        String applicationId = "1184572566795468881";
         DiscordEventHandlers handlers = new DiscordEventHandlers();
         handlers.ready = (user) -> JByteMod.LOGGER.log("Discord is now ready.");
 
@@ -34,7 +34,9 @@ public class Discord {
     public static void updatePresence(String details, String state) {
         DiscordRichPresence presence = new DiscordRichPresence();
         presence.details = details;
+        presence.largeImageKey = "icon";
         presence.startTimestamp = startTimestamp;
+        presence.largeImageText  = "JByteMod-Remastered";
         if (!state.equals("") && JByteMod.ops.get("discord_state").getBoolean()) {
             presence.state = state;
         }
