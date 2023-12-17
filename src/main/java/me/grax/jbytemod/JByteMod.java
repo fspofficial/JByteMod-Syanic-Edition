@@ -3,8 +3,9 @@ package me.grax.jbytemod;
 import com.sun.tools.attach.VirtualMachine;
 import de.xbrowniecodez.jbytemod.securitymanager.CustomSecurityManager;
 import de.xbrowniecodez.jbytemod.utils.BytecodeUtils;
-import de.xbrowniecodez.jbytemod.utils.UpdateChecker;
 import de.xbrowniecodez.jbytemod.utils.Utils;
+import de.xbrowniecodez.jbytemod.utils.update.UpdateChecker;
+import de.xbrowniecodez.jbytemod.utils.update.objects.Version;
 import lombok.Getter;
 import me.grax.jbytemod.discord.Discord;
 import me.grax.jbytemod.logging.Logging;
@@ -21,8 +22,6 @@ import me.grax.jbytemod.ui.lists.TCBList;
 import me.grax.jbytemod.ui.tree.SortedTreeNode;
 import me.grax.jbytemod.utils.ErrorDisplay;
 import me.grax.jbytemod.utils.FileUtils;
-import me.grax.jbytemod.utils.asm.FrameGen;
-import me.grax.jbytemod.utils.attach.RuntimeJarArchive;
 import me.grax.jbytemod.utils.gui.LookUtils;
 import me.grax.jbytemod.utils.task.AttachTask;
 import me.grax.jbytemod.utils.task.RetransformTask;
@@ -51,7 +50,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class JByteMod extends JFrame {
-	public final static String version = Utils.readPropertiesFile().getProperty("version");
+	public static final Version version = new Version(Utils.readPropertiesFile().getProperty("version"));
     private static final String jbytemod = "JByteMod Remastered v" + version;
     
     public static File workingDir = new File(".");
