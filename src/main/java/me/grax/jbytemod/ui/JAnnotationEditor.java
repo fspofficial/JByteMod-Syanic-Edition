@@ -125,11 +125,11 @@ public class JAnnotationEditor extends JFrame {
                     } catch (Exception e1) {
                         new ErrorDisplay(e1);
                     }
-                    open.remove(field);
+                    open.remove(JAnnotationEditor.this);
                 }
             });
         } catch (Throwable e1) {
-            open.remove(field);
+            open.remove(JAnnotationEditor.this);
             new ErrorDisplay(e1);
             setVisible(false);
         }
