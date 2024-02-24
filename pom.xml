@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>GraxCode</groupId>
 	<artifactId>JByteMod-Remastered</artifactId>
-	<version>2.3</version>
+	<version>2.4</version>
 	<packaging>jar</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -116,7 +116,7 @@
 									<overWrite>true</overWrite>
 									<outputDirectory>${project.build.directory}/classes</outputDirectory>
 									<excludes>
-										**/AbstractInsnNode.class
+										**/AbstractInsnNode.class, **/LdcInsnNode.class, **/InsnNode.class, **/IntInsnNode.class, **/LabelNode.class, **/MethodInsnNode.class, **/FieldInsnNode.class, **/VarInsnNode.class, **/TypeInsnNode.class, **/MultiANewArrayInsnNode.class, **/IincInsnNode.class, **/JumpInsnNode.class, **/InvokeDynamicInsnNode.class, **/TableSwitchInsnNode.class, **/LookupSwitchInsnNode.class, **/LineNumberNode.class, */FrameNode.class
 									</excludes>
 								</artifactItem>
 							</artifactItems>
