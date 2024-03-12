@@ -11,7 +11,7 @@ import java.awt.*;
  */
 public class PageEndPanel extends JPanel {
 
-    private static final String COPYRIGHT_TEXT = "\u00A9 brownie 2020 - 2023";
+    private static final String COPYRIGHT_TEXT = "\u00A9 brownie 2020 - 2024";
     private JProgressBar progressBar;
     private JLabel percentLabel;
     private JLabel copyrightLabel;
