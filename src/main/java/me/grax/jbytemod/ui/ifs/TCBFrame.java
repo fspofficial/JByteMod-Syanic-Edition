@@ -1,7 +1,7 @@
 package me.grax.jbytemod.ui.ifs;
 
 import me.grax.jbytemod.ui.NoBorderSP;
-import me.grax.jbytemod.ui.lists.TCBList;
+import de.xbrowniecodez.jbytemod.ui.lists.TCBList;
 
 import java.awt.*;
 
