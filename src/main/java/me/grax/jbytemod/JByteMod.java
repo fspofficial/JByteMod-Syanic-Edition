@@ -17,7 +17,7 @@ import me.grax.jbytemod.ui.*;
 import me.grax.jbytemod.ui.graph.ControlFlowPanel;
 import de.xbrowniecodez.jbytemod.ui.lists.LVPList;
 import me.grax.jbytemod.ui.lists.MyCodeList;
-import me.grax.jbytemod.ui.lists.SearchList;
+import de.xbrowniecodez.jbytemod.ui.lists.SearchList;
 import de.xbrowniecodez.jbytemod.ui.lists.TCBList;
 import me.grax.jbytemod.ui.tree.SortedTreeNode;
 import me.grax.jbytemod.utils.ErrorDisplay;

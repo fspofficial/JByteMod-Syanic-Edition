@@ -1,7 +1,7 @@
 package me.grax.jbytemod.ui;
 
 import me.grax.jbytemod.JByteMod;
-import me.grax.jbytemod.ui.lists.SearchList;
+import de.xbrowniecodez.jbytemod.ui.lists.SearchList;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 

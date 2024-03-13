@@ -2,7 +2,7 @@ package me.grax.jbytemod.utils.task.search;
 
 import me.grax.jbytemod.JByteMod;
 import me.grax.jbytemod.ui.PageEndPanel;
-import me.grax.jbytemod.ui.lists.SearchList;
+import de.xbrowniecodez.jbytemod.ui.lists.SearchList;
 import me.grax.jbytemod.ui.lists.entries.SearchEntry;
 import me.grax.jbytemod.utils.TextUtils;
 import me.grax.jbytemod.utils.list.LazyListModel;
