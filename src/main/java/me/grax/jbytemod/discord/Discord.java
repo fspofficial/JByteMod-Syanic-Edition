@@ -1,52 +1,64 @@
 package me.grax.jbytemod.discord;
 
-import club.minnced.discord.rpc.DiscordEventHandlers;
-import club.minnced.discord.rpc.DiscordRPC;
-import club.minnced.discord.rpc.DiscordRichPresence;
-import lombok.Getter;
-import me.grax.jbytemod.JByteMod;
-@Getter
+import java.time.OffsetDateTime;
 
+import com.jagrosh.discordipc.IPCClient;
+import com.jagrosh.discordipc.IPCListener;
+import com.jagrosh.discordipc.entities.RichPresence;
+
+import lombok.Getter;
+import lombok.SneakyThrows;
+import me.grax.jbytemod.JByteMod;
+
+@Getter
 public class Discord {
-    private DiscordRPC discordRPC;
-    private long startTimestamp;
+    private OffsetDateTime startTimestamp;
     private final String applicationId;
+    private RichPresence.Builder builder;
+    private IPCClient client;
 
     public Discord(String applicationId) {
         this.applicationId = applicationId;
     }
 
+    @SneakyThrows
     public void init() {
-        discordRPC = DiscordRPC.INSTANCE;
-        DiscordEventHandlers handlers = new DiscordEventHandlers();
-        handlers.ready = (user) -> JByteMod.LOGGER.log("Discord is now ready.");
-
-        discordRPC.Discord_Initialize(applicationId, handlers, true, "");
-
-        startTimestamp = System.currentTimeMillis();
-        updatePresence("Idle ...", "");
-
-        new Thread(() -> {
-            while (!Thread.currentThread().isInterrupted()) {
-                discordRPC.Discord_RunCallbacks();
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException ignored) {
-                }
+        startTimestamp = OffsetDateTime.now();
+        client = new IPCClient(Long.parseLong(applicationId));
+        builder = new RichPresence.Builder();
+        client.setListener(new IPCListener() {
+            @Override
+            public void onReady(IPCClient client) {
+                updatePresence("Idle...", "");
             }
-        }, "RPC-Callback-Handler").start();
+        });
+        client.connect();
     }
 
+    /**
+     * Updates Discord presence based on application state.
+     *
+     * @param details additional details
+     * @param state   current state
+     */
     public void updatePresence(String details, String state) {
-        DiscordRichPresence presence = new DiscordRichPresence();
-        presence.details = details;
-        presence.largeImageKey = "icon";
-        presence.startTimestamp = startTimestamp;
-        presence.largeImageText  = "JByteMod-Remastered";
-        if (!state.equals("") && JByteMod.ops.get("discord_state").getBoolean()) {
-            presence.state = state;
-        }
+        String discordState = JByteMod.ops.get("discord_state").getBoolean() ? state : "Editing hidden class";
+        String discordDetails = JByteMod.ops.get("discord_state").getBoolean() ? details : "Working on hidden file";
 
-        discordRPC.Discord_UpdatePresence(presence);
+        builder.setState(discordState)
+                .setDetails(discordDetails)
+                .setStartTimestamp(startTimestamp)
+                .setLargeImage("icon", "JByteMod-Remastered");
+
+        client.sendRichPresence(builder.build());
+    }
+
+    /**
+     * Shutdown Discord IPC client.
+     */
+    public void shutdown() {
+        if (client != null) {
+            client.close();
+        }
     }
 }

@@ -183,7 +183,7 @@ public class JByteMod extends JFrame {
             if (agent) {
                 dispose();
             } else {
-                instance.discord.getDiscordRPC().Discord_Shutdown();
+                discord.shutdown();
                 Runtime.getRuntime().exit(0);
             }
         }
