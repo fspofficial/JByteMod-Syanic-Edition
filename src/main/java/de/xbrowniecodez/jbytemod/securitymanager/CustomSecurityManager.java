@@ -2,6 +2,7 @@ package de.xbrowniecodez.jbytemod.securitymanager;
 
 import java.net.SocketTimeoutException;
 import java.security.Permission;
+import java.util.Map;
 
 import me.grax.jbytemod.JByteMod;
 
@@ -18,10 +19,12 @@ public class CustomSecurityManager extends SecurityManager{
 
 	@Override
 	public void checkConnect(String host, int port) {
+		//allow connections to local device (required i.e for discordIPC socket)
+		if(host.contains(getComputerName())) {
+			return;
+		}
 		JByteMod.LOGGER.log(String.format("[Security Manager] Blocked a connection to %s:%s", host, port));
 		SneakyThrow.sneakyThrow(new SocketTimeoutException("[SecurityManager] Connection blocked."));
-		
-
 	}
 
 	@Override
@@ -44,5 +47,13 @@ public class CustomSecurityManager extends SecurityManager{
 	@Override
 	public void checkPermission(Permission perm, Object context) {
 		checkPermission(perm);
+	}
+
+	private String getComputerName()
+	{
+		Map<String, String> env = System.getenv();
+		if (env.containsKey("COMPUTERNAME"))
+			return env.get("COMPUTERNAME");
+		else return env.getOrDefault("HOSTNAME", "Unknown Computer");
 	}
 }
