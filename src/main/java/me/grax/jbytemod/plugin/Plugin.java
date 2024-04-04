@@ -27,7 +27,7 @@ public abstract class Plugin {
     public abstract void menuClick();
 
     protected final Map<String, ClassNode> getCurrentFile() {
-        return JByteMod.instance.getFile().getClasses();
+        return JByteMod.instance.getJarArchive().getClasses();
     }
 
     protected final void updateTree() {

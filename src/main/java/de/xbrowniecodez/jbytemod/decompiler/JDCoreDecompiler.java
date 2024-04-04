@@ -21,12 +21,12 @@ public class JDCoreDecompiler extends Decompiler {
     Loader loader = new Loader() {
         @Override
         public byte[] load(String internalName) {
-            return BytecodeUtils.getClassNodeBytes(JByteMod.instance.getFile().getClasses().get(internalName));
+            return BytecodeUtils.getClassNodeBytes(JByteMod.instance.getJarArchive().getClasses().get(internalName));
         }
 
         @Override
         public boolean canLoad(String internalName) {
-            return Objects.nonNull(JByteMod.instance.getFile().getClasses().get(internalName));
+            return Objects.nonNull(JByteMod.instance.getJarArchive().getClasses().get(internalName));
         }
     };
 

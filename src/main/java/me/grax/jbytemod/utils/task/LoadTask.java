@@ -41,7 +41,7 @@ public class LoadTask extends SwingWorker<Void, Integer> {
             this.jarSize = countFiles(this.input = new ZipFile(input, "UTF-8"));
             JByteMod.LOGGER.log(jarSize + " files to load!");
             this.jbm = jbm;
-            this.jpb = jbm.getPP();
+            this.jpb = jbm.getPageEndPanel();
             this.ja = ja;
             this.file = input;
             // clean old cache

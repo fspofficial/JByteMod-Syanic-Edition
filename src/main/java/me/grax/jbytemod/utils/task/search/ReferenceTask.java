@@ -25,7 +25,7 @@ public class ReferenceTask extends SwingWorker<Void, Integer> {
     public ReferenceTask(SearchList sl, JByteMod jbm, String owner, String name, String desc, boolean exact, boolean field) {
         this.sl = sl;
         this.jbm = jbm;
-        this.jpb = jbm.getPP();
+        this.jpb = jbm.getPageEndPanel();
         this.exact = exact;
         this.owner = owner;
         this.name = name;
@@ -36,7 +36,7 @@ public class ReferenceTask extends SwingWorker<Void, Integer> {
     @Override
     protected Void doInBackground() throws Exception {
         LazyListModel<SearchEntry> model = new LazyListModel<SearchEntry>();
-        Collection<ClassNode> values = jbm.getFile().getClasses().values();
+        Collection<ClassNode> values = jbm.getJarArchive().getClasses().values();
         double size = values.size();
         double i = 0;
         boolean exact = this.exact;

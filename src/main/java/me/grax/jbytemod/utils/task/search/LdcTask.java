@@ -29,7 +29,7 @@ public class LdcTask extends SwingWorker<Void, Integer> {
     public LdcTask(SearchList sl, JByteMod jbm, String ldc, boolean exact, boolean caseSens, boolean regex) {
         this.sl = sl;
         this.jbm = jbm;
-        this.jpb = jbm.getPP();
+        this.jpb = jbm.getPageEndPanel();
         this.exact = exact;
         this.caseSens = caseSens;
         if (regex) {
@@ -46,14 +46,14 @@ public class LdcTask extends SwingWorker<Void, Integer> {
     public LdcTask(SearchList sl, JByteMod jbm, Pattern p) {
         this.sl = sl;
         this.jbm = jbm;
-        this.jpb = jbm.getPP();
+        this.jpb = jbm.getPageEndPanel();
         this.pattern = p;
     }
 
     @Override
     protected Void doInBackground() throws Exception {
         LazyListModel<SearchEntry> model = new LazyListModel<>();
-        Collection<ClassNode> values = jbm.getFile().getClasses().values();
+        Collection<ClassNode> values = jbm.getJarArchive().getClasses().values();
         double size = values.size();
         double i = 0;
         boolean exact = this.exact;

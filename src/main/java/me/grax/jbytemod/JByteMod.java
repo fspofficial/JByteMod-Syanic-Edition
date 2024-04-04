@@ -7,6 +7,7 @@ import de.xbrowniecodez.jbytemod.utils.Utils;
 import de.xbrowniecodez.jbytemod.utils.update.UpdateChecker;
 import de.xbrowniecodez.jbytemod.utils.update.objects.Version;
 import lombok.Getter;
+import lombok.Setter;
 import me.grax.jbytemod.discord.Discord;
 import me.grax.jbytemod.logging.Logging;
 import me.grax.jbytemod.plugin.Plugin;
@@ -63,30 +64,44 @@ public class JByteMod extends JFrame {
     public static JByteMod instance;
     public static Color border;
     private static boolean lafInit;
-    private static JarArchive file;
-    private static Instrumentation agentInstrumentation;
+    @Getter
+    private JarArchive jarArchive;
+    private Instrumentation agentInstrumentation;
 
     static {
         try {
             System.loadLibrary("attach");
         } catch (Throwable ex) {
+
         }
     }
 
     private JPanel contentPane;
     @Getter
     private ClassTree jarTree;
-    private MyCodeList clist;
-    private PageEndPanel pp;
-    private SearchList slist;
+    @Getter
+    @Setter
+    private MyCodeList codeList;
+    @Getter
+    private PageEndPanel pageEndPanel;
+    @Getter
+    @Setter
+    private SearchList searchList;
     @Getter
     private DecompilerPanel dp;
-    private TCBList tcblist;
     @Getter
+    @Setter
+    private TCBList tcbList;
+    @Getter
+    @Setter
     private MyTabbedPane tabbedPane;
     private InfoPanel sp;
-    private LVPList lvplist;
-    private ControlFlowPanel cfp;
+    @Getter
+    @Setter
+    private LVPList lvpList;
+    @Getter
+    @Setter
+    private ControlFlowPanel controlFlowPanel;
     @Getter
     private MyMenuBar myMenuBar;
     @Getter
@@ -94,6 +109,7 @@ public class JByteMod extends JFrame {
     @Getter
     private MethodNode currentMethod;
     @Getter
+    @Setter
     private PluginManager pluginManager;
     @Getter
     private File filePath;
@@ -153,13 +169,13 @@ public class JByteMod extends JFrame {
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         contentPane.setLayout(new BorderLayout(5, 5));
         setContentPane(contentPane);
-        setTCBList(new TCBList());
-        setLVPList(new LVPList());
+        setTcbList(new TCBList());
+        setLvpList(new LVPList());
         createSplitPane();
-        contentPane.add(pp = new PageEndPanel(), BorderLayout.PAGE_END);
+        contentPane.add(pageEndPanel = new PageEndPanel(), BorderLayout.PAGE_END);
         contentPane.add(new MyToolBar(this), BorderLayout.PAGE_START);
 
-        if (file != null) {
+        if (jarArchive != null) {
             refreshTree();
         }
     }
@@ -284,63 +300,11 @@ public class JByteMod extends JFrame {
         if (agentInstrumentation == null) {
             throw new RuntimeException();
         }
-        new RetransformTask(this, agentInstrumentation, file).execute();
+        new RetransformTask(this, agentInstrumentation, jarArchive).execute();
     }
 
     public void attachTo(VirtualMachine vm) throws Exception {
         new AttachTask(this, vm).execute();
-    }
-
-    public ControlFlowPanel getCFP() {
-        return this.cfp;
-    }
-
-    public void setCFP(ControlFlowPanel cfp) {
-        this.cfp = cfp;
-    }
-
-    public MyCodeList getCodeList() {
-        return clist;
-    }
-
-    public void setCodeList(MyCodeList list) {
-        this.clist = list;
-    }
-
-    public JarArchive getFile() {
-        return file;
-    }
-
-    public LVPList getLVPList() {
-        return lvplist;
-    }
-
-    private void setLVPList(LVPList lvp) {
-        this.lvplist = lvp;
-    }
-
-    public void setPluginManager(PluginManager pluginManager) {
-        this.pluginManager = pluginManager;
-    }
-
-    public PageEndPanel getPP() {
-        return pp;
-    }
-
-    public SearchList getSearchList() {
-        return slist;
-    }
-
-    public void setTabbedPane(MyTabbedPane tp) {
-        this.tabbedPane = tp;
-    }
-
-    public TCBList getTCBList() {
-        return tcblist;
-    }
-
-    public void setTCBList(TCBList tcb) {
-        this.tcblist = tcb;
     }
 
     /**
@@ -366,12 +330,12 @@ public class JByteMod extends JFrame {
     }
 
     private void loadJarFile(File input) {
-        file = new JarArchive(this, input);
+        jarArchive = new JarArchive(this, input);
         setTitleSuffix(input.getName());
     }
 
     private void loadClassFile(File input) throws Exception {
-        file = new JarArchive(BytecodeUtils.getClassNodeFromBytes(Files.readAllBytes(input.toPath())));
+        jarArchive = new JarArchive(BytecodeUtils.getClassNodeFromBytes(Files.readAllBytes(input.toPath())));
         setTitleSuffix(input.getName());
         refreshTree();
     }
@@ -382,7 +346,7 @@ public class JByteMod extends JFrame {
 
     private void notifyPlugins() {
         for (Plugin p : pluginManager.getPlugins()) {
-            p.loadFile(file.getClasses());
+            p.loadFile(jarArchive.getClasses());
         }
     }
 
@@ -396,12 +360,12 @@ public class JByteMod extends JFrame {
 
     public void refreshTree() {
         LOGGER.log("Building tree..");
-        this.jarTree.refreshTree(file);
+        this.jarTree.refreshTree(jarArchive);
     }
 
     public void saveFile(File output) {
         try {
-            new SaveTask(this, output, file).execute();
+            new SaveTask(this, output, jarArchive).execute();
         } catch (Throwable t) {
             new ErrorDisplay(t);
         }
@@ -414,7 +378,7 @@ public class JByteMod extends JFrame {
         this.currentNode = cn;
         this.currentMethod = null;
         sp.selectClass(cn);
-        clist.loadFields(cn);
+        codeList.loadFields(cn);
         tabbedPane.selectClass(cn);
         lastSelectedTreeEntries.put(cn, null);
         if (lastSelectedTreeEntries.size() > 5) {
@@ -448,12 +412,12 @@ public class JByteMod extends JFrame {
         this.currentNode = cn;
         this.currentMethod = mn;
         sp.selectMethod(cn, mn);
-        if (!clist.loadInstructions(mn)) {
-            clist.setSelectedIndex(-1);
+        if (!codeList.loadInstructions(mn)) {
+            codeList.setSelectedIndex(-1);
         }
-        tcblist.addNodes(cn, mn);
-        lvplist.addNodes(cn, mn);
-        cfp.setNode(mn);
+        tcbList.addNodes(cn, mn);
+        lvpList.addNodes(cn, mn);
+        controlFlowPanel.setNode(mn);
         dp.setText("");
         tabbedPane.selectMethod(cn, mn);
         lastSelectedTreeEntries.put(cn, mn);
@@ -464,10 +428,6 @@ public class JByteMod extends JFrame {
 
     public void setDP(DecompilerPanel dp) {
         this.dp = dp;
-    }
-
-    public void setSearchlist(SearchList searchList) {
-        this.slist = searchList;
     }
 
     public void setSP(InfoPanel sp) {

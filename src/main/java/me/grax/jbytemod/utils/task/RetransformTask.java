@@ -22,7 +22,7 @@ public class RetransformTask extends SwingWorker<Void, Integer> {
     public RetransformTask(JByteMod jbm, Instrumentation ins, JarArchive file) {
         this.ins = ins;
         this.file = file;
-        this.jpb = jbm.getPP();
+        this.jpb = jbm.getPageEndPanel();
     }
 
     @Override

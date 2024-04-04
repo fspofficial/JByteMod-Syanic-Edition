@@ -39,8 +39,8 @@ public class InfoPanel extends JPanel {
             }
         }
         deskPane.removeAll();
-        deskPane.add(new TCBFrame(jbm.getTCBList()));
-        deskPane.add(new LVPFrame(jbm.getLVPList()));
+        deskPane.add(new TCBFrame(jbm.getTcbList()));
+        deskPane.add(new LVPFrame(jbm.getLvpList()));
         deskPane.add(new MNSettings(cn, mn));
 
         this.repaint();

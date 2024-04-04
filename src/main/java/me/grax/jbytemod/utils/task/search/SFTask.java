@@ -23,14 +23,14 @@ public class SFTask extends SwingWorker<Void, Integer> {
     public SFTask(SearchList sl, JByteMod jbm, String sf) {
         this.sl = sl;
         this.jbm = jbm;
-        this.jpb = jbm.getPP();
+        this.jpb = jbm.getPageEndPanel();
         this.sf = sf;
     }
 
     @Override
     protected Void doInBackground() throws Exception {
         LazyListModel<SearchEntry> model = new LazyListModel<>();
-        Collection<ClassNode> values = jbm.getFile().getClasses().values();
+        Collection<ClassNode> values = jbm.getJarArchive().getClasses().values();
         double size = values.size();
         double i = 0;
         for (ClassNode cn : values) {

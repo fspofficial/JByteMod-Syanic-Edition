@@ -194,7 +194,7 @@ public class ClassTree extends JTree implements IDropUser {
                                     }
                                     dup.name = name;
                                     cn.methods.add(dup);
-                                    jbm.getJarTree().refreshTree(jbm.getFile());
+                                    jbm.getJarTree().refreshTree(jbm.getJarArchive());
                                 }
                             });
                             menu.add(duplicate);
@@ -294,7 +294,7 @@ public class ClassTree extends JTree implements IDropUser {
                                 public void actionPerformed(ActionEvent e) {
                                     if (JOptionPane.showConfirmDialog(JByteMod.instance, JByteMod.res.getResource("confirm_remove"),
                                             JByteMod.res.getResource("confirm"), JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                                        jbm.getFile().getClasses().remove(cn.name);
+                                        jbm.getJarArchive().getClasses().remove(cn.name);
                                         TreeNode parent = stn.getParent();
                                         model.removeNodeFromParent(stn);
                                         while (parent != null && !parent.children().hasMoreElements() && parent != model.getRoot()) {
@@ -335,7 +335,7 @@ public class ClassTree extends JTree implements IDropUser {
                                     cn.name = getPath(stn);
                                     cn.superName = "java/lang/Object";
                                     if (new InsnEditDialogue(mn, cn).open()) {
-                                        jbm.getFile().getClasses().put(cn.name, cn);
+                                        jbm.getJarArchive().getClasses().put(cn.name, cn);
                                         jbm.refreshTree();
                                     }
                                 }
@@ -416,7 +416,7 @@ public class ClassTree extends JTree implements IDropUser {
             }
         }
         if (node.getCn() != null)
-            jbm.getFile().getClasses().remove(node.getCn().name);
+            jbm.getJarArchive().getClasses().remove(node.getCn().name);
         model.removeNodeFromParent(node);
     }
 

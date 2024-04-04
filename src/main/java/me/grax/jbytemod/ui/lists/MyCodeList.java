@@ -359,7 +359,7 @@ public class MyCodeList extends JList<InstrEntry> {
                 edit.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         MethodInsnNode min = (MethodInsnNode) ain;
-                        for (ClassNode cn : jbm.getFile().getClasses().values()) {
+                        for (ClassNode cn : jbm.getJarArchive().getClasses().values()) {
 
                             if (cn.name.equals(min.owner)) {
                                 for (MethodNode mn : cn.methods) {
@@ -391,7 +391,7 @@ public class MyCodeList extends JList<InstrEntry> {
                 edit.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         FieldInsnNode fin = (FieldInsnNode) ain;
-                        for (ClassNode cn : jbm.getFile().getClasses().values()) {
+                        for (ClassNode cn : jbm.getJarArchive().getClasses().values()) {
                             if (cn.name.equals(fin.owner)) {
                                 jbm.selectClass(cn);
                                 return;

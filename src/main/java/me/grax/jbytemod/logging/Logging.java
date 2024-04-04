@@ -70,12 +70,12 @@ public class Logging extends PrintStream {
         public void run() {
             JByteMod inst = JByteMod.instance;
             if (inst != null) {
-                inst.getPP().setTip(text);
+                inst.getPageEndPanel().setTip(text);
                 try {
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
                 }
-                inst.getPP().setTip(null);
+                inst.getPageEndPanel().setTip(null);
             }
         }
     }

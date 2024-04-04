@@ -409,7 +409,7 @@ public class InsnEditDialogue extends ClassDialogue {
                 private void setToolTip() {
                     boolean set = false;
                     if (ownerField != null && !ownerField.getText().isEmpty() && !nameField.getText().isEmpty()) {
-                        ClassNode node = JByteMod.instance.getFile().getClasses().get(ownerField.getText());
+                        ClassNode node = JByteMod.instance.getJarArchive().getClasses().get(ownerField.getText());
                         if (node == null) {
                             try {
                                 node = Loader.classToNode(ownerField.getText());
@@ -481,7 +481,7 @@ public class InsnEditDialogue extends ClassDialogue {
                             String mName = nameField.getText();
                             String mOwner = ownerField.getText();
                             if (!mName.isEmpty() && !mOwner.isEmpty()) {
-                                ClassNode node = JByteMod.instance.getFile().getClasses().get(mOwner);
+                                ClassNode node = JByteMod.instance.getJarArchive().getClasses().get(mOwner);
                                 if (node == null) {
                                     try {
                                         node = Loader.classToNode(mOwner);

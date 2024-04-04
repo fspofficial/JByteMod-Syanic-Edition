@@ -31,7 +31,7 @@ public class FrameGen extends Thread {
                 return;
             }
         }
-        ClassWriter cw = new LibClassWriter(ClassWriter.COMPUTE_FRAMES, jbm.getFile().getClasses(), libraries);
+        ClassWriter cw = new LibClassWriter(ClassWriter.COMPUTE_FRAMES, jbm.getJarArchive().getClasses(), libraries);
         try {
             cn.accept(cw);
             ClassNode node2 = BytecodeUtils.getClassNodeFromBytes(cw.toByteArray());

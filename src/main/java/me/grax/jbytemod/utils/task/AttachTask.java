@@ -22,7 +22,7 @@ public class AttachTask extends SwingWorker<Void, Integer> {
 
     public AttachTask(JByteMod jbm, VirtualMachine vm) {
         this.vm = vm;
-        this.jpb = jbm.getPP();
+        this.jpb = jbm.getPageEndPanel();
     }
 
     public int countFiles(final JarFile zipFile) {

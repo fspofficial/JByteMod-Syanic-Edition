@@ -42,7 +42,7 @@ public class MyEditorTab extends JPanel {
         this.decompiler = new DecompilerTab(jbm);
         this.decompiler.setName("decompiler");
 
-        jbm.setCFP(this.analysis = new ControlFlowPanel(jbm));
+        jbm.setControlFlowPanel(this.analysis = new ControlFlowPanel(jbm));
         this.analysis.setName("analysis");
 
         center.add(code);

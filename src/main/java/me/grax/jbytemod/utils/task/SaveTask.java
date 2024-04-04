@@ -26,7 +26,7 @@ public class SaveTask extends SwingWorker<Void, Integer> {
     public SaveTask(JByteMod jbm, File output, JarArchive file) {
         this.output = output;
         this.file = file;
-        this.jpb = jbm.getPP();
+        this.jpb = jbm.getPageEndPanel();
     }
 
     @Override
