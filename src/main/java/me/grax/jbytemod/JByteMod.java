@@ -1,7 +1,6 @@
 package me.grax.jbytemod;
 
 import com.sun.tools.attach.VirtualMachine;
-import de.xbrowniecodez.jbytemod.securitymanager.CustomSecurityManager;
 import de.xbrowniecodez.jbytemod.utils.BytecodeUtils;
 import de.xbrowniecodez.jbytemod.utils.Utils;
 import de.xbrowniecodez.jbytemod.utils.update.UpdateChecker;
@@ -143,7 +142,6 @@ public class JByteMod extends JFrame {
 
     private void initializeComponents(boolean agent) throws Exception {
         new UpdateChecker();
-        new CustomSecurityManager();
         initializeFrame(agent);
     }
 
