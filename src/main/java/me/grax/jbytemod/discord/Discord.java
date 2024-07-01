@@ -6,6 +6,7 @@ import com.jagrosh.discordipc.IPCClient;
 import com.jagrosh.discordipc.IPCListener;
 import com.jagrosh.discordipc.entities.RichPresence;
 
+import com.jagrosh.discordipc.entities.pipe.PipeStatus;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import me.grax.jbytemod.JByteMod;
@@ -32,7 +33,11 @@ public class Discord {
                 updatePresence("Idle...", "");
             }
         });
-        client.connect();
+        try {
+            client.connect();
+        } catch (Exception e) {
+            System.out.println("Failed to hook discord");
+        }
     }
 
     /**
@@ -49,15 +54,15 @@ public class Discord {
                 .setDetails(discordDetails)
                 .setStartTimestamp(startTimestamp)
                 .setLargeImage("icon", "JByteMod-Remastered");
-
-        client.sendRichPresence(builder.build());
+        if(client.getStatus().equals(PipeStatus.CONNECTED))
+            client.sendRichPresence(builder.build());
     }
 
     /**
      * Shutdown Discord IPC client.
      */
     public void shutdown() {
-        if (client != null) {
+        if (client != null && client.getStatus().equals(PipeStatus.CONNECTED)) {
             client.close();
         }
     }
