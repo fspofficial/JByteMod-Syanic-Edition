@@ -390,7 +390,7 @@ public class ClassTree extends JTree implements IDropUser {
     }
 
     @Override
-    public void onJarLoad(int id, File input) {
+    public void onFileLoad(int id, File input) {
         jbm.loadFile(input);
     }
 

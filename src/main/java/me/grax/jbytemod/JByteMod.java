@@ -306,15 +306,15 @@ public class JByteMod extends JFrame {
     }
 
     /**
-     * Load .jar or .class file
+     * Load .jar, .class or .apk file
      */
     public void loadFile(File input) {
         this.filePath = input;
         String ap = input.getAbsolutePath();
 
         try {
-            if (ap.endsWith(".jar")) {
-                loadJarFile(input);
+            if (ap.endsWith(".jar") || ap.endsWith(".apk")) {
+                loadZipFile(input);
             } else if (ap.endsWith(".class")) {
                 loadClassFile(input);
             } else {
@@ -327,7 +327,8 @@ public class JByteMod extends JFrame {
         }
     }
 
-    private void loadJarFile(File input) {
+
+    private void loadZipFile(File input) {
         jarArchive = new JarArchive(this, input);
         setTitleSuffix(input.getName());
     }

@@ -38,7 +38,8 @@ public class JarDropHandler extends TransferHandler {
         for (File file : data) {
             String fileName = file.getName().toLowerCase();
             if (fileName.endsWith(".jar")
-                    || fileName.endsWith(".class")) {
+                    || fileName.endsWith(".class")
+                    || fileName.endsWith(".apk")) {
                 user.onFileLoad(id, file);
                 break;
             }

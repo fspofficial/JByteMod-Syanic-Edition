@@ -185,6 +185,37 @@
 			<artifactId>vineflower</artifactId>
 			<version>${vineflower.version}</version>
 		</dependency>
+
+		<!-- APK Support -->
+		<dependency>
+			<groupId>de.brownie</groupId>
+			<artifactId>dex-translator</artifactId>
+			<version>2.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>de.brownie</groupId>
+			<artifactId>dex-reader</artifactId>
+			<version>2.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>de.brownie</groupId>
+			<artifactId>dex-reader-api</artifactId>
+			<version>2.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>de.brownie</groupId>
+			<artifactId>dex-ir</artifactId>
+			<version>2.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.android.tools</groupId>
+			<artifactId>dx</artifactId>
+			<version>30.0.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>

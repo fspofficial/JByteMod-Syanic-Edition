@@ -1,10 +1,13 @@
 package me.grax.jbytemod.utils.task;
 
+import com.googlecode.d2j.dex.Dex2Asm;
+import com.googlecode.d2j.node.DexFileNode;
+import com.googlecode.d2j.reader.DexFileReader;
+import de.xbrowniecodez.android.asm.Dex2ASMVisitorFactory;
 import de.xbrowniecodez.jbytemod.utils.BytecodeUtils;
 import de.xbrowniecodez.jbytemod.utils.ClassUtils;
 import me.grax.jbytemod.JByteMod;
 import me.grax.jbytemod.JarArchive;
-import me.grax.jbytemod.discord.Discord;
 import me.grax.jbytemod.ui.PageEndPanel;
 import me.grax.jbytemod.utils.ErrorDisplay;
 import me.grax.jbytemod.utils.FileUtils;
@@ -85,7 +88,10 @@ public class LoadTask extends SwingWorker<Void, Integer> {
 
         final Enumeration<ZipEntry> entries = jar.getEntries();
         while (entries.hasMoreElements()) {
-            readJar(jar, entries.nextElement(), classes, otherFiles);
+            if(file.getName().endsWith(".jar"))
+                readJar(jar, entries.nextElement(), classes, otherFiles);
+            else
+                readApk(jar, entries.nextElement(), classes, otherFiles);
         }
         jar.close();
         ja.setClasses(classes);
@@ -95,8 +101,49 @@ public class LoadTask extends SwingWorker<Void, Integer> {
         for(String name : otherFiles.keySet()){
             if(name.endsWith(".class") || name.endsWith(".class/")) junkClasses++;
         }
+    }
 
-        return;
+    private void readApk(ZipFile jar, ZipEntry zipEntry, Map<String, ClassNode> classes,
+                         Map<String, byte[]> otherFiles) {
+        Dex2Asm dex2ASM = new Dex2Asm();
+        long startTime = System.currentTimeMillis();
+
+        String name = zipEntry.getName();
+        try (InputStream jis = jar.getInputStream(zipEntry)) {
+            byte[] bytes = IOUtils.toByteArray(jis);
+
+            if(name.startsWith("classes") && name.endsWith(".dex")) {
+                DexFileReader dexFileReader = new DexFileReader(bytes);
+
+                DexFileNode dexFileNode = new DexFileNode();
+                dexFileReader.accept(dexFileNode);
+                dexFileNode.clzs.forEach(dexClassNode -> {
+                    ClassNode classNode = new ClassNode();
+
+                    Dex2ASMVisitorFactory dex2ASMVisitorFactory = new Dex2ASMVisitorFactory(classNode);
+                    dex2ASM.convertClass(dexClassNode, dex2ASMVisitorFactory);
+
+                    classes.put(classNode.name, classNode);
+
+                    updateProgress(dexFileNode.clzs.size());
+                });
+                //dex2ASM.convertDex(dexFileNode, dex2ASMVisitorFactory);
+            } else if (name.equals("META-INF/MANIFEST.MF")) {
+                processManifestFile(name, bytes, otherFiles);
+            } else {
+                processOtherFile(name, bytes, otherFiles);
+            }
+
+            handleMemoryWarning(startTime, bytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JByteMod.LOGGER.err("Failed loading file");
+        }
+    }
+
+    private void updateProgress(int num) {
+        int progress = (int) (((float) loaded++ / (float) num) * 100f);
+        publish(progress);
     }
 
     private void readJar(ZipFile jar, ZipEntry zipEntry, Map<String, ClassNode> classes,
