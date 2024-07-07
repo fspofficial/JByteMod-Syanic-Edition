@@ -98,9 +98,6 @@ public class JByteMod extends JFrame {
     @Setter
     private LVPList lvpList;
     @Getter
-    @Setter
-    private ControlFlowPanel controlFlowPanel;
-    @Getter
     private MyMenuBar myMenuBar;
     @Getter
     private ClassNode currentNode;
@@ -415,7 +412,6 @@ public class JByteMod extends JFrame {
         }
         tcbList.addNodes(cn, mn);
         lvpList.addNodes(cn, mn);
-        controlFlowPanel.setNode(mn);
         dp.setText("");
         tabbedPane.selectMethod(cn, mn);
         lastSelectedTreeEntries.put(cn, mn);
