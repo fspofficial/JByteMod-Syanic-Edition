@@ -1,5 +1,6 @@
 package me.grax.jbytemod;
 
+import de.xbrowniecodez.jbytemod.JByteMod;
 import lombok.Getter;
 import lombok.Setter;
 import me.grax.jbytemod.utils.ErrorDisplay;
