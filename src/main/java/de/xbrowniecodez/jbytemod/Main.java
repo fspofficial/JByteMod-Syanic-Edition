@@ -2,6 +2,7 @@ package de.xbrowniecodez.jbytemod;
 
 import de.xbrowniecodez.jbytemod.utils.update.UpdateChecker;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import me.grax.jbytemod.discord.Discord;
 import me.grax.jbytemod.logging.Logging;
@@ -15,12 +16,13 @@ import java.io.File;
 @Getter
 public enum Main {
     INSTANCE;
+    @Setter
     private JByteMod jByteMod;
     private Logging logger;
     private Discord discord;
     private UpdateChecker updateChecker;
 
-    public static void main(String[] args) { Main.INSTANCE.start(args); }
+    public static void main(String[] args) { Main.getInstance().start(args); }
     @SneakyThrows
     private void start(String[] args) {
         CommandLine cmd = parseCommandLine(args);
@@ -58,7 +60,7 @@ public enum Main {
 
     private void printHelpAndExit() {
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp(Main.INSTANCE.getJByteMod().getTitle(), buildCommandLineOptions());
+        formatter.printHelp(Main.getInstance().getJByteMod().getTitle(), buildCommandLineOptions());
         System.exit(0);
     }
 
@@ -67,10 +69,14 @@ public enum Main {
             File input = new File(cmd.getOptionValue("f"));
             if (FileUtils.exists(input) && FileUtils.isType(input, ".jar", ".class")) {
                 frame.loadFile(input);
-                  Main.INSTANCE.getLogger().log("Specified file loaded");
+                  Main.getInstance().getLogger().log("Specified file loaded");
             } else {
-                 Main.INSTANCE.getLogger().err("Specified file not found");
+                 Main.getInstance().getLogger().err("Specified file not found");
             }
         }
+    }
+
+    public static Main getInstance() {
+        return Main.INSTANCE;
     }
 }

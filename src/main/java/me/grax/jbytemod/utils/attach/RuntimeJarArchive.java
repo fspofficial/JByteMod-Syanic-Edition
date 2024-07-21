@@ -29,7 +29,7 @@ public class RuntimeJarArchive extends JarArchive {
         try {
             loadNames(JByteMod.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
             loadNames(JarUtils.getRT().getAbsolutePath());
-             Main.INSTANCE.getLogger().log("Successfully loaded system class names");
+             Main.getInstance().getLogger().log("Successfully loaded system class names");
         } catch (Exception e1) {
             e1.printStackTrace();
         }

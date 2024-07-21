@@ -31,7 +31,7 @@ public class MNSettings extends MyInternalFrame {
         final JPanel labels = new JPanel(new GridLayout(0, 1));
         panel.add(labels, "West");
         panel.add(input, "Center");
-        panel.add(new JLabel(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("ref_warn")), "South");
+        panel.add(new JLabel(Main.getInstance().getJByteMod().getLanguageRes().getResource("ref_warn")), "South");
         labels.add(new JLabel("Method Name:"));
         JTextField name = new JTextField(mn.name);
         input.add(name);
@@ -57,14 +57,14 @@ public class MNSettings extends MyInternalFrame {
         maxS.setValue(mn.maxStack);
         input.add(maxS);
         labels.add(new JLabel("Annotations:"));
-        JButton annotations = new JButton(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("edit"));
+        JButton annotations = new JButton(Main.getInstance().getJByteMod().getLanguageRes().getResource("edit"));
         annotations.addActionListener(a -> {
             if (!JAnnotationEditor.isOpen("visibleAnnotations"))
                 new JAnnotationEditor("Annotations", mn, "visibleAnnotations").setVisible(true);
         });
         input.add(annotations);
         labels.add(new JLabel("Invisible Annotations:"));
-        JButton invisAnnotations = new JButton(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("edit"));
+        JButton invisAnnotations = new JButton(Main.getInstance().getJByteMod().getLanguageRes().getResource("edit"));
         invisAnnotations.addActionListener(a -> {
             if (!JAnnotationEditor.isOpen("invisibleAnnotations"))
                 new JAnnotationEditor("Invisible Annotations", mn, "invisibleAnnotations").setVisible(true);
@@ -72,28 +72,24 @@ public class MNSettings extends MyInternalFrame {
         input.add(invisAnnotations);
         this.add(panel, BorderLayout.CENTER);
         JButton update = new JButton("Update");
-        update.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                boolean refresh = false;
-                if (!mn.name.equals(name.getText())) {
-                    refresh = true;
-                    mn.name = name.getText();
-                }
-                mn.desc = desc.getText();
-                mn.access = (int) access.getValue();
-                mn.maxLocals = (int) maxL.getValue();
-                mn.maxStack = (int) maxS.getValue();
-                String sig = signature.getText();
-                if (sig.isEmpty()) {
-                    mn.signature = null;
-                } else {
-                    mn.signature = sig;
-                }
-                if (refresh) {
-                    Main.INSTANCE.getJByteMod().getJarTree().refreshMethod(cn, mn);
-                }
+        update.addActionListener(e -> {
+            boolean refresh = false;
+            if (!mn.name.equals(name.getText())) {
+                refresh = true;
+                mn.name = name.getText();
+            }
+            mn.desc = desc.getText();
+            mn.access = (int) access.getValue();
+            mn.maxLocals = (int) maxL.getValue();
+            mn.maxStack = (int) maxS.getValue();
+            String sig = signature.getText();
+            if (sig.isEmpty()) {
+                mn.signature = null;
+            } else {
+                mn.signature = sig;
+            }
+            if (refresh) {
+                Main.getInstance().getJByteMod().getJarTree().refreshMethod(cn, mn);
             }
         });
         this.add(update, BorderLayout.PAGE_END);

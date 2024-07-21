@@ -15,14 +15,14 @@ public class JAboutFrame extends JDialog {
     }
 
     private void initializeUI(JByteMod jbm) {
-        setTitle(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("about") + " " + jbm.getTitle());
+        setTitle(Main.getInstance().getJByteMod().getLanguageRes().getResource("about") + " " + jbm.getTitle());
         setModal(true);
         setBounds(100, 100, 450, 300);
         JPanel contentPanel = new JPanel(new BorderLayout());
         contentPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         setResizable(false);
 
-        JButton closeButton = new JButton(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("close"));
+        JButton closeButton = new JButton(Main.getInstance().getJByteMod().getLanguageRes().getResource("close"));
         closeButton.addActionListener(e -> dispose());
 
         JPanel buttonPanel = new JPanel(new GridLayout(1, 4));

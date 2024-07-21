@@ -446,7 +446,7 @@ public class TransformerHelper implements Opcodes {
         try {
             return future.get(10, TimeUnit.SECONDS);
         } catch (InterruptedException | TimeoutException e) {
-            // Main.INSTANCE.getLogger().debug("timed out while analyzing {} {}{}", classNode.name, methodNode.name, methodNode.desc);
+            // Main.getInstance().getLogger().debug("timed out while analyzing {} {}{}", classNode.name, methodNode.name, methodNode.desc);
             return null;
         } catch (ExecutionException e) {
             //LOGGER.debug("exception while analyzing {} {}{}", classNode.name, methodNode.name, methodNode.desc, e);

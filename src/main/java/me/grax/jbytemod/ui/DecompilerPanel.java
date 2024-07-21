@@ -20,7 +20,7 @@ public class DecompilerPanel extends RSyntaxTextArea {
 
     @SneakyThrows
     public void setTheme() {
-        Theme theme = Theme.load(Main.INSTANCE.getJByteMod().getOptions().get("use_dark_theme").getBoolean() ? getClass().getResourceAsStream("/resources/de/brownie/rsyntaxtextarea/themes/custom.xml") : getClass().getResourceAsStream("/org/fife/ui/rsyntaxtextarea/themes/idea.xml"));
+        Theme theme = Theme.load(Main.getInstance().getJByteMod().getOptions().get("use_dark_theme").getBoolean() ? getClass().getResourceAsStream("/resources/de/brownie/rsyntaxtextarea/themes/custom.xml") : getClass().getResourceAsStream("/org/fife/ui/rsyntaxtextarea/themes/idea.xml"));
         theme.apply(this);
     }
 

@@ -2,7 +2,7 @@ package de.xbrowniecodez.jbytemod.ui.lists;
 
 import de.xbrowniecodez.jbytemod.Main;
 import me.grax.jbytemod.ui.dialogue.InsnEditDialogue;
-import me.grax.jbytemod.ui.lists.entries.TCBEntry;
+import de.xbrowniecodez.jbytemod.ui.lists.entries.TCBEntry;
 import me.grax.jbytemod.utils.ErrorDisplay;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -49,19 +49,19 @@ public class TCBList extends JList<TCBEntry> {
         List<TCBEntry> selectedEntries = getSelectedValuesList();
         JPopupMenu menu = new JPopupMenu();
         if (!selectedEntries.isEmpty()) {
-            JMenuItem remove = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("remove"));
-            remove.addActionListener(this::removeSelectedEntries);
-            menu.add(remove);
+            JMenuItem removeItem = new JMenuItem(selectedEntries.size() > 1 ? Main.getInstance().getJByteMod().getLanguageRes().getResource("remove_all") : Main.getInstance().getJByteMod().getLanguageRes().getResource("remove"));
+            removeItem.addActionListener(this::removeSelectedEntries);
+            menu.add(removeItem);
 
-            JMenuItem edit = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("edit"));
-            edit.addActionListener(this::editSelectedEntries);
-            menu.add(edit);
+            JMenuItem editItem = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("edit"));
+            editItem.addActionListener(this::editSelectedEntries);
+            menu.add(editItem);
         }
 
-        JMenuItem insert = new JMenuItem(getSelectedValuesList().isEmpty() ?
-                Main.INSTANCE.getJByteMod().getLanguageRes().getResource("add") : Main.INSTANCE.getJByteMod().getLanguageRes().getResource("insert"));
-        insert.addActionListener(this::insertEntry);
-        menu.add(insert);
+        JMenuItem insertItem = new JMenuItem(getSelectedValuesList().isEmpty() ?
+                Main.getInstance().getJByteMod().getLanguageRes().getResource("add") : Main.getInstance().getJByteMod().getLanguageRes().getResource("insert"));
+        insertItem.addActionListener(this::insertEntry);
+        menu.add(insertItem);
 
         menu.show(this, e.getX(), e.getY());
     }

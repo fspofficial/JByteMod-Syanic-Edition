@@ -19,7 +19,7 @@ public class Loader {
         }
         InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream(type + ".class");
         if (is == null) {
-            Main.INSTANCE.getLogger().err(type + " not in classpath");
+            Main.getInstance().getLogger().err(type + " not in classpath");
             return null;
         }
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

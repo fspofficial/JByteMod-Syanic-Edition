@@ -206,7 +206,7 @@ public class ClassDialogue {
                 try {
                     Object value = f.get(object);
                     panel.setLayout(new BorderLayout());
-                    JButton edit = new JButton(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("edit"));
+                    JButton edit = new JButton(Main.getInstance().getJByteMod().getLanguageRes().getResource("edit"));
                     edit.setToolTipText("Can be null");
                     edit.addActionListener(e -> {
                         try {
@@ -247,7 +247,7 @@ public class ClassDialogue {
                 }
                 rightInput.add(wrap(f, panel));
             } else {
-                JButton edit = new JButton(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("edit"));
+                JButton edit = new JButton(Main.getInstance().getJByteMod().getLanguageRes().getResource("edit"));
                 try {
                     Object value = f.get(object);
                     edit.addActionListener(e -> {
@@ -534,7 +534,7 @@ public class ClassDialogue {
             actions.setLayout(new GridLayout(1, 4));
             if (InvokeDynamicInsnNode.class.isAssignableFrom(f.getDeclaringClass()) && f.getName().equals("bsmArgs")) {
                 //Special case for bootstrap arguments
-                JButton add = new JButton(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("add"));
+                JButton add = new JButton(Main.getInstance().getJByteMod().getLanguageRes().getResource("add"));
                 add.addActionListener(a -> {
                     Object edit = bsmArgsWindow();
                     int row = jtable.getSelectedRow();
@@ -549,7 +549,7 @@ public class ClassDialogue {
                 });
                 actions.add(add);
             } else {
-                JButton add = new JButton(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("add"));
+                JButton add = new JButton(Main.getInstance().getJByteMod().getLanguageRes().getResource("add"));
                 add.addActionListener(a -> {
                     try {
                         int row = jtable.getSelectedRow();
@@ -572,7 +572,7 @@ public class ClassDialogue {
                     actions.add(add);
                 }
             }
-            JButton remove = new JButton(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("remove"));
+            JButton remove = new JButton(Main.getInstance().getJByteMod().getLanguageRes().getResource("remove"));
             remove.addActionListener(a -> {
                 int[] selectedRows = jtable.getSelectedRows();
                 if (selectedRows.length > 0) {
@@ -583,7 +583,7 @@ public class ClassDialogue {
                 }
             });
             actions.add(remove);
-            JButton edit = new JButton(Main.INSTANCE.getJByteMod().getLanguageRes().getResource(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("edit")));
+            JButton edit = new JButton(Main.getInstance().getJByteMod().getLanguageRes().getResource(Main.getInstance().getJByteMod().getLanguageRes().getResource("edit")));
             edit.addActionListener(a -> {
                 int row = jtable.getSelectedRow();
                 if (row == -1) {
@@ -660,7 +660,7 @@ public class ClassDialogue {
                     e.printStackTrace();
                 }
             } else {
-                JButton edit = new JButton(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("edit"));
+                JButton edit = new JButton(Main.getInstance().getJByteMod().getLanguageRes().getResource("edit"));
                 edit.addActionListener(e -> {
                     try {
                         ClassDialogue dialogue = ClassDialogue.this.init(o);

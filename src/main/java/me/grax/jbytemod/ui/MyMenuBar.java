@@ -10,7 +10,7 @@ import me.grax.jbytemod.res.LanguageRes;
 import me.grax.jbytemod.res.Option;
 import me.grax.jbytemod.res.Options;
 import me.grax.jbytemod.ui.dialogue.ClassDialogue;
-import me.grax.jbytemod.ui.lists.entries.SearchEntry;
+import de.xbrowniecodez.jbytemod.ui.lists.entries.SearchEntry;
 import me.grax.jbytemod.utils.DeobfusacteUtils;
 import me.grax.jbytemod.utils.ErrorDisplay;
 import me.grax.jbytemod.utils.TextUtils;
@@ -48,96 +48,54 @@ public class MyMenuBar extends JMenuBar {
 
 
     private void initFileMenu() {
-        JMenu file = new JMenu(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("file"));
+        JMenu file = new JMenu(Main.getInstance().getJByteMod().getLanguageRes().getResource("file"));
         if (!agent) {
-            JMenuItem save = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("save"));
-            JMenuItem saveas = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("save_as"));
-            JMenuItem load = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("load"));
-            load.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    openLoadDialogue();
-                }
-            });
-            save.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    if (lastFile != null) {
-                        jbm.saveFile(lastFile);
-                    } else {
-                        openSaveDialogue();
-                    }
-                }
-            });
-            saveas.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
+            JMenuItem save = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("save"));
+            JMenuItem saveas = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("save_as"));
+            JMenuItem load = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("load"));
+            load.addActionListener(e -> openLoadDialogue());
+            save.addActionListener(e -> {
+                if (lastFile != null) {
+                    jbm.saveFile(lastFile);
+                } else {
                     openSaveDialogue();
                 }
             });
+            saveas.addActionListener(e -> openSaveDialogue());
             save.setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             load.setAccelerator(KeyStroke.getKeyStroke('N', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             file.add(save);
             file.add(saveas);
             file.add(load);
         } else {
-            JMenuItem refresh = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("refresh"));
-            refresh.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    jbm.refreshAgentClasses();
-                }
-            });
+            JMenuItem refresh = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("refresh"));
+            refresh.addActionListener(e -> jbm.refreshAgentClasses());
             file.add(refresh);
-            JMenuItem apply = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("apply"));
-            apply.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    jbm.applyChangesAgent();
-                }
-            });
+            JMenuItem apply = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("apply"));
+            apply.addActionListener(e -> jbm.applyChangesAgent());
             file.add(apply);
         }
         this.add(file);
 
-        JMenu search = new JMenu(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("search"));
-        JMenuItem ldc = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("search_ldc"));
-        ldc.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                searchLDC();
-            }
-        });
+        JMenu search = new JMenu(Main.getInstance().getJByteMod().getLanguageRes().getResource("search"));
+        JMenuItem ldc = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("search_ldc"));
+        ldc.addActionListener(e -> searchLDC());
 
         search.add(ldc);
-        JMenuItem field = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("search_field"));
-        field.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                searchField();
-            }
-        });
+        JMenuItem field = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("search_field"));
+        field.addActionListener(e -> searchField());
 
         search.add(field);
-        JMenuItem method = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("search_method"));
-        method.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                searchMethod();
-            }
-        });
+        JMenuItem method = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("search_method"));
+        method.addActionListener(e -> searchMethod());
 
         search.add(method);
-        JMenuItem replace = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("replace_ldc"));
-        replace.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                replaceLDC();
-            }
-        });
+        JMenuItem replace = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("replace_ldc"));
+        replace.addActionListener(e -> replaceLDC());
 
         search.add(replace);
         this.add(search);
-        JMenu utils = new JMenu(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("utils"));
+        JMenu utils = new JMenu(Main.getInstance().getJByteMod().getLanguageRes().getResource("utils"));
         JMenuItem accman = new JMenuItem("Access Helper");
         accman.addActionListener(new ActionListener() {
 
@@ -147,7 +105,7 @@ public class MyMenuBar extends JMenuBar {
             }
         });
         utils.add(accman);
-        JMenuItem attach = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("attach"));
+        JMenuItem attach = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("attach"));
         attach.addActionListener(new ActionListener() {
 
             @Override
@@ -181,7 +139,7 @@ public class MyMenuBar extends JMenuBar {
         this.add(utils);
         JMenu tree = new JMenu("Tree");
         utils.add(tree);
-        JMenuItem rltree = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("tree_reload"));
+        JMenuItem rltree = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("tree_reload"));
         rltree.addActionListener(new ActionListener() {
 
             @Override
@@ -190,7 +148,7 @@ public class MyMenuBar extends JMenuBar {
             }
         });
         tree.add(rltree);
-        JMenuItem collapse = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("collapse_all"));
+        JMenuItem collapse = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("collapse_all"));
         collapse.addActionListener(new ActionListener() {
 
             @Override
@@ -199,9 +157,9 @@ public class MyMenuBar extends JMenuBar {
             }
         });
         tree.add(collapse);
-        JMenu searchUtils = new JMenu(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("search"));
+        JMenu searchUtils = new JMenu(Main.getInstance().getJByteMod().getLanguageRes().getResource("search"));
         utils.add(searchUtils);
-        JMenuItem url = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("url_search"));
+        JMenuItem url = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("url_search"));
         url.addActionListener(new ActionListener() {
 
             @Override
@@ -210,7 +168,7 @@ public class MyMenuBar extends JMenuBar {
             }
         });
         searchUtils.add(url);
-        JMenuItem email = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("email_search"));
+        JMenuItem email = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("email_search"));
         email.addActionListener(new ActionListener() {
 
             @Override
@@ -220,10 +178,10 @@ public class MyMenuBar extends JMenuBar {
         });
         searchUtils.add(email);
         // Utils:
-        JMenu deobfTools = new JMenu(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("deobf_tools"));
+        JMenu deobfTools = new JMenu(Main.getInstance().getJByteMod().getLanguageRes().getResource("deobf_tools"));
         utils.add(deobfTools);
 
-        JMenuItem findSF = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("find_sourcefiles"));
+        JMenuItem findSF = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("find_sourcefiles"));
         findSF.addActionListener(new ActionListener() {
 
             @Override
@@ -236,11 +194,11 @@ public class MyMenuBar extends JMenuBar {
                 final JPanel labels = new JPanel(new GridLayout(0, 1));
                 panel.add(labels, "West");
                 panel.add(input, "Center");
-                // panel.add(new JLabel(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("big_jar_warn")), "South");
-                labels.add(new JLabel(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("find_sourcefiles_input_name")));
+                // panel.add(new JLabel(Main.getInstance().getJByteMod().getLanguageRes().getResource("big_jar_warn")), "South");
+                labels.add(new JLabel(Main.getInstance().getJByteMod().getLanguageRes().getResource("find_sourcefiles_input_name")));
                 final JTextField sf = new JTextField();
                 input.add(sf);
-                if (JOptionPane.showConfirmDialog(Main.INSTANCE.getJByteMod(), panel, Main.INSTANCE.getJByteMod().getLanguageRes().getResource("find_sourcefiles"),
+                if (JOptionPane.showConfirmDialog(Main.getInstance().getJByteMod(), panel, Main.getInstance().getJByteMod().getLanguageRes().getResource("find_sourcefiles"),
                         2) == 0 && !sf.getText().isEmpty()) {
                     jbm.getSearchList().searchForSF(sf.getText());
                 }
@@ -248,7 +206,7 @@ public class MyMenuBar extends JMenuBar {
         });
         search.add(findSF);
 
-        JMenuItem findClass = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("find_class_by_name"));
+        JMenuItem findClass = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("find_class_by_name"));
         findClass.addActionListener(new ActionListener() {
 
             @Override
@@ -261,11 +219,11 @@ public class MyMenuBar extends JMenuBar {
                 final JPanel labels = new JPanel(new GridLayout(0, 1));
                 panel.add(labels, "West");
                 panel.add(input, "Center");
-                // panel.add(new JLabel(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("big_jar_warn")), "South");
-                labels.add(new JLabel(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("find_class_input_name")));
+                // panel.add(new JLabel(Main.getInstance().getJByteMod().getLanguageRes().getResource("big_jar_warn")), "South");
+                labels.add(new JLabel(Main.getInstance().getJByteMod().getLanguageRes().getResource("find_class_input_name")));
                 final JTextField cst = new JTextField();
                 input.add(cst);
-                if (JOptionPane.showConfirmDialog(Main.INSTANCE.getJByteMod(), panel, Main.INSTANCE.getJByteMod().getLanguageRes().getResource("find_class_by_name"),
+                if (JOptionPane.showConfirmDialog(Main.getInstance().getJByteMod(), panel, Main.getInstance().getJByteMod().getLanguageRes().getResource("find_class_by_name"),
                         2) == 0 && !cst.getText().isEmpty()) {
                     LazyListModel<SearchEntry> model = new LazyListModel<>();
                     for (final ClassNode cn : jbm.getJarArchive().getClasses().values()) {
@@ -282,7 +240,7 @@ public class MyMenuBar extends JMenuBar {
         });
         search.add(findClass);
 
-        JMenuItem clazz_main = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("find_main_class"));
+        JMenuItem clazz_main = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("find_main_class"));
         clazz_main.addActionListener(new ActionListener() {
 
             @Override
@@ -304,14 +262,14 @@ public class MyMenuBar extends JMenuBar {
         });
         searchUtils.add(clazz_main);
 
-        JMenuItem optimize_peephole = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("optimize_peephole"));
+        JMenuItem optimize_peephole = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("optimize_peephole"));
         optimize_peephole.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 if (jbm.getJarArchive() != null && jbm.getJarArchive().getClasses() != null) {
                     int count = DeobfusacteUtils.mergeTrapHandler(jbm.getJarArchive().getClasses()) + DeobfusacteUtils.rearrangeGoto(jbm.getJarArchive().getClasses()) + DeobfusacteUtils.foldConstant(jbm.getJarArchive().getClasses()) + DeobfusacteUtils.removeUnconditionalSwitch(jbm.getJarArchive().getClasses());
                     JOptionPane.showMessageDialog(null, "Optimized " + count + " places.",
-                            Main.INSTANCE.getJByteMod().getLanguageRes().getResource("optimize_peephole"), JOptionPane.INFORMATION_MESSAGE);
+                            Main.getInstance().getJByteMod().getLanguageRes().getResource("optimize_peephole"), JOptionPane.INFORMATION_MESSAGE);
                 }else {
                     canNotFindFile();
                 }
@@ -319,7 +277,7 @@ public class MyMenuBar extends JMenuBar {
         });
         deobfTools.add(optimize_peephole);
 
-        JMenuItem show_code = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("show_code"));
+        JMenuItem show_code = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("show_code"));
         show_code.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
@@ -330,7 +288,7 @@ public class MyMenuBar extends JMenuBar {
                     DeobfusacteUtils.removeLocalVariable(jbm.getJarArchive().getClasses());
                     DeobfusacteUtils.removeIllegalVarargs(jbm.getJarArchive().getClasses());
                     JOptionPane.showMessageDialog(null, "Finished showing codes.",
-                            Main.INSTANCE.getJByteMod().getLanguageRes().getResource("show_code"), JOptionPane.INFORMATION_MESSAGE);
+                            Main.getInstance().getJByteMod().getLanguageRes().getResource("show_code"), JOptionPane.INFORMATION_MESSAGE);
                 }else {
                     canNotFindFile();
                 }
@@ -338,14 +296,14 @@ public class MyMenuBar extends JMenuBar {
         });
         deobfTools.add(show_code);
 
-        JMenuItem signatureFix = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("signaturefix"));
+        JMenuItem signatureFix = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("signaturefix"));
         signatureFix.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 if (jbm.getJarArchive() != null && jbm.getJarArchive().getClasses() != null) {
                     DeobfusacteUtils.fixSignature(jbm.getJarArchive().getClasses());
-                    JOptionPane.showMessageDialog(null, Main.INSTANCE.getJByteMod().getLanguageRes().getResource("finish_tip"),
-                            Main.INSTANCE.getJByteMod().getLanguageRes().getResource("signaturefix"), JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, Main.getInstance().getJByteMod().getLanguageRes().getResource("finish_tip"),
+                            Main.getInstance().getJByteMod().getLanguageRes().getResource("signaturefix"), JOptionPane.INFORMATION_MESSAGE);
                 }else {
                     canNotFindFile();
                 }
@@ -359,7 +317,7 @@ public class MyMenuBar extends JMenuBar {
             public void actionPerformed(final ActionEvent e) {
                 if (jbm.getJarArchive() != null && jbm.getJarArchive().getClasses() != null) {
                     DeobfusacteUtils.removeSyntheticBridge(jbm.getJarArchive().getClasses());
-                    JOptionPane.showMessageDialog(null, Main.INSTANCE.getJByteMod().getLanguageRes().getResource("finish_tip"),
+                    JOptionPane.showMessageDialog(null, Main.getInstance().getJByteMod().getLanguageRes().getResource("finish_tip"),
                             "Synthetic Bridge Fixer", JOptionPane.INFORMATION_MESSAGE);
                 }else {
                     canNotFindFile();
@@ -369,14 +327,14 @@ public class MyMenuBar extends JMenuBar {
         });
         deobfTools.add(access_fix);
 
-        JMenuItem linenumber_remove = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("line_number_remove"));
+        JMenuItem linenumber_remove = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("line_number_remove"));
         linenumber_remove.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 if (jbm.getJarArchive() != null && jbm.getJarArchive().getClasses() != null) {
                     DeobfusacteUtils.removeLineNumber(jbm.getJarArchive().getClasses());
-                    JOptionPane.showMessageDialog(null, Main.INSTANCE.getJByteMod().getLanguageRes().getResource("finish_tip"),
-                            Main.INSTANCE.getJByteMod().getLanguageRes().getResource("line_number_remove"), JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, Main.getInstance().getJByteMod().getLanguageRes().getResource("finish_tip"),
+                            Main.getInstance().getJByteMod().getLanguageRes().getResource("line_number_remove"), JOptionPane.INFORMATION_MESSAGE);
                 }else {
                     canNotFindFile();
                 }
@@ -384,14 +342,14 @@ public class MyMenuBar extends JMenuBar {
         });
         deobfTools.add(linenumber_remove);
 
-        JMenuItem local_variable_remove = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("local_variable_remove"));
+        JMenuItem local_variable_remove = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("local_variable_remove"));
         local_variable_remove.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 if (jbm.getJarArchive() != null && jbm.getJarArchive().getClasses() != null) {
                     DeobfusacteUtils.removeLocalVariable(jbm.getJarArchive().getClasses());
-                    JOptionPane.showMessageDialog(null, Main.INSTANCE.getJByteMod().getLanguageRes().getResource("finish_tip"),
-                            Main.INSTANCE.getJByteMod().getLanguageRes().getResource("local_variable_remove"), JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, Main.getInstance().getJByteMod().getLanguageRes().getResource("finish_tip"),
+                            Main.getInstance().getJByteMod().getLanguageRes().getResource("local_variable_remove"), JOptionPane.INFORMATION_MESSAGE);
                 }else {
                     canNotFindFile();
                 }
@@ -399,14 +357,14 @@ public class MyMenuBar extends JMenuBar {
         });
         deobfTools.add(local_variable_remove);
 
-        JMenuItem illegal_varargs_remove = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("illegal_varargs_remove"));
+        JMenuItem illegal_varargs_remove = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("illegal_varargs_remove"));
         illegal_varargs_remove.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 if (jbm.getJarArchive() != null && jbm.getJarArchive().getClasses() != null) {
                     DeobfusacteUtils.removeIllegalVarargs(jbm.getJarArchive().getClasses());
-                    JOptionPane.showMessageDialog(null, Main.INSTANCE.getJByteMod().getLanguageRes().getResource("finish_tip"),
-                            Main.INSTANCE.getJByteMod().getLanguageRes().getResource("illegal_varargs_remove"), JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, Main.getInstance().getJByteMod().getLanguageRes().getResource("finish_tip"),
+                            Main.getInstance().getJByteMod().getLanguageRes().getResource("illegal_varargs_remove"), JOptionPane.INFORMATION_MESSAGE);
                 }else {
                     canNotFindFile();
                 }
@@ -414,14 +372,14 @@ public class MyMenuBar extends JMenuBar {
         });
         deobfTools.add(illegal_varargs_remove);
 
-        JMenuItem illegal_invisible_annotations = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("illegal_invisible_annotations"));
+        JMenuItem illegal_invisible_annotations = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("illegal_invisible_annotations"));
         illegal_invisible_annotations.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 if (jbm.getJarArchive() != null && jbm.getJarArchive().getClasses() != null) {
                     DeobfusacteUtils.removeIllegalInvisibleAnnotations(jbm.getJarArchive().getClasses());
-                    JOptionPane.showMessageDialog(null, Main.INSTANCE.getJByteMod().getLanguageRes().getResource("finish_tip"),
-                            Main.INSTANCE.getJByteMod().getLanguageRes().getResource("illegal_invisible_annotations"), JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, Main.getInstance().getJByteMod().getLanguageRes().getResource("finish_tip"),
+                            Main.getInstance().getJByteMod().getLanguageRes().getResource("illegal_invisible_annotations"), JOptionPane.INFORMATION_MESSAGE);
                 }else {
                     canNotFindFile();
                 }
@@ -429,13 +387,13 @@ public class MyMenuBar extends JMenuBar {
         });
         deobfTools.add(illegal_invisible_annotations);
 
-        JMenuItem fold_constant = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("fold_constant"));
+        JMenuItem fold_constant = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("fold_constant"));
         fold_constant.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 if (jbm.getJarArchive() != null && jbm.getJarArchive().getClasses() != null) {
                     JOptionPane.showMessageDialog(null, "Folded " + DeobfusacteUtils.foldConstant(jbm.getJarArchive().getClasses()) + " constants.",
-                            Main.INSTANCE.getJByteMod().getLanguageRes().getResource("fold_constant"), JOptionPane.INFORMATION_MESSAGE);
+                            Main.getInstance().getJByteMod().getLanguageRes().getResource("fold_constant"), JOptionPane.INFORMATION_MESSAGE);
                 }else {
                     canNotFindFile();
                 }
@@ -443,13 +401,13 @@ public class MyMenuBar extends JMenuBar {
         });
         deobfTools.add(fold_constant);
 
-        JMenuItem rearrange_goto = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("rearrange_goto"));
+        JMenuItem rearrange_goto = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("rearrange_goto"));
         rearrange_goto.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 if (jbm.getJarArchive() != null && jbm.getJarArchive().getClasses() != null) {
                     JOptionPane.showMessageDialog(null, "Rearranged " + DeobfusacteUtils.rearrangeGoto(jbm.getJarArchive().getClasses()) + " goto blocks.",
-                            Main.INSTANCE.getJByteMod().getLanguageRes().getResource("rearrange_goto"), JOptionPane.INFORMATION_MESSAGE);
+                            Main.getInstance().getJByteMod().getLanguageRes().getResource("rearrange_goto"), JOptionPane.INFORMATION_MESSAGE);
                 }else {
                     canNotFindFile();
                 }
@@ -457,13 +415,13 @@ public class MyMenuBar extends JMenuBar {
         });
         deobfTools.add(rearrange_goto);
 
-        JMenuItem merge_trap_handler = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("merge_trap_handler"));
+        JMenuItem merge_trap_handler = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("merge_trap_handler"));
         merge_trap_handler.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 if (jbm.getJarArchive() != null && jbm.getJarArchive().getClasses() != null) {
                     JOptionPane.showMessageDialog(null, "Removed " + DeobfusacteUtils.mergeTrapHandler(jbm.getJarArchive().getClasses()) + " duplicate handlers.",
-                            Main.INSTANCE.getJByteMod().getLanguageRes().getResource("merge_trap_handler"), JOptionPane.INFORMATION_MESSAGE);
+                            Main.getInstance().getJByteMod().getLanguageRes().getResource("merge_trap_handler"), JOptionPane.INFORMATION_MESSAGE);
                 }else {
                     canNotFindFile();
                 }
@@ -471,13 +429,13 @@ public class MyMenuBar extends JMenuBar {
         });
         deobfTools.add(merge_trap_handler);
 
-        JMenuItem remove_unconditional_switch = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("remove_unconditional_switch"));
+        JMenuItem remove_unconditional_switch = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("remove_unconditional_switch"));
         remove_unconditional_switch.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 if (jbm.getJarArchive() != null && jbm.getJarArchive().getClasses() != null) {
                     JOptionPane.showMessageDialog(null, "Removed " + DeobfusacteUtils.removeUnconditionalSwitch(jbm.getJarArchive().getClasses()) + " unconditional switch(es).",
-                            Main.INSTANCE.getJByteMod().getLanguageRes().getResource("remove_unconditional_switch"), JOptionPane.INFORMATION_MESSAGE);
+                            Main.getInstance().getJByteMod().getLanguageRes().getResource("remove_unconditional_switch"), JOptionPane.INFORMATION_MESSAGE);
                 }else {
                     canNotFindFile();
                 }
@@ -486,15 +444,15 @@ public class MyMenuBar extends JMenuBar {
         deobfTools.add(remove_unconditional_switch);
 
         // From old version of JbyteMod by Grax
-        JMenuItem sourceRename = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("rename_sourcefiles"));
+        JMenuItem sourceRename = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("rename_sourcefiles"));
         sourceRename.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
                 if (jbm.getJarArchive().getClasses() == null)
                     return;
-                if (JOptionPane.showConfirmDialog(null, Main.INSTANCE.getJByteMod().getLanguageRes().getResource("rename_sourcefiles_warnning"),
-                        Main.INSTANCE.getJByteMod().getLanguageRes().getResource("confirm"), 0) == 0) {
+                if (JOptionPane.showConfirmDialog(null, Main.getInstance().getJByteMod().getLanguageRes().getResource("rename_sourcefiles_warnning"),
+                        Main.getInstance().getJByteMod().getLanguageRes().getResource("confirm"), 0) == 0) {
                     int i = 0;
                     for (final ClassNode c : jbm.getJarArchive().getClasses().values()) {
                         c.sourceFile = "Class" + i++ + ".java";
@@ -505,8 +463,8 @@ public class MyMenuBar extends JMenuBar {
         deobfTools.add(sourceRename);
 
         this.add(getSettings());
-        JMenu help = new JMenu(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("help"));
-        JMenuItem about = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("about"));
+        JMenu help = new JMenu(Main.getInstance().getJByteMod().getLanguageRes().getResource("help"));
+        JMenuItem about = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("about"));
         about.addActionListener(new ActionListener() {
 
             @Override
@@ -520,7 +478,7 @@ public class MyMenuBar extends JMenuBar {
         });
 
         help.add(about);
-        JMenuItem licenses = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("licenses"));
+        JMenuItem licenses = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("licenses"));
         licenses.addActionListener(new ActionListener() {
 
             @Override
@@ -530,7 +488,7 @@ public class MyMenuBar extends JMenuBar {
                     jf.setBounds(100, 100, 700, 800);
                     jf.add(new JScrollPane(
                             new JTextArea(IOUtils.toString(MyMenuBar.class.getResourceAsStream("/resources/LICENSES")))));
-                    jf.setTitle(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("licenses"));
+                    jf.setTitle(Main.getInstance().getJByteMod().getLanguageRes().getResource("licenses"));
                     jf.setVisible(true);
                 } catch (Exception ex) {
                     new ErrorDisplay(ex);
@@ -556,7 +514,7 @@ public class MyMenuBar extends JMenuBar {
             VirtualMachine vm = null;
 
             if (list.isEmpty()) {
-                String pid = JOptionPane.showInputDialog(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("no_vm_found"));
+                String pid = JOptionPane.showInputDialog(Main.getInstance().getJByteMod().getLanguageRes().getResource("no_vm_found"));
                 if (pid != null && !pid.isEmpty()) {
                     vm = AttachUtils.getVirtualMachine(Integer.parseInt(pid));
                 }
@@ -574,7 +532,7 @@ public class MyMenuBar extends JMenuBar {
             JOptionPane.showMessageDialog(null, "Failed to attach. Please use JDK as runtime.");
         } catch (Throwable t) {
             if (t.getMessage() != null) {
-                JOptionPane.showMessageDialog(null, "<" + t.getMessage() + "> " + Main.INSTANCE.getJByteMod().getLanguageRes().getResource("attach_error"));
+                JOptionPane.showMessageDialog(null, "<" + t.getMessage() + "> " + Main.getInstance().getJByteMod().getLanguageRes().getResource("attach_error"));
             } else {
                 new ErrorDisplay(t);
             }
@@ -582,9 +540,9 @@ public class MyMenuBar extends JMenuBar {
     }
 
     private JMenu getSettings() {
-        JMenu settings = new JMenu(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("settings"));
-        LanguageRes lr = Main.INSTANCE.getJByteMod().getLanguageRes();
-        Options o = Main.INSTANCE.getJByteMod().getOptions();
+        JMenu settings = new JMenu(Main.getInstance().getJByteMod().getLanguageRes().getResource("settings"));
+        LanguageRes lr = Main.getInstance().getJByteMod().getLanguageRes();
+        Options o = Main.getInstance().getJByteMod().getOptions();
         HashMap<String, JMenu> menus = new LinkedHashMap<>();
         HashMap<String, JMenu> roots = new LinkedHashMap<>();
         for (Option op : o.bools) {
@@ -619,15 +577,11 @@ public class MyMenuBar extends JMenuBar {
             switch (op.getType()) {
                 case BOOLEAN:
                     JCheckBoxMenuItem jmi = new JCheckBoxMenuItem(lr.getResource(op.getName()), op.getBoolean());
-                    jmi.addActionListener(new ActionListener() {
-
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            op.setValue(jmi.isSelected());
-                            o.save();
-                            if(op.getName().equals("use_dark_theme")) {
-                                LookUtils.changeTheme();
-                            }
+                    jmi.addActionListener(e -> {
+                        op.setValue(jmi.isSelected());
+                        o.save();
+                        if(op.getName().equals("use_dark_theme")) {
+                            LookUtils.changeTheme();
                         }
                     });
                     menu.add(jmi);
@@ -678,13 +632,13 @@ public class MyMenuBar extends JMenuBar {
         final JPanel labels = new JPanel(new GridLayout(0, 1));
         panel.add(labels, "West");
         panel.add(input, "Center");
-        panel.add(new JLabel(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("big_string_warn")), "South");
-        labels.add(new JLabel(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("find")));
+        panel.add(new JLabel(Main.getInstance().getJByteMod().getLanguageRes().getResource("big_string_warn")), "South");
+        labels.add(new JLabel(Main.getInstance().getJByteMod().getLanguageRes().getResource("find")));
         JTextField cst = new JTextField();
         input.add(cst);
-        JCheckBox exact = new JCheckBox(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("exact"));
+        JCheckBox exact = new JCheckBox(Main.getInstance().getJByteMod().getLanguageRes().getResource("exact"));
         JCheckBox regex = new JCheckBox("Regex");
-        JCheckBox snstv = new JCheckBox(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("case_sens"));
+        JCheckBox snstv = new JCheckBox(Main.getInstance().getJByteMod().getLanguageRes().getResource("case_sens"));
         labels.add(exact);
         labels.add(regex);
         input.add(snstv);
@@ -701,7 +655,7 @@ public class MyMenuBar extends JMenuBar {
         final JPanel labels = new JPanel(new GridLayout(0, 1));
         panel.add(labels, "West");
         panel.add(input, "Center");
-        panel.add(new JLabel(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("big_string_warn")), "South");
+        panel.add(new JLabel(Main.getInstance().getJByteMod().getLanguageRes().getResource("big_string_warn")), "South");
         labels.add(new JLabel("Find: "));
         JTextField find = new JTextField();
         input.add(find);
@@ -712,8 +666,8 @@ public class MyMenuBar extends JMenuBar {
         ldctype.setSelectedIndex(0);
         labels.add(new JLabel("Ldc Type: "));
         input.add(ldctype);
-        JCheckBox exact = new JCheckBox(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("exact"));
-        JCheckBox cases = new JCheckBox(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("case_sens"));
+        JCheckBox exact = new JCheckBox(Main.getInstance().getJByteMod().getLanguageRes().getResource("exact"));
+        JCheckBox cases = new JCheckBox(Main.getInstance().getJByteMod().getLanguageRes().getResource("case_sens"));
         labels.add(exact);
         input.add(cases);
         if (JOptionPane.showConfirmDialog(this.jbm, panel, "Replace LDC", JOptionPane.OK_CANCEL_OPTION,
@@ -777,7 +731,7 @@ public class MyMenuBar extends JMenuBar {
                     }
                 }
             }
-             Main.INSTANCE.getLogger().log(i + " ldc's replaced");
+             Main.getInstance().getLogger().log(i + " ldc's replaced");
         }
     }
 
@@ -787,7 +741,7 @@ public class MyMenuBar extends JMenuBar {
         final JPanel labels = new JPanel(new GridLayout(0, 1));
         panel.add(labels, "West");
         panel.add(input, "Center");
-        panel.add(new JLabel(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("big_jar_warn")), "South");
+        panel.add(new JLabel(Main.getInstance().getJByteMod().getLanguageRes().getResource("big_jar_warn")), "South");
         labels.add(new JLabel("Owner:"));
         JTextField owner = new JTextField();
         input.add(owner);
@@ -797,10 +751,10 @@ public class MyMenuBar extends JMenuBar {
         labels.add(new JLabel("Desc:"));
         JTextField desc = new JTextField();
         input.add(desc);
-        JCheckBox exact = new JCheckBox(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("exact"));
+        JCheckBox exact = new JCheckBox(Main.getInstance().getJByteMod().getLanguageRes().getResource("exact"));
         labels.add(exact);
         input.add(new JPanel());
-        if (JOptionPane.showConfirmDialog(Main.INSTANCE.getJByteMod(), panel, "Search FieldInsnNode", JOptionPane.OK_CANCEL_OPTION,
+        if (JOptionPane.showConfirmDialog(Main.getInstance().getJByteMod(), panel, "Search FieldInsnNode", JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE, searchIcon) == JOptionPane.OK_OPTION
                 && !(name.getText().isEmpty() && owner.getText().isEmpty() && desc.getText().isEmpty())) {
             jbm.getSearchList().searchForFMInsn(owner.getText(), name.getText(), desc.getText(), exact.isSelected(), true);
@@ -813,7 +767,7 @@ public class MyMenuBar extends JMenuBar {
         final JPanel labels = new JPanel(new GridLayout(0, 1));
         panel.add(labels, "West");
         panel.add(input, "Center");
-        panel.add(new JLabel(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("big_jar_warn")), "South");
+        panel.add(new JLabel(Main.getInstance().getJByteMod().getLanguageRes().getResource("big_jar_warn")), "South");
         labels.add(new JLabel("Owner:"));
         JTextField owner = new JTextField();
         input.add(owner);
@@ -823,10 +777,10 @@ public class MyMenuBar extends JMenuBar {
         labels.add(new JLabel("Desc:"));
         JTextField desc = new JTextField();
         input.add(desc);
-        JCheckBox exact = new JCheckBox(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("exact"));
+        JCheckBox exact = new JCheckBox(Main.getInstance().getJByteMod().getLanguageRes().getResource("exact"));
         labels.add(exact);
         input.add(new JPanel());
-        if (JOptionPane.showConfirmDialog(Main.INSTANCE.getJByteMod(), panel, "Search MethodInsnNode", JOptionPane.OK_CANCEL_OPTION,
+        if (JOptionPane.showConfirmDialog(Main.getInstance().getJByteMod(), panel, "Search MethodInsnNode", JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE, searchIcon) == JOptionPane.OK_OPTION
                 && !(name.getText().isEmpty() && owner.getText().isEmpty() && desc.getText().isEmpty())) {
             jbm.getSearchList().searchForFMInsn(owner.getText(), name.getText(), desc.getText(), exact.isSelected(), false);
@@ -848,7 +802,7 @@ public class MyMenuBar extends JMenuBar {
                     output = new File(output.getAbsolutePath() + ".jar");
                 }
                 this.lastFile = output;
-                 Main.INSTANCE.getLogger().log("Selected output file: " + output.getAbsolutePath());
+                 Main.getInstance().getLogger().log("Selected output file: " + output.getAbsolutePath());
                 jbm.saveFile(output);
             }
         }
@@ -861,7 +815,7 @@ public class MyMenuBar extends JMenuBar {
         int result = jfc.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             File input = jfc.getSelectedFile();
-             Main.INSTANCE.getLogger().log("Selected input file: " + input.getAbsolutePath());
+             Main.getInstance().getLogger().log("Selected input file: " + input.getAbsolutePath());
             jbm.loadFile(input);
         }
     }

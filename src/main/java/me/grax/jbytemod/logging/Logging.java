@@ -69,7 +69,7 @@ public class Logging extends PrintStream {
 
         @Override
         public void run() {
-            JByteMod inst = Main.INSTANCE.getJByteMod();
+            JByteMod inst = Main.getInstance().getJByteMod();
             if (inst != null && inst.getPageEndPanel() != null) {
                 inst.getPageEndPanel().setTip(text);
                 try {

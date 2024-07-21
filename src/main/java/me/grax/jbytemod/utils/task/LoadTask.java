@@ -43,7 +43,7 @@ public class LoadTask extends SwingWorker<Void, Integer> {
             this.othersFile = 0;
             this.startTime = System.currentTimeMillis();
             this.jarSize = countFiles(this.input = new ZipFile(input, "UTF-8"));
-             Main.INSTANCE.getLogger().log(jarSize + " files to load!");
+             Main.getInstance().getLogger().log(jarSize + " files to load!");
             this.jbm = jbm;
             this.jpb = jbm.getPageEndPanel();
             this.ja = ja;
@@ -51,7 +51,7 @@ public class LoadTask extends SwingWorker<Void, Integer> {
             // clean old cache
             // ja.setClasses(null);
             this.maxMem = Runtime.getRuntime().maxMemory();
-            this.memoryWarning = Main.INSTANCE.getJByteMod().getOptions().get("memory_warning").getBoolean();
+            this.memoryWarning = Main.getInstance().getJByteMod().getOptions().get("memory_warning").getBoolean();
         } catch (IOException e) {
             new ErrorDisplay(e);
         }
@@ -81,7 +81,7 @@ public class LoadTask extends SwingWorker<Void, Integer> {
     public void loadFiles(ZipFile jar) throws IOException {
         long mem = Runtime.getRuntime().totalMemory();
         if (mem / (double) maxMem > 0.75) {
-             Main.INSTANCE.getLogger().warn("Memory usage is high: " + Math.round((mem / (double) maxMem * 100d)) + "%");
+             Main.getInstance().getLogger().warn("Memory usage is high: " + Math.round((mem / (double) maxMem * 100d)) + "%");
         }
         System.gc();
         Map<String, ClassNode> classes = new HashMap<String, ClassNode>();
@@ -138,7 +138,7 @@ public class LoadTask extends SwingWorker<Void, Integer> {
             handleMemoryWarning(startTime, bytes);
         } catch (Exception e) {
             e.printStackTrace();
-             Main.INSTANCE.getLogger().err("Failed loading file");
+             Main.getInstance().getLogger().err("Failed loading file");
         }
     }
 
@@ -168,7 +168,7 @@ public class LoadTask extends SwingWorker<Void, Integer> {
             handleMemoryWarning(startTime, bytes);
         } catch (Exception e) {
             e.printStackTrace();
-             Main.INSTANCE.getLogger().err("Failed loading file");
+             Main.getInstance().getLogger().err("Failed loading file");
         }
     }
 
@@ -177,7 +177,7 @@ public class LoadTask extends SwingWorker<Void, Integer> {
             try {
                 if (ClassUtils.isClassFileFormat(bytes)) {
                     final ClassNode cn = BytecodeUtils.getClassNodeFromBytes(bytes);
-                    int rate = Main.INSTANCE.getJByteMod().getOptions().get("bad_class_check").getBoolean() ? FileUtils.isBadClass(cn) : 0;
+                    int rate = Main.getInstance().getJByteMod().getOptions().get("bad_class_check").getBoolean() ? FileUtils.isBadClass(cn) : 0;
 
                     if (rate <= 80) {
                         classes.put(cn.name, cn);
@@ -214,7 +214,7 @@ public class LoadTask extends SwingWorker<Void, Integer> {
             double memoryUsage = Runtime.getRuntime().totalMemory() / (double) maxMem;
 
             if (timeDiff > 60 * 3 * 1000 && memoryUsage > 0.95) {
-                 Main.INSTANCE.getLogger().logNotification(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("memory_full"));
+                 Main.getInstance().getLogger().logNotification(Main.getInstance().getJByteMod().getLanguageRes().getResource("memory_full"));
                 publish(100);
                 this.cancel(true);
             }
@@ -225,18 +225,18 @@ public class LoadTask extends SwingWorker<Void, Integer> {
     @Override
     protected void process(List<Integer> chunks) {
         int i = chunks.get(chunks.size() - 1);
-        Main.INSTANCE.getDiscord().updatePresence("Loading " + file.getName() + " (" + i + "%)", "");
+        Main.getInstance().getDiscord().updatePresence("Loading " + file.getName() + " (" + i + "%)", "");
         jpb.setValue(i);
         super.process(chunks);
     }
 
     @Override
     protected void done() {
-        Main.INSTANCE.getJByteMod().setLastEditFile(file.getName());
-        Main.INSTANCE.getDiscord().updatePresence("Working on " + file.getName(), "Idle ...");
-        Main.INSTANCE.getLogger().log("Successfully loaded file!");
+        Main.getInstance().getJByteMod().setLastEditFile(file.getName());
+        Main.getInstance().getDiscord().updatePresence("Working on " + file.getName(), "Idle ...");
+        Main.getInstance().getLogger().log("Successfully loaded file!");
         jbm.refreshTree();
-        Main.INSTANCE.getLogger().log("Tree refreshed.");
-        Main.INSTANCE.getLogger().log("Loaded classes in " + (System.currentTimeMillis() - startTime) + "ms" + ", bypassed " + othersFile + " files because I can't load them. (Include " + junkClasses + " junk classes.)");
+        Main.getInstance().getLogger().log("Tree refreshed.");
+        Main.getInstance().getLogger().log("Loaded classes in " + (System.currentTimeMillis() - startTime) + "ms" + ", bypassed " + othersFile + " files because I can't load them. (Include " + junkClasses + " junk classes.)");
     }
 }

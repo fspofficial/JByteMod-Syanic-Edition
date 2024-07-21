@@ -30,27 +30,27 @@ public abstract class Plugin {
     public abstract void menuClick();
 
     protected final Map<String, ClassNode> getCurrentFile() {
-        return Main.INSTANCE.getJByteMod().getJarArchive().getClasses();
+        return Main.getInstance().getJByteMod().getJarArchive().getClasses();
     }
 
     protected final void updateTree() {
-        Main.INSTANCE.getJByteMod().refreshTree();
+        Main.getInstance().getJByteMod().refreshTree();
     }
 
     protected final JMenuBar getMenu() {
-        return Main.INSTANCE.getJByteMod().getMyMenuBar();
+        return Main.getInstance().getJByteMod().getMyMenuBar();
     }
 
     protected final JTree getTree() {
-        return Main.INSTANCE.getJByteMod().getJarTree();
+        return Main.getInstance().getJByteMod().getJarTree();
     }
 
     protected final ClassNode getSelectedNode() {
-        return Main.INSTANCE.getJByteMod().getCurrentNode();
+        return Main.getInstance().getJByteMod().getCurrentNode();
     }
 
     protected final MethodNode getSelectedMethod() {
-        return Main.INSTANCE.getJByteMod().getCurrentMethod();
+        return Main.getInstance().getJByteMod().getCurrentMethod();
     }
 
 }

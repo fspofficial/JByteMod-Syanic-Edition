@@ -8,17 +8,17 @@ import de.xbrowniecodez.jbytemod.Main;
 public class LookUtils {
 
     public static void setTheme() {
-        Main.INSTANCE.getLogger().log("Setting Theme");
-        LafManager.install(Main.INSTANCE.getJByteMod().getOptions().get("use_dark_theme").getBoolean() ? new OneDarkTheme() : new IntelliJTheme());
+        Main.getInstance().getLogger().log("Setting Theme");
+        LafManager.install(Main.getInstance().getJByteMod().getOptions().get("use_dark_theme").getBoolean() ? new OneDarkTheme() : new IntelliJTheme());
     }
 
     public static void changeTheme() {
-        if(Main.INSTANCE.getJByteMod().getOptions().get("use_dark_theme").getBoolean()) {
+        if(Main.getInstance().getJByteMod().getOptions().get("use_dark_theme").getBoolean()) {
             LafManager.setTheme(new OneDarkTheme());
         } else {
             LafManager.setTheme(new IntelliJTheme());
         }
         LafManager.install();
-        Main.INSTANCE.getJByteMod().getDecompilerPanel().setTheme();
+        Main.getInstance().getJByteMod().getDecompilerPanel().setTheme();
     }
 }

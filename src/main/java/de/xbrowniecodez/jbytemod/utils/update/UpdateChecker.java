@@ -25,12 +25,12 @@ public class UpdateChecker {
 	}
 
 	public void check() {
-		 Main.INSTANCE.getLogger().log("Checking for updates...");
+		 Main.getInstance().getLogger().log("Checking for updates...");
 		JsonObject releaseInfo = fetchLatestReleaseInfo();
 		if (releaseInfo != null) {
 			latestVersion = new Version(releaseInfo.get("name").getAsString());
 			String changelog = releaseInfo.get("body").getAsString();
-			if(latestVersion.isNewer(Main.INSTANCE.getJByteMod().getVersion()))
+			if(latestVersion.isNewer(Main.getInstance().getJByteMod().getVersion()))
 				showUpdateDialog(String.valueOf(latestVersion), changelog);
 		}
 	}

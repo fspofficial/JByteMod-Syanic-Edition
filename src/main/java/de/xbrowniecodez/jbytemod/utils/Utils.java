@@ -48,11 +48,11 @@ public class Utils {
 
         if (!workingDirectory.exists()) {
             if (!workingDirectory.mkdir()) {
-                 Main.INSTANCE.getLogger().err("Failed to create working directory!");
+                 Main.getInstance().getLogger().err("Failed to create working directory!");
                 return new File(".");
             }
         }
-         Main.INSTANCE.getLogger().log("Working directory " + workingDirectory);
+         Main.getInstance().getLogger().log("Working directory " + workingDirectory);
         return workingDirectory;
     }
 }
