@@ -2,7 +2,7 @@ package de.xbrowniecodez.jbytemod.ui.lists;
 
 import de.xbrowniecodez.jbytemod.Main;
 import de.xbrowniecodez.jbytemod.JByteMod;
-import de.xbrowniecodez.jbytemod.ui.lists.entries.SearchEntry;
+import me.grax.jbytemod.ui.lists.entries.SearchEntry;
 import me.grax.jbytemod.utils.list.LazyListModel;
 import me.grax.jbytemod.utils.task.search.LdcTask;
 import me.grax.jbytemod.utils.task.search.ReferenceTask;
@@ -42,15 +42,15 @@ public class SearchList extends JList<SearchEntry> {
         if (selectedEntry == null) return;
 
         JPopupMenu menu = new JPopupMenu();
-        JMenuItem goToDeclarationItem = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("go_to_dec"));
+        JMenuItem goToDeclarationItem = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("go_to_dec"));
         goToDeclarationItem.addActionListener(createGoToDeclarationAction(selectedEntry));
         menu.add(goToDeclarationItem);
 
-        JMenuItem selectTreeItem = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("select_tree"));
+        JMenuItem selectTreeItem = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("select_tree"));
         selectTreeItem.addActionListener(createSelectTreeAction(selectedEntry));
         menu.add(selectTreeItem);
 
-        JMenuItem copyTextItem = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("copy_text"));
+        JMenuItem copyTextItem = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("copy_text"));
         copyTextItem.addActionListener(createCopyTextAction(selectedEntry));
         menu.add(copyTextItem);
 
@@ -59,17 +59,17 @@ public class SearchList extends JList<SearchEntry> {
 
     private ActionListener createGoToDeclarationAction(SearchEntry selectedEntry) {
         return e -> {
-            ClassNode cn = selectedEntry.getClassNode();
-            MethodNode mn = selectedEntry.getMethodNode();
+            ClassNode cn = selectedEntry.getCn();
+            MethodNode mn = selectedEntry.getMn();
             jByteMod.selectMethod(cn, mn);
         };
     }
 
     private ActionListener createSelectTreeAction(SearchEntry selectedEntry) {
         return e -> {
-            ClassNode cn = selectedEntry.getClassNode();
-            MethodNode mn = selectedEntry.getMethodNode();
-            jByteMod.treeSelection(mn);
+            ClassNode cn = selectedEntry.getCn();
+            MethodNode mn = selectedEntry.getMn();
+            jByteMod.treeSelection(cn, mn);
         };
     }
 

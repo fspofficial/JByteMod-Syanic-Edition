@@ -19,10 +19,10 @@ public class LanguageRes {
     private final HashMap<String, String> defaultMap = new HashMap<>();
 
     public LanguageRes() {
-        Main.getInstance().getLogger().log("Reading Language XML..");
+        Main.INSTANCE.getLogger().log("Reading Language XML..");
         this.readXML(map, getXML());
         this.readXML(defaultMap, LanguageRes.class.getResourceAsStream("/locale/en.xml"));
-        Main.getInstance().getLogger().log("Successfully loaded " + map.size() + " local resources and " + defaultMap.size() + " default resources");
+        Main.INSTANCE.getLogger().log("Successfully loaded " + map.size() + " local resources and " + defaultMap.size() + " default resources");
     }
 
 
@@ -50,7 +50,7 @@ public class LanguageRes {
                 }
             }
         } catch (Exception e) {
-             Main.getInstance().getLogger().err("Failed to load resources: " + e.getMessage());
+             Main.INSTANCE.getLogger().err("Failed to load resources: " + e.getMessage());
             e.printStackTrace();
             new ErrorDisplay(e);
         }
@@ -62,10 +62,10 @@ public class LanguageRes {
     /*
     InputStream is = LanguageRes.class.getResourceAsStream("/locale/" + this.getLanguage() + ".xml");
     if (is == null) {
-       Main.getInstance().getLogger().warn("Locale not found, using default en.xml");
+       Main.INSTANCE.getLogger().warn("Locale not found, using default en.xml");
       is = LanguageRes.class.getResourceAsStream("/locale/en.xml");
       if (is == null) {
-         Main.getInstance().getLogger().err("en.xml not found!");
+         Main.INSTANCE.getLogger().err("en.xml not found!");
       }
     }
     return is;

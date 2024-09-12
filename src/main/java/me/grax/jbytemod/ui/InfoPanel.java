@@ -1,7 +1,5 @@
 package me.grax.jbytemod.ui;
 
-import com.github.weisj.darklaf.LafManager;
-import com.github.weisj.darklaf.theme.OneDarkTheme;
 import com.github.weisj.darklaf.ui.tabbedpane.DarkTabbedPaneBorder;
 import de.xbrowniecodez.jbytemod.Main;
 import de.xbrowniecodez.jbytemod.JByteMod;
@@ -18,25 +16,21 @@ public class InfoPanel extends JPanel {
     private JByteMod jbm;
 
     public InfoPanel(JByteMod jbm) {
+        Color backgroundColor = Main.INSTANCE.getJByteMod().getOptions().get("use_dark_theme").getBoolean() ? new Color(33, 37, 43) : Color.WHITE;
         this.jbm = jbm;
         this.setLayout(new BorderLayout());
         deskPane = new JDesktopPane() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                // Call the method to update the background color
-                Color backgroundColor = getBackgroundColor();
                 g.setColor(backgroundColor);
                 g.fillRect(0, 0, getWidth(), getHeight());
             }
+
         };
         deskPane.setBorder(new DarkTabbedPaneBorder());
         deskPane.setDesktopManager(new DeskMan());
         this.add(deskPane, BorderLayout.CENTER);
-    }
-
-    private Color getBackgroundColor() {
-        return Main.getInstance().getJByteMod().getOptions().get("use_dark_theme").getBoolean() ? new Color(33, 37, 43) : Color.WHITE;
     }
 
     public void selectMethod(ClassNode cn, MethodNode mn) {

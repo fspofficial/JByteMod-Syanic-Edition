@@ -55,11 +55,11 @@ public class RetransformTask extends SwingWorker<Void, Integer> {
             if (!definitions.isEmpty()) {
                 publish(80);
                 ins.redefineClasses(definitions.toArray(new ClassDefinition[0]));
-                 Main.getInstance().getLogger().log("Successfully retransformed " + newOriginal.size() + " classes");
+                 Main.INSTANCE.getLogger().log("Successfully retransformed " + newOriginal.size() + " classes");
                 original.putAll(newOriginal);
             }
         } catch (VerifyError v) {
-            JOptionPane.showMessageDialog(null, Main.getInstance().getJByteMod().getLanguageRes().getResource("verify_error"));
+            JOptionPane.showMessageDialog(null, Main.INSTANCE.getJByteMod().getLanguageRes().getResource("verify_error"));
         } catch (Throwable t) {
             new ErrorDisplay(t);
             t.printStackTrace();

@@ -46,7 +46,7 @@ public class ProcyonDecompiler extends Decompiler {
         for (Field f : settings.getClass().getDeclaredFields()) {
             if (f.getType() == boolean.class && f.getName().startsWith("procyon")) {
                 f.setAccessible(true);
-                f.setBoolean(settings, Main.getInstance().getJByteMod().getOptions().get(f.getName()).getBoolean());
+                f.setBoolean(settings, Main.INSTANCE.getJByteMod().getOptions().get(f.getName()).getBoolean());
             }
         }
         return settings;

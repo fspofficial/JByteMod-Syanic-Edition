@@ -16,13 +16,16 @@ import java.awt.*;
 import java.io.File;
 
 public class DecompilerTab extends JPanel {
-    private final File tempDir = new File(System.getProperty("java.io.tmpdir"));
+    private static File tempDir = new File(System.getProperty("java.io.tmpdir"));
+    private static File userDir = new File(System.getProperty("user.dir"));
     protected Decompilers decompiler = Decompilers.CFR;
-    private final DecompilerPanel dp;
-    private final JLabel label;
-    private final JButton compile = new JButton("Compile");
+    private DecompilerPanel dp;
+    private JLabel label;
+    private JByteMod jbm;
+    private JButton compile = new JButton("Compile");
 
     public DecompilerTab(JByteMod jbm) {
+        this.jbm = jbm;
         this.dp = new DecompilerPanel();
         this.label = new JLabel(decompiler + " Decompiler");
         jbm.setDecompilerPanel(dp);
@@ -49,7 +52,7 @@ public class DecompilerTab extends JPanel {
         compile.setVisible(false);
         rightPanel.add(compile);
 
-        JButton reload = new JButton(Main.getInstance().getJByteMod().getLanguageRes().getResource("reload"));
+        JButton reload = new JButton(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("reload"));
         reload.addActionListener(e -> decompile(Decompiler.last, Decompiler.lastMn, true));
         rightPanel.add(reload);
         
@@ -72,22 +75,22 @@ public class DecompilerTab extends JPanel {
 
         switch (decompiler) {
             case PROCYON:
-                d = new ProcyonDecompiler(Main.getInstance().getJByteMod(), dp);
+                d = new ProcyonDecompiler(jbm, dp);
                 break;
             case VINEFLOWER:
-                d = new VineflowerDecompiler(Main.getInstance().getJByteMod(), dp);
+                d = new VineflowerDecompiler(jbm, dp);
                 break;
             case CFR:
-                d = new CFRDecompiler(Main.getInstance().getJByteMod(), dp);
+                d = new CFRDecompiler(jbm, dp);
                 break;
             case KOFFEE:
-                d = new KoffeeDecompiler(Main.getInstance().getJByteMod(), dp);
+                d = new KoffeeDecompiler(jbm, dp);
                 break;
             case JDCORE:
-                d = new JDCoreDecompiler(Main.getInstance().getJByteMod(), dp);
+                d = new JDCoreDecompiler(jbm, dp);
                 break;
             case ASMIFIER:
-                d = new ASMifierDecompiler(Main.getInstance().getJByteMod(), dp);
+                d = new ASMifierDecompiler(jbm, dp);
                 break;
         }
         d.setNode(cn, mn);

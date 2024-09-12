@@ -1,11 +1,15 @@
 package me.grax.jbytemod.ui.lists;
 
-import de.xbrowniecodez.jbytemod.ui.lists.entries.InstrEntry;
+import me.grax.jbytemod.ui.lists.entries.InstrEntry;
 import me.grax.jbytemod.utils.gui.SwingUtils;
 import me.grax.jbytemod.utils.list.LazyListModel;
+import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.JumpInsnNode;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class AdressList extends JList<String> {
     private MyCodeList cl;

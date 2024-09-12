@@ -1,4 +1,4 @@
-package de.xbrowniecodez.jbytemod.ui.lists.entries;
+package me.grax.jbytemod.ui.lists.entries;
 
 import me.grax.jbytemod.utils.InstrUtils;
 import me.grax.jbytemod.utils.TextUtils;

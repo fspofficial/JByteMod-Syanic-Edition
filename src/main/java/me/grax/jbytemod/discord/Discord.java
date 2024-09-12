@@ -34,12 +34,12 @@ public class Discord {
                 updatePresence("Idle...", " ");
             }
         });
-        Main.getInstance().getLogger().log("Hooking discord..");
+        Main.INSTANCE.getLogger().log("Hooking discord..");
         try {
             client.connect();
-            Main.getInstance().getLogger().log("Successfully hooked discord");
+            Main.INSTANCE.getLogger().log("Successfully hooked discord");
         } catch (Exception e) {
-            Main.getInstance().getLogger().err("Failed to hook discord");
+            Main.INSTANCE.getLogger().err("Failed to hook discord");
             e.printStackTrace();
         }
     }
@@ -51,13 +51,13 @@ public class Discord {
      * @param state   current state
      */
     public void updatePresence(String details, String state) {
-        String discordState = Main.getInstance().getJByteMod().getOptions().get("discord_state").getBoolean() ? state : "Editing hidden class";
-        String discordDetails = Main.getInstance().getJByteMod().getOptions().get("discord_state").getBoolean() ? details : "Working on hidden file";
+        String discordState = Main.INSTANCE.getJByteMod().getOptions().get("discord_state").getBoolean() ? state : "Editing hidden class";
+        String discordDetails = Main.INSTANCE.getJByteMod().getOptions().get("discord_state").getBoolean() ? details : "Working on hidden file";
 
         builder.setState(discordState)
                 .setDetails(discordDetails)
                 .setStartTimestamp(startTimestamp)
-                .setLargeImage("icon", Main.getInstance().getJByteMod().getVersion().toString());
+                .setLargeImage("icon", Main.INSTANCE.getJByteMod().getVersion().toString());
         if(client.getStatus().equals(PipeStatus.CONNECTED))
             client.sendRichPresence(builder.build());
     }

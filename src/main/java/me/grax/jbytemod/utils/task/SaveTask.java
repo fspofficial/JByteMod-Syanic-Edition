@@ -36,17 +36,17 @@ public class SaveTask extends SwingWorker<Void, Integer> {
             try {
                 Map<String, ClassNode> classes = this.file.getClasses();
                 Map<String, byte[]> outputBytes = this.file.getOutput();
-                int flags = Main.getInstance().getJByteMod().getOptions().get("compute_maxs").getBoolean() ? 1 : 0;
-                 Main.getInstance().getLogger().log("Writing..");
+                int flags = Main.INSTANCE.getJByteMod().getOptions().get("compute_maxs").getBoolean() ? 1 : 0;
+                 Main.INSTANCE.getLogger().log("Writing..");
                 if (this.file.isSingleEntry()) {
                     ClassNode node = classes.values().iterator().next();
                     CustomClassWriter writer = new CustomClassWriter(flags);
                     node.accept(writer);
                     publish(50);
-                    Main.getInstance().getLogger().log("Saving..");
+                    Main.INSTANCE.getLogger().log("Saving..");
                     Files.write(new File(this.output.toString().replace(".jar", ".class")).toPath(), writer.toByteArray());
                     publish(100);
-                    Main.getInstance().getLogger().log("Saving successful!");
+                    Main.INSTANCE.getLogger().log("Saving successful!");
                     return null;
                 }
 
@@ -61,16 +61,16 @@ public class SaveTask extends SwingWorker<Void, Integer> {
                         outputBytes.put(s + ".class", writer.toByteArray());
                         publish((int) ((i++ / size) * 50d));
                     }catch(StringIndexOutOfBoundsException exception) {
-                         Main.getInstance().getLogger().println("Failed to save " + classes.get(s).name);
+                         Main.INSTANCE.getLogger().println("Failed to save " + classes.get(s).name);
                     }
                 }
                 publish(50);
-                 Main.getInstance().getLogger().log("Saving..");
+                 Main.INSTANCE.getLogger().log("Saving..");
                 this.saveAsJarNew(outputBytes, output.getAbsolutePath());
-                 Main.getInstance().getLogger().log("Saving successful!");
+                 Main.INSTANCE.getLogger().log("Saving successful!");
             } catch (Exception e) {
                 e.printStackTrace();
-                 Main.getInstance().getLogger().log("Saving failed!");
+                 Main.INSTANCE.getLogger().log("Saving failed!");
             }
             publish(100);
             return null;

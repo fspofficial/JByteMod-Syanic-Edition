@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-   <string name="language">English</string>
    <string name="exit_warn">Do you really want to exit? All unsaved changes will be lost.</string>
    <string name="is_sure">Are you sure?</string>
    <string name="jar_warn">Other files than .jar are not supported yet, please select a java archive.</string>
@@ -72,6 +71,7 @@
    <string name="remove_dead_code">Remove unreachable code</string>
    <string name="add_method">Add method</string>
    <string name="find_usage">Find usages</string>
+
    <string name="generate_frames">Generate frames</string>
    <string name="reload">Reload</string>
    <string name="close">Close</string>
@@ -129,6 +129,30 @@
 
    
    <!-- Decompiler Options -->
+   
+   <!-- Fernflower -->
+   <string name="ff_rbr">Hide bridge methods</string>
+   <string name="ff_rsy">Hide synthetic class members</string>
+   <string name="ff_din">Decompile inner classes</string>
+   <string name="ff_dc4">Collapse 1.4 class references</string>
+   <string name="ff_das">Decompile assertions</string>
+   <string name="ff_hes">Hide empty super invocation</string>
+   <string name="ff_hdc">Hide empty default constructor</string>
+   <string name="ff_dgs">Decompile generic signatures</string>
+   <string name="ff_ner">Assume return not throwing exceptions</string>
+   <string name="ff_den">Decompile enumerations</string>
+   <string name="ff_rgn">Remove getClass() invocation</string>
+   <string name="ff_lit">Output numeric literals "as-is"</string>
+   <string name="ff_asc">Encode non-ASCII characters</string>
+   <string name="ff_bto">Interpret int 1 as boolean true</string>
+   <string name="ff_nns">Allow for not set synthetic attribute</string>
+   <string name="ff_uto">Consider nameless types as Object</string>
+   <string name="ff_udv">Reconstruct variable names</string>
+   <string name="ff_rer">Remove empty exception ranges</string>
+   <string name="ff_fdi">De-inline finally structures</string>
+   <string name="ff_ren">Rename ambiguous elements</string>
+   <string name="ff_inn">Check for IntelliJ IDEA-specific @NotNull</string>
+   <string name="ff_lac">Decompile lambda expressions</string>
    
    <!-- Procyon -->
    <string name="procyon_includeLineNumbersInBytecode">Include line numbers in bytecode</string>

@@ -2,7 +2,7 @@ package de.xbrowniecodez.jbytemod.ui.lists;
 
 import de.xbrowniecodez.jbytemod.Main;
 import me.grax.jbytemod.ui.dialogue.InsnEditDialogue;
-import de.xbrowniecodez.jbytemod.ui.lists.entries.LVPEntry;
+import me.grax.jbytemod.ui.lists.entries.LVPEntry;
 import me.grax.jbytemod.utils.ErrorDisplay;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.LocalVariableNode;
@@ -52,17 +52,17 @@ public class LVPList extends JList<LVPEntry> {
         JPopupMenu menu = new JPopupMenu();
 
         if (!selectedEntries.isEmpty()) {
-            JMenuItem removeItem = new JMenuItem(selectedEntries.size() > 1 ? Main.getInstance().getJByteMod().getLanguageRes().getResource("remove_all") : Main.getInstance().getJByteMod().getLanguageRes().getResource("remove"));
-            removeItem.addActionListener(this::removeSelectedEntries);
-            menu.add(removeItem);
+            JMenuItem remove = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("remove"));
+            remove.addActionListener(this::removeSelectedEntries);
+            menu.add(remove);
 
-            JMenuItem edit = new JMenuItem(Main.getInstance().getJByteMod().getLanguageRes().getResource("edit"));
+            JMenuItem edit = new JMenuItem(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("edit"));
             edit.addActionListener(this::editSelectedEntries);
             menu.add(edit);
         }
 
         JMenuItem insert = new JMenuItem(selectedEntries.isEmpty() ?
-                Main.getInstance().getJByteMod().getLanguageRes().getResource("add") : Main.getInstance().getJByteMod().getLanguageRes().getResource("insert"));
+                Main.INSTANCE.getJByteMod().getLanguageRes().getResource("add") : Main.INSTANCE.getJByteMod().getLanguageRes().getResource("insert"));
         insert.addActionListener(this::insertEntry);
         menu.add(insert);
 
@@ -76,7 +76,7 @@ public class LVPList extends JList<LVPEntry> {
 
         for (LVPEntry selected : selectedEntries) {
             try {
-                currentMethodNode.localVariables.remove(selected.getLocalVariableNode());
+                currentMethodNode.localVariables.remove(selected.getLvn());
             } catch (Exception ex) {
                 new ErrorDisplay(ex);
             }
@@ -91,7 +91,7 @@ public class LVPList extends JList<LVPEntry> {
 
         for (LVPEntry selected : selectedEntries) {
             try {
-                new InsnEditDialogue(currentMethodNode, selected.getLocalVariableNode()).open();
+                new InsnEditDialogue(currentMethodNode, selected.getLvn()).open();
             } catch (Exception ex) {
                 new ErrorDisplay(ex);
             }

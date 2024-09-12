@@ -18,7 +18,7 @@ public class ThemeChanges {
             f.setAccessible(true);
             f.set(o, new Color(0xFF01D328));
         } catch (Exception e) {
-             Main.getInstance().getLogger().err("Failed to apply nimbus theme changes");
+             Main.INSTANCE.getLogger().err("Failed to apply nimbus theme changes");
         }
     }
 

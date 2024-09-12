@@ -9,8 +9,8 @@ import org.objectweb.asm.tree.*;
 
 public class InstrUtils {
 
-    public static Option primColor = Main.getInstance().getJByteMod().getOptions().get("primary_color");
-    public static Option secColor = Main.getInstance().getJByteMod().getOptions().get("secondary_color");
+    public static Option primColor = Main.INSTANCE.getJByteMod().getOptions().get("primary_color");
+    public static Option secColor = Main.INSTANCE.getJByteMod().getOptions().get("secondary_color");
 
     public static String toString(AbstractInsnNode ain) {
         String opc = TextUtils.toBold(OpUtils.getOpcodeText(ain.getOpcode()).toLowerCase()) + " ";

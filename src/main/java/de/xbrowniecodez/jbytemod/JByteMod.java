@@ -96,8 +96,6 @@ public class JByteMod extends JFrame {
         if (jarArchive != null) {
             refreshTree();
         }
-        this.setPluginManager(new PluginManager(this));
-        this.myMenuBar.addPluginMenu(pluginManager.getPlugins());
     }
 
     private void createSplitPane(Container container) {
@@ -119,7 +117,7 @@ public class JByteMod extends JFrame {
             if (agent) {
                 dispose();
             } else {
-                Main.getInstance().getDiscord().shutdown();
+                Main.INSTANCE.getDiscord().shutdown();
                 Runtime.getRuntime().exit(0);
             }
         }
@@ -132,7 +130,7 @@ public class JByteMod extends JFrame {
         new RetransformTask(this, agentInstrumentation, jarArchive).execute();
     }
 
-    public void attachTo(VirtualMachine vm) {
+    public void attachTo(VirtualMachine vm) throws Exception {
         new AttachTask(this, vm).execute();
     }
 
@@ -188,7 +186,7 @@ public class JByteMod extends JFrame {
     }
 
     public void refreshTree() {
-        Main.getInstance().getLogger().log("Building tree..");
+        Main.INSTANCE.getLogger().log("Building tree..");
         this.jarTree.refreshTree(jarArchive);
     }
 
@@ -201,7 +199,7 @@ public class JByteMod extends JFrame {
     }
 
     public void selectClass(ClassNode cn) {
-        if (Main.getInstance().getJByteMod().getOptions().get("select_code_tab").getBoolean()) {
+        if (Main.INSTANCE.getJByteMod().getOptions().get("select_code_tab").getBoolean()) {
             tabbedPane.setSelectedIndex(0);
         }
         this.currentNode = cn;
@@ -234,7 +232,7 @@ public class JByteMod extends JFrame {
     }
 
     public void selectMethod(ClassNode cn, MethodNode mn) {
-        if (Main.getInstance().getJByteMod().getOptions().get("select_code_tab").getBoolean()) {
+        if (Main.INSTANCE.getJByteMod().getOptions().get("select_code_tab").getBoolean()) {
             tabbedPane.setSelectedIndex(0);
         }
         OpUtils.clearLabelCache();
@@ -262,10 +260,12 @@ public class JByteMod extends JFrame {
     public void setVisible(boolean b) {
         LookUtils.setTheme();
         this.initializeFrame(false);
+        this.setPluginManager(new PluginManager(this));
+        this.myMenuBar.addPluginMenu(pluginManager.getPlugins());
         super.setVisible(b);
     }
 
-    public void treeSelection(MethodNode mn) {
+    public void treeSelection(ClassNode cn, MethodNode mn) {
         //selection may take some time
         new Thread(() -> {
             DefaultTreeModel tm = (DefaultTreeModel) jarTree.getModel();

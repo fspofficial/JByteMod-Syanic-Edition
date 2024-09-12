@@ -18,8 +18,8 @@ public class FrameGen extends Thread {
     private static Map<String, ClassNode> libraries;
 
     public static void regenerateFrames(JByteMod jbm, ClassNode cn) {
-        if (libraries == null && Main.getInstance().getJByteMod().getOptions().get("use_rt").getBoolean()) {
-            if (JOptionPane.showConfirmDialog(null, Main.getInstance().getJByteMod().getLanguageRes().getResource("load_rt")) == JOptionPane.OK_OPTION) {
+        if (libraries == null && Main.INSTANCE.getJByteMod().getOptions().get("use_rt").getBoolean()) {
+            if (JOptionPane.showConfirmDialog(null, Main.INSTANCE.getJByteMod().getLanguageRes().getResource("load_rt")) == JOptionPane.OK_OPTION) {
                 try {
                     libraries = JarUtils.loadRT();
                 } catch (IOException e) {
@@ -38,7 +38,7 @@ public class FrameGen extends Thread {
             ClassNode node2 = BytecodeUtils.getClassNodeFromBytes(cw.toByteArray());
             cn.methods.clear();
             cn.methods.addAll(node2.methods);
-             Main.getInstance().getLogger().log("Successfully regenerated frames at class " + cn.name);
+             Main.INSTANCE.getLogger().log("Successfully regenerated frames at class " + cn.name);
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -49,7 +49,7 @@ public class FrameGen extends Thread {
     public void run() {
         try {
             libraries = JarUtils.loadRT();
-             Main.getInstance().getLogger().log("Successfully loaded RT.jar");
+             Main.INSTANCE.getLogger().log("Successfully loaded RT.jar");
         } catch (IOException e) {
             new ErrorDisplay(e);
         }

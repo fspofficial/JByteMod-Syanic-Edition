@@ -92,7 +92,7 @@ public class MethodUtils {
                 i++;
             }
         }
-         Main.getInstance().getLogger().log("Removed " + i + " nodes!");
+         Main.INSTANCE.getLogger().log("Removed " + i + " nodes!");
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})

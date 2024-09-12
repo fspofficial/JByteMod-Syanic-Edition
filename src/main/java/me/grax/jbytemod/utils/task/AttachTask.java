@@ -43,7 +43,7 @@ public class AttachTask extends SwingWorker<Void, Integer> {
 
         File self = new File(JByteMod.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
         if (self.getAbsolutePath().endsWith(".jar")) {
-            JOptionPane.showMessageDialog(null, Main.getInstance().getJByteMod().getLanguageRes().getResource("injecting_msg"));
+            JOptionPane.showMessageDialog(null, Main.INSTANCE.getJByteMod().getLanguageRes().getResource("injecting_msg"));
             JarFile jbytemod = new JarFile(self);
             double size = countFiles(jbytemod);
             ZipOutputStream output = new ZipOutputStream(new FileOutputStream(temp));
@@ -69,11 +69,11 @@ public class AttachTask extends SwingWorker<Void, Integer> {
             jbytemod.close();
             output.close();
             publish(100);
-            Main.getInstance().getJByteMod().dispose();
+            Main.INSTANCE.getJByteMod().dispose();
             vm.loadAgent(temp.getAbsolutePath(), self.getParent());
             temp.deleteOnExit();
         } else {
-            JOptionPane.showMessageDialog(null, Main.getInstance().getJByteMod().getLanguageRes().getResource("no_jar_found"));
+            JOptionPane.showMessageDialog(null, Main.INSTANCE.getJByteMod().getLanguageRes().getResource("no_jar_found"));
         }
         publish(100);
         return null;

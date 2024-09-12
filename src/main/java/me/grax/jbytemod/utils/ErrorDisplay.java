@@ -43,7 +43,7 @@ public class ErrorDisplay extends JFrame {
         for (int i = 0; i < 4; i++) {
             pageEnd.add(new JPanel());
         }
-        JButton close = new JButton(Main.getInstance().getJByteMod().getLanguageRes() != null ? Main.getInstance().getJByteMod().getLanguageRes().getResource("close") : "Close"); //res may not be loaded
+        JButton close = new JButton(Main.INSTANCE.getJByteMod().getLanguageRes() != null ? Main.INSTANCE.getJByteMod().getLanguageRes().getResource("close") : "Close"); //res may not be loaded
         pageEnd.add(close);
         close.addActionListener(e -> ErrorDisplay.this.dispose());
         String st = s + suffix;

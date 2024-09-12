@@ -31,7 +31,7 @@ public class ErrorAnalyzer {
         } catch (AnalyzerException e) {
             put(map, e.node, new InsnError(e.getMessage()));
         } catch (Exception e) {
-             Main.getInstance().getLogger().err("Couldn't analyze errors in bytecode (" + e.toString() + ")");
+             Main.INSTANCE.getLogger().err("Couldn't analyze errors in bytecode (" + e.toString() + ")");
         }
         return map;
     }

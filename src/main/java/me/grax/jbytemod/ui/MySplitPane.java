@@ -14,7 +14,7 @@ public class MySplitPane extends JSplitPane {
         rightSide = new MyTabbedPane(jbm);
         leftSide = new JPanel();
         leftSide.setLayout(new BorderLayout(0, 0));
-        leftSide.add(new JLabel(" " + Main.getInstance().getJByteMod().getLanguageRes().getResource("java_archive")), BorderLayout.NORTH);
+        leftSide.add(new JLabel(" " + Main.INSTANCE.getJByteMod().getLanguageRes().getResource("java_archive")), BorderLayout.NORTH);
         leftSide.add(new JScrollPane(classTree), BorderLayout.CENTER);
         this.setLeftComponent(leftSide);
         this.setRightComponent(rightSide);

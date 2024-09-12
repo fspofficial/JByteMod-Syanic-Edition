@@ -104,7 +104,7 @@ public class CFRDecompiler extends Decompiler {
             HashMap<String, String> ops = new HashMap<>();
             ops.put("comments", "false");
             for (String key : options.keySet()) {
-                ops.put(key, String.valueOf(Main.getInstance().getJByteMod().getOptions().get("cfr_" + key).getBoolean()));
+                ops.put(key, String.valueOf(Main.INSTANCE.getJByteMod().getOptions().get("cfr_" + key).getBoolean()));
             }
             ClassFileSource2 cfs = new ClassFileSource2() {
 

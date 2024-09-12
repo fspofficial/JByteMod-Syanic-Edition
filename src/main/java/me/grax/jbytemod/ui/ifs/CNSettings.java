@@ -11,6 +11,8 @@ import org.objectweb.asm.tree.ClassNode;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class CNSettings extends MyInternalFrame {
     /**
@@ -29,7 +31,7 @@ public class CNSettings extends MyInternalFrame {
         final JPanel labels = new JPanel(new GridLayout(0, 1));
         panel.add(labels, "West");
         panel.add(input, "Center");
-        panel.add(new JLabel(Main.getInstance().getJByteMod().getLanguageRes().getResource("ref_warn")), "South");
+        panel.add(new JLabel(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("ref_warn")), "South");
         labels.add(new JLabel("Class Name:"));
         JTextField name = new JTextField(cn.name);
         input.add(name);
@@ -64,7 +66,7 @@ public class CNSettings extends MyInternalFrame {
         JTextField parent = new JTextField(cn.superName);
         input.add(parent);
         labels.add(new JLabel("Class Interfaces:"));
-        JButton interfaces = new JButton(Main.getInstance().getJByteMod().getLanguageRes().getResource("edit"));
+        JButton interfaces = new JButton(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("edit"));
         interfaces.addActionListener(a -> {
             if (!JListEditor.isOpen())
                 new JListEditor("Interfaces", cn, "interfaces").setVisible(true);
@@ -80,14 +82,14 @@ public class CNSettings extends MyInternalFrame {
         JTextField outerdesc = new JTextField(cn.outerMethodDesc);
         input.add(outerdesc);
         labels.add(new JLabel("Annotations:"));
-        JButton annotations = new JButton(Main.getInstance().getJByteMod().getLanguageRes().getResource("edit"));
+        JButton annotations = new JButton(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("edit"));
         annotations.addActionListener(a -> {
             if (!JAnnotationEditor.isOpen("visibleAnnotations"))
                 new JAnnotationEditor("Annotations", cn, "visibleAnnotations").setVisible(true);
         });
         input.add(annotations);
         labels.add(new JLabel("Invisible Annotations:"));
-        JButton invisAnnotations = new JButton(Main.getInstance().getJByteMod().getLanguageRes().getResource("edit"));
+        JButton invisAnnotations = new JButton(Main.INSTANCE.getJByteMod().getLanguageRes().getResource("edit"));
         invisAnnotations.addActionListener(a -> {
             if (!JAnnotationEditor.isOpen("invisibleAnnotations"))
                 new JAnnotationEditor("Invisible Annotations", cn, "invisibleAnnotations").setVisible(true);
@@ -95,53 +97,57 @@ public class CNSettings extends MyInternalFrame {
         input.add(invisAnnotations);
         this.add(panel, BorderLayout.CENTER);
         JButton update = new JButton("Update");
-        update.addActionListener(e -> {
-            boolean refresh = false;
-            if (!cn.name.equals(name.getText())) {
-                refresh = true;
-                cn.name = name.getText();
-            }
-            cn.sourceFile = sf.getText();
-            cn.access = (int) access.getValue();
-            cn.version = (int) version.getValue();
-            String srcDebug = sd.getText();
-            if (srcDebug.isEmpty()) {
-                cn.sourceDebug = null;
-            } else {
-                cn.sourceDebug = srcDebug;
-            }
-            String sig = signature.getText();
-            if (sig.isEmpty()) {
-                cn.signature = null;
-            } else {
-                cn.signature = sig;
-            }
-            String par = parent.getText();
-            if (par.isEmpty()) {
-                cn.superName = null;
-            } else {
-                cn.superName = par;
-            }
-            String oc = outerclass.getText();
-            if (oc.isEmpty()) {
-                cn.outerClass = null;
-            } else {
-                cn.outerClass = oc;
-            }
-            String om = outermethod.getText();
-            if (om.isEmpty()) {
-                cn.outerMethod = null;
-            } else {
-                cn.outerMethod = om;
-            }
-            String od = outerdesc.getText();
-            if (od.isEmpty()) {
-                cn.outerMethodDesc = null;
-            } else {
-                cn.outerMethodDesc = od;
-            }
-            if (refresh) {
-                Main.getInstance().getJByteMod().refreshTree();
+        update.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                boolean refresh = false;
+                if (!cn.name.equals(name.getText())) {
+                    refresh = true;
+                    cn.name = name.getText();
+                }
+                cn.sourceFile = sf.getText();
+                cn.access = (int) access.getValue();
+                cn.version = (int) version.getValue();
+                String srcDebug = sd.getText();
+                if (srcDebug.isEmpty()) {
+                    cn.sourceDebug = null;
+                } else {
+                    cn.sourceDebug = srcDebug;
+                }
+                String sig = signature.getText();
+                if (sig.isEmpty()) {
+                    cn.signature = null;
+                } else {
+                    cn.signature = sig;
+                }
+                String par = parent.getText();
+                if (par.isEmpty()) {
+                    cn.superName = null;
+                } else {
+                    cn.superName = par;
+                }
+                String oc = outerclass.getText();
+                if (oc.isEmpty()) {
+                    cn.outerClass = null;
+                } else {
+                    cn.outerClass = oc;
+                }
+                String om = outermethod.getText();
+                if (om.isEmpty()) {
+                    cn.outerMethod = null;
+                } else {
+                    cn.outerMethod = om;
+                }
+                String od = outerdesc.getText();
+                if (od.isEmpty()) {
+                    cn.outerMethodDesc = null;
+                } else {
+                    cn.outerMethodDesc = od;
+                }
+                if (refresh) {
+                    Main.INSTANCE.getJByteMod().refreshTree();
+                }
             }
         });
         this.add(update, BorderLayout.PAGE_END);
