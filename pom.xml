@@ -10,7 +10,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>8</maven.compiler.source>
-		<maven.compiler.target>8</maven.compiler.target>
+		<maven.compiler.target>21</maven.compiler.target>
 		<asm.version>9.8-SNAPSHOT</asm.version>
 		<procyon.version>0.6.0</procyon.version>
 		<cfr.version>0.152</cfr.version>
@@ -93,7 +93,12 @@
 		<dependency>
 			<groupId>com.github.weisj</groupId>
 			<artifactId>darklaf-core</artifactId>
-			<version>3.0.1</version>
+			<version>3.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.weisj</groupId>
+			<artifactId>darklaf-native-utils</artifactId>
+			<version>3.0.2x</version>
 		</dependency>
 		<dependency>
 			<groupId>org.benf</groupId>
